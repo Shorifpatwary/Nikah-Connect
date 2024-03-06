@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "components/ui/button",
-  component: Button,
+  title: "components/ui/badge",
+  component: Badge,
   parameters: {
     layout: "centered",
   },
@@ -17,28 +17,11 @@ const meta = {
     variant: {
       control: {
         type: "select",
-        options: [
-          "default",
-          "destructive",
-          "outline",
-          "secondary",
-          "ghost",
-          "link",
-        ],
+        options: ["default", "destructive", "outline", "secondary"],
       },
     },
-    size: {
-      control: {
-        type: "select",
-        options: ["default", "sm", "lg", "icon"],
-      },
-    },
-    disabled: {
-      control: "boolean",
-    },
-    // backgroundColor: { control: 'color' },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -47,6 +30,6 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     variant: "default",
-    children: "button children",
+    children: "badge children",
   },
 };

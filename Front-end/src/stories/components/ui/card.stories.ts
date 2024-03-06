@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "components/ui/button",
-  component: Button,
+  title: "components/ui/card",
+  component: Card,
   parameters: {
     layout: "centered",
   },
@@ -14,31 +14,14 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     className: { control: "text" },
-    variant: {
-      control: {
-        type: "select",
-        options: [
-          "default",
-          "destructive",
-          "outline",
-          "secondary",
-          "ghost",
-          "link",
-        ],
-      },
-    },
     size: {
       control: {
         type: "select",
-        options: ["default", "sm", "lg", "icon"],
+        options: ["default", "sm", "lg"],
       },
     },
-    disabled: {
-      control: "boolean",
-    },
-    // backgroundColor: { control: 'color' },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Card>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -47,6 +30,6 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     variant: "default",
-    children: "button children",
+    children: "card children",
   },
 };
