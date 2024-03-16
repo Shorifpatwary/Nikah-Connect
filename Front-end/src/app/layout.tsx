@@ -1,14 +1,30 @@
-import type { Metadata, Viewport } from "next";
-import { Inter as FontSans } from "next/font/google";
-import "./globals.css";
+import DesktopHeader from "@/components/sections/header";
 import { cn } from "@/lib/utils";
-import { NextFontWithVariable } from "next/dist/compiled/@next/font";
-import DasktopHeader from "@/components/custom-ui/header";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
 
-const fontSans: NextFontWithVariable = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-}) as NextFontWithVariable;
+const primaryFont = localFont({
+  // src: [
+  //   {
+  //     path: "../../src/assets/font/SolaimanLipi.ttf",
+  //     weight: "400",
+  //     style: "normal",
+  //   },
+  //   // {
+  //   //   path: "../../src/assets/font/SutonnyMJ-Bold.woff2",
+  //   //   weight: "700",
+  //   //   style: "normal",
+  //   // },
+  // ],
+  src: "../../src/assets/font/SolaimanLipi.woff2",
+  variable: "--font-SolaimanLipi",
+  display: "swap",
+});
+// const fontSans: NextFontWithVariable = FontSans({
+//   subsets: ["latin"],
+//   variable: "--font-sans",
+// }) as NextFontWithVariable;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -26,7 +42,7 @@ export const metadata: Metadata = {
   title:
     "কানেক্ট নিকাহ - বাংলাদেশী মুসলিম ম্যাট্রিমোনি | Connect Nikah - Bangladeshi Muslim Matrimony",
   description:
-    "কানেক্ট নিকাহ হলো প্রধান বাংলাদেশী মুসলিম ম্যাট্রিমোনি ওয়েবসাইট, যা মানুষদের তাদের পূর্ণাঙ্গ জীবন সঙ্গী খুঁজে পেতে সহায়তা করে। Connect Nikah is the leading Bangladeshi Muslim matrimony website, helping people find their perfect life partners. ",
+    "কানেক্ট নিকাহ হলো প্রধান বাংলাদেশী মুসলিম ম্যাট্রিমোনি ওয়েবসাইট, যা মানুষদের তাদের পূর্ণাঙ্গ জীবন সঙ্গী খুঁজে পেতে সহায়তা করে। Connect Nikah is the leading Bangladeshi Muslim matrimony website, helping people find their perfect life partners.",
   metadataBase: new URL("https://www.connectnikah.com"),
   generator: "Connect Nikah",
   keywords: [
@@ -48,7 +64,7 @@ export const metadata: Metadata = {
   referrer: "origin-when-cross-origin",
   creator: "Connect Nikah Team",
   publisher: "Connect Nikah",
-  category: "marrige",
+  category: "marriage",
   applicationName: "Connect Nikah | কানেক্ট নিকাহ",
   authors: [
     { name: "shorif" },
@@ -84,7 +100,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  // search ingine bot
+  // search engine bot
   robots: {
     index: true,
     follow: true,
@@ -209,11 +225,11 @@ export default function RootLayout({
     <html lang="bn" className="dark" id="rootElement">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          "min-h-screen bg-background font-primary  antialiased",
+          primaryFont.variable
         )}
       >
-        <DasktopHeader />
+        <DesktopHeader />
         {children}
       </body>
     </html>

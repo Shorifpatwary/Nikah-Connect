@@ -1,6 +1,6 @@
-import React from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import React from "react";
 
 interface LogoProps {
   logo: {
@@ -14,7 +14,7 @@ interface LogoProps {
 
 const Logo: React.FC<LogoProps> = ({ logo, link = "/" }) => {
   return (
-    <Link href={link} className=" h-14">
+    <Link href={link} className=" h-full">
       <Image
         width={logo.width}
         height={logo.height}

@@ -24,10 +24,10 @@ const ChangeThemeButton = () => {
 
   return (
     <div className="container">
-      <h3 className="text-center capitalize dark">
+      <h3 className="dark text-center capitalize">
         Dark theme and Light theme
       </h3>
-      <div className="flex gap-2 justify-center">
+      <div className="flex justify-center gap-2">
         <Button onClick={() => setTheme("light")}>Light</Button>
         <Button onClick={() => setTheme("dark")}>Dark</Button>
         <Button onClick={() => setTheme("system")}>System</Button>

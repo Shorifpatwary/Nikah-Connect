@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Card } from "@/components/ui/card";
+import Header from "@/components/sections/header";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "components/ui/card",
-  component: Card,
+  title: "components/sections/header/desktop",
+  component: Header,
   parameters: {
     layout: "centered",
   },
@@ -14,6 +14,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     className: { control: "text" },
+
     // size: {
     //   control: {
     //     type: "select",
@@ -21,15 +22,15 @@ const meta = {
     //   },
     // },
   },
-} satisfies Meta<typeof Card>;
+} satisfies Meta<typeof Header>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
-  args: {
-    // variant: "default",
-    children: "card children",
-  },
+  // args: {
+  //   variant: "default",
+  //   children: "header children",
+  // },
 };

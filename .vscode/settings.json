@@ -19,7 +19,6 @@
     "source.organizeImports": "always"
   },
   "editor.suggestSelection": "recentlyUsed",
-
   "diffEditor.codeLens": true,
   "explorer.fileNesting.enabled": true,
   "search.useParentIgnoreFiles": true,
@@ -83,11 +82,21 @@
     "tailwindcss",
     "typeof",
     "typesafe",
+    "SolaimanLipi",
     "unoptimized",
     "userinfo",
     "Vercel",
     "Viewports",
     "WEBP",
-    "plopfile"
+    "plopfile",
+    "clsx",
+    "nocache",
+    "noimageindex",
+    "googleplay",
+    "bibaho",
+    "shadi",
+    "patro",
+    "patri",
+    "nikah"
   ]
 }

@@ -30,6 +30,11 @@
     /* if you want to increase or decrease your font size , modify 0.5vw width. not 10px. */
     font-size: calc(0.6vw + 12px);
     scroll-behavior: smooth;
+    font-family: var(--font-SolaimanLipi);
+
+    /* touch-action: auto; */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .dark {
@@ -62,4 +67,59 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* custom classes */
+/* RESPONSIVE TYPOGRAPHY  */
+.fs_9xl {
+  font-size: calc(7vw + 22px);
+  line-height: 1;
+}
+.fs_8xl {
+  font-size: calc(5vw + 22px);
+  line-height: 1;
+}
+.fs_7xl {
+  font-size: calc(4vw + 21px);
+  line-height: 1.05;
+}
+.fs_6xl {
+  font-size: calc(3vw + 21px);
+  line-height: 1.1;
+}
+.fs_5xl {
+  font-size: calc(2.1vw + 20px);
+  line-height: 1.15;
+}
+.fs_4xl {
+  font-size: calc(1.5vw + 20px);
+  line-height: 1.25;
+}
+.fs_3xl {
+  font-size: calc(1vw + 20px);
+  line-height: 1.35;
+}
+.fs_2xl {
+  font-size: calc(0.9vw + 20px);
+  line-height: 1.35;
+}
+.fs_xl {
+  font-size: calc(0.8vw + 20px);
+  line-height: 1.35;
+}
+.fs_lg {
+  font-size: calc(0.6vw + 20px);
+  line-height: 1.35;
+}
+.fs_base {
+  font-size: calc(0.4vw + 20px);
+  line-height: 1.35;
+}
+.fs_sm {
+  font-size: calc(0.3vw + 18px);
+  line-height: 1.35;
+}
+.fs_xs {
+  font-size: 16px;
+  line-height: 1.35;
 }

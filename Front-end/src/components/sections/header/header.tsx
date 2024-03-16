@@ -1,31 +1,31 @@
 import { Button } from "@/components/ui/button";
-import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
-import Link from "next/link";
 import {
-  CollapsibleTrigger,
-  CollapsibleContent,
-  Collapsible,
-} from "@/components/ui/collapsible";
-import {
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenu,
-} from "@/components/ui/navigation-menu";
-import {
-  PopoverTrigger,
-  PopoverContent,
-  Popover,
-} from "@/components/ui/popover";
-import {
-  CardTitle,
+  Card,
+  CardContent,
   CardDescription,
   CardHeader,
-  CardContent,
-  Card,
+  CardTitle,
 } from "@/components/ui/card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Link from "next/link";
 
 export default function Component() {
   return (
@@ -148,7 +148,7 @@ export default function Component() {
           <span className="sr-only">Acme Inc</span>
         </Link>
       </div>
-      {/* dasktom menu */}
+      {/* desktop menu */}
       <div className="flex w-full justify-center">
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
