@@ -17,7 +17,7 @@ const Section: React.FC<SectionProps> = ({
   return (
     <Tag
       className={cn(
-        "flex min-h-96 w-11/12 flex-row items-center justify-center py-10",
+        "flex  w-11/12 flex-row items-center justify-center py-28",
         className
       )}
       {...props}

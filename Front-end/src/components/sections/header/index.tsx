@@ -1,9 +1,11 @@
 import { header } from "@/assets/data/header";
-import NightIcon from "@/assets/icons/night";
 import Logo from "@/components/blocks/logo";
 import Section from "@/components/blocks/section";
+import { SheetSide } from "@/components/dashboard/sidebar";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import ChangeThemeButton from "../../blocks/changeTheme";
+
 const DesktopHeader = () => {
   return (
     <>
@@ -32,15 +34,12 @@ const DesktopHeader = () => {
         {/* header action */}
         <div className="flex w-2/12 items-center justify-evenly  gap-1 max-md:w-4/12">
           {/* design this button later */}
-          <Button
-            variant="outline"
-            className="border-2 border-secondary capitalize"
-          >
+          <Button variant="outline" className="border-primary  capitalize">
             login
           </Button>
-          <Button variant="default" size="icon" className="capitalize">
-            <NightIcon className=" w-full fill-none stroke-secondary stroke-2" />
-          </Button>
+
+          <ChangeThemeButton />
+          <SheetSide />
         </div>
       </Section>
       {/* <Component /> */}

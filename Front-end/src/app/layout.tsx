@@ -1,30 +1,14 @@
+import "@/app/globals.css";
 import DesktopHeader from "@/components/sections/header";
 import { cn } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
 
 const primaryFont = localFont({
-  // src: [
-  //   {
-  //     path: "../../src/assets/font/SolaimanLipi.ttf",
-  //     weight: "400",
-  //     style: "normal",
-  //   },
-  //   // {
-  //   //   path: "../../src/assets/font/SutonnyMJ-Bold.woff2",
-  //   //   weight: "700",
-  //   //   style: "normal",
-  //   // },
-  // ],
-  src: "../../src/assets/font/SolaimanLipi.woff2",
+  src: "../assets/font/SolaimanLipi.woff2",
   variable: "--font-SolaimanLipi",
   display: "swap",
 });
-// const fontSans: NextFontWithVariable = FontSans({
-//   subsets: ["latin"],
-//   variable: "--font-sans",
-// }) as NextFontWithVariable;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -169,51 +153,6 @@ export const metadata: Metadata = {
   archives: ["https://www.connectnikah.com/about"],
   assets: ["https://www.connectnikah.com/assets"],
   bookmarks: ["https://www.connectnikah.com/about"],
-
-  // UNUSED META DATA
-  // I'm using file based icons
-  // icons: {
-  //   icon: '/icon.png',
-  //   shortcut: '/shortcut-icon.png',
-  //   apple: '/apple-icon.png',
-  //   other: {
-  //     rel: 'apple-touch-icon-precomposed',
-  //     url: '/apple-touch-icon-precomposed.png',
-  //   },
-  // },
-
-  // not available APPLE APP
-  // itunes: {
-  //   appId: 'myAppStoreID',
-  //   appArgument: 'myAppArgument',
-  // },
-  // appleWebApp: {
-  //   title: 'Apple Web App',
-  //   statusBarStyle: 'black-translucent',
-  //   startupImage: [
-  //     '/assets/startup/apple-touch-startup-image-768x1004.png',
-  //     {
-  //       url: '/assets/startup/apple-touch-startup-image-1536x2008.png',
-  //       media: '(device-width: 768px) and (device-height: 1024px)',
-  //     },
-  //   ],
-  // },
-
-  // no APP LINKS available
-  // appLinks: {
-  // 	ios: {
-  // 		url: "https://www.connectnikah.com/ios",
-  // 		app_store_id: "app_store_id",
-  // 	},
-  // 	android: {
-  // 		package: "com.example.android/package",
-  // 		app_name: "app_name_android",
-  // 	},
-  // 	web: {
-  // 		url: "https://www.connectnikah.com/web",
-  // 		should_fallback: true,
-  // 	},
-  // },
 };
 
 export default function RootLayout({

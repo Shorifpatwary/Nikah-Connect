@@ -4,16 +4,14 @@ import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   return (
-    <Section
-      className="pt-36"
-      rowClassName="max-md:flex-col gap-4 max-md:gap-20"
-    >
-      <div className=" flex h-80 w-7/12 flex-1 flex-col items-start justify-start gap-10 text-left max-md:order-2 max-md:w-full">
+    <Section rowClassName="max-md:flex-col gap-4 max-md:gap-20">
+      {/* call to action block */}
+      <div className=" flex w-7/12 flex-1 flex-col items-start justify-start gap-10 text-left max-md:order-2 max-md:w-full">
         <TitleMd className="*:text-secondary">
           বাংলাদেশী মুসলিম ম্যাট্রিমোনি ওয়েবসাইট <span>Delivered</span> .
         </TitleMd>
         <div>
-          <ParagraphMd className="font-primary text-xl font-medium">
+          <ParagraphMd className="font-primary text-xl">
             দিনাজপুর-৪ (চিরিরবন্দর-খানসামা) আসনে সংসদ সদস্য আবুল হাসান মাহমুদ
             আলী নতুন মন্ত্রিসভায় অর্থমন্ত্রীর দায়িত্ব পাওয়ায় চিরিরবন্দর উপজেলা এ
             সংবর্ধনা অনুষ্ঠানের আয়োজন করে। অর্থমন্ত্রী বলেন, অর্থনীতি যেখানে
@@ -24,7 +22,6 @@ const HeroSection = () => {
             প্রতিপক্ষ স্বাধীনতা বিরোধীরা সব সময় দেশের বিরুদ্ধে গুজব ছড়াচ্ছে।
             তারা তো কিছুই করতে পারে না।
           </ParagraphMd>
-          <p className=" font-weight-light text-xl"></p>
         </div>
         {/* call to actions */}
         <div className="flex justify-start gap-8">
@@ -32,17 +29,7 @@ const HeroSection = () => {
           <Button variant="secondary">Button</Button>
         </div>
       </div>
-
-      {/* <div className=" grid max-w-6xl gap-4">
-        <h1 className="text-3xl font-bold lg:text-6xl">
-         
-        </h1>
-        <p className=" max-w-2xl text-gray-500 dark:text-gray-400 md:text-xl">
-          The all-in-one platform for modern web projects. Ship faster with
-          component-based frontend, full-stack Jamstack, and zero configuration.
-        </p>
-      </div> */}
-
+      {/* search bio data  */}
       <div className=" w-5/12 max-w-3xl max-md:order-1 max-md:w-full">
         <img
           alt="Hero image"

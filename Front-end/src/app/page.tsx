@@ -4,6 +4,7 @@ import ChangeThemeButton from "@/components/blocks/changeTheme";
 import HeroSection from "@/components/sections/hero";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.connectnikah.com"),
@@ -36,6 +37,9 @@ export default function Home() {
         {" and more ___ "}
       </h2>
       <ChangeThemeButton />
+      <Link href="/admin" className="text-primary">
+        dashboard{" "}
+      </Link>
     </main>
   );
 }
