@@ -30,7 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "plopfile.js",
-    "src/app/error.js"
+    "src/app/error.js",
+    "src/components/dashboard/sidebar/nav-data.tss"
   ],
   "exclude": ["node_modules"]
 }

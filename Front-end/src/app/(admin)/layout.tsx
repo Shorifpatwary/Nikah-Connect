@@ -1,10 +1,9 @@
 import "@/app/globals.css";
-import { SheetSide } from "@/components/dashboard/sidebar";
+import DashboardHeader from "@/components/dashboard/header";
+// import { SheetSide } from "@/components/dashboard/sidebar";
 import { cn } from "@/lib/utils";
 import { Metadata, Viewport } from "next";
 import { Noto_Serif_Bengali } from "next/font/google";
-import Link from "next/link";
-import ChangeThemeButton from "../../components/blocks/changeTheme";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -40,12 +39,10 @@ export default function DashboardLayout({
             noto_serif.className
           )}
         >
-          <SheetSide />
+          <DashboardHeader />
+          {/* <SheetSide /> */}
           {children}
-          <Link href="/" className="button-primary">
-            website link
-          </Link>
-          <ChangeThemeButton />
+          <h2>how are you ?</h2>
         </div>
       </body>
     </html>

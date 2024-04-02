@@ -1,7 +1,6 @@
 import { header } from "@/assets/data/header";
 import Logo from "@/components/blocks/logo";
 import Section from "@/components/blocks/section";
-import { SheetSide } from "@/components/dashboard/sidebar";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import ChangeThemeButton from "../../blocks/changeTheme";
@@ -25,9 +24,6 @@ const DesktopHeader = () => {
             <li className="text-base">something</li>
             <li className="text-base">something</li>
             <li className="text-base">something</li>
-            {/* <li className="text-base">something</li>
-            <li className="text-base">something</li>
-            <li className="text-base">something</li> */}
           </ul>
           {/* <MenuItem  /> */}
         </nav>
@@ -39,10 +35,8 @@ const DesktopHeader = () => {
           </Button>
 
           <ChangeThemeButton />
-          <SheetSide />
         </div>
       </Section>
-      {/* <Component /> */}
     </>
   );
 };

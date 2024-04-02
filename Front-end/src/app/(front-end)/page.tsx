@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <div className="flex min-h-screen flex-col items-center justify-between">
       {/* <HeroSection /> */}
       <HeroSection />
       {/* <h2 className="capitalize">something more </h2> */}
@@ -40,6 +40,6 @@ export default function Home() {
       <Link href="/admin" className="text-primary">
         dashboard{" "}
       </Link>
-    </main>
+    </div>
   );
 }
