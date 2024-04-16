@@ -10,7 +10,7 @@ import { SideNavItem, SideNavItems } from "./nav-data";
 
 const SideNav = () => {
   return (
-    <div className="  h-screen w-full flex-1   md:flex ">
+    <div className="  h-screen w-full flex-1 capitalize md:flex">
       <div className="flex w-full flex-col space-y-6">
         <Link
           href="/"

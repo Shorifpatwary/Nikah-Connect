@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 const DashboardHeader = () => {
   return (
-    <div className="align-items-center flex min-h-10 max-w-52 justify-start rounded-sm bg-primary px-2 ">
-      <div className="flex  items-center justify-evenly  gap-1 ">
+    <div className="align-items-center absolute bottom-0 left-0 flex  max-w-52 justify-start rounded-sm p-2 ">
+      <div className="flex items-center justify-evenly  gap-1 rounded border-2 border-primary ">
         <SideBar />
-        <Button variant="outline" className="border-primary  capitalize">
+        {/* <Separator orientation="vertical" /> */}
+        <Button variant="link" className="border-primary  capitalize">
           login
         </Button>
+        {/* <Separator orientation="vertical" className=" font-primary" /> */}
         <ChangeThemeButton />
       </div>
     </div>
