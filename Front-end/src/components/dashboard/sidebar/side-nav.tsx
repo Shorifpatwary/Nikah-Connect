@@ -10,7 +10,7 @@ import { SideNavItem, SideNavItems } from "./nav-data";
 
 const SideNav = () => {
   return (
-    <div className="  h-screen w-full flex-1 capitalize md:flex">
+    <div className=" h-screen w-full flex-1 capitalize md:flex">
       <div className="flex w-full flex-col space-y-6">
         <Link
           href="/"
@@ -40,44 +40,46 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
   };
 
   return (
-    <div className="">
+    <div className=" ">
       {item.submenu ? (
         <>
           <button
             onClick={toggleSubMenu}
-            className={` flex w-full flex-row items-center justify-between rounded-lg p-2 hover:bg-primary-foreground ${
+            className={` flex w-full flex-row items-center justify-between rounded-lg p-2  hover:bg-primary-foreground ${
               pathname.includes(item.path) ? "hover:bg-primary-foreground" : ""
             }`}
           >
-            <div className="flex flex-row items-center space-x-4">
+            <div className="flex flex-row items-center space-x-4 ">
               {item.icon}
               <span className="flex text-xl  font-semibold">{item.title}</span>
             </div>
 
-            <div className={`${subMenuOpen ? "rotate-180" : ""} flex`}>
+            <div
+              className={`transform transition-transform duration-300 ${subMenuOpen ? "rotate-180 " : ""} flex`}
+            >
               <ChevronDown />
             </div>
           </button>
 
-          {subMenuOpen && (
-            <div className="my-2 ml-12 flex flex-col space-y-4  ">
-              {item.subMenuItems?.map((subItem, idx) => {
-                return (
-                  <Link
-                    key={idx}
-                    href={subItem.path}
-                    className={`rounded p-2 hover:bg-primary-foreground ${
-                      subItem.path === pathname
-                        ? "font-bold hover:bg-primary-foreground"
-                        : ""
-                    }`}
-                  >
-                    <span>{subItem.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+          <div
+            className={`${subMenuOpen ? "block" : "hidden"} my-2 ml-6 flex flex-col  transition-all duration-1000 `}
+          >
+            {item.subMenuItems?.map((subItem, idx) => {
+              return (
+                <Link
+                  key={idx}
+                  href={subItem.path}
+                  className={`rounded p-2 hover:bg-primary-foreground ${
+                    subItem.path === pathname
+                      ? "font-bold hover:bg-primary-foreground"
+                      : ""
+                  }`}
+                >
+                  <span>{subItem.title}</span>
+                </Link>
+              );
+            })}
+          </div>
         </>
       ) : (
         <Link

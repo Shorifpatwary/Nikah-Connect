@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Spatie\Permission\Contracts\Role;
 
 return new class extends Migration
 {
@@ -18,9 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
+            // $table->enum('registration_method', ['facebook', 'google', 'twitter', 'gmail'])->default('gmail');
+            // $table->string('third_party_registration_data')->nullable();
             $table->string('phone')->nullable();
-
             $table->rememberToken();
             $table->timestamps();
         });

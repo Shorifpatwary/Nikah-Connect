@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionsEnum;
+use App\Enums\RolesEnum;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -16,9 +17,12 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         // Define roles and corresponding permissions
         $roles = [
-            'user' => ['*.bio', "*.profile"],
-            'admin' => ["*"],
-            'editor' => ['edit post', "create post", "view post", "delete post"],
+            RolesEnum::USER => [PermissionsEnum::ALL_FOR_USER],
+            RolesEnum::SUPER_ADMIN => [PermissionsEnum::ALL],
+            RolesEnum::ADMIN => [PermissionsEnum::ALL],
+            RolesEnum::EDITOR => [PermissionsEnum::VIEW_USER],
+            RolesEnum::WRITER => [PermissionsEnum::VIEW_USER],
+            RolesEnum::USER_MANAGER => [PermissionsEnum::VIEW_USER],
         ];
 
         // Create roles and permissions

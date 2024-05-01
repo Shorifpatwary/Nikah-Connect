@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Spatie\Permission\Contracts\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -22,18 +20,16 @@ class RegisteredUserController extends Controller
     public function store(Request $request): Response
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            // 'role_id' => "required|exists:roles,id",
-            'phone' => 'string|max:55',
+            'name' => ['required', 'string', 'max:55'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:55', 'unique:' . User::class],
+            'password' => ['required', 'string', 'min:4',  'confirmed'],
+            'phone' => "string|max:55",
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // 'role_id' => Role::first()->id,
             'phone' => $request->phone,
         ]);
         $user->assignRole('user');

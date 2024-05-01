@@ -14,12 +14,13 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
+    //  'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'register', "password/email", "password/reset", "email/verify/*"],
 
     'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'), env('APP_URL', 'http://localhost:8000')],
 
     'allowed_origins_patterns' => [],
 

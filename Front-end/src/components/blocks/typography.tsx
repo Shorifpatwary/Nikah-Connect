@@ -81,7 +81,20 @@ export const ParagraphSm: React.FC<TypographyProps> = ({
   ...props
 }) => {
   return (
-    <Tag className={cn("font-primary text-base ", className)} {...props}>
+    <Tag className={cn("font-primary text-base", className)} {...props}>
+      {children}
+    </Tag>
+  );
+};
+
+export const ParagraphXS: React.FC<TypographyProps> = ({
+  className,
+  tag: Tag = "p",
+  children,
+  ...props
+}) => {
+  return (
+    <Tag className={cn("font-primary text-sm", className)} {...props}>
       {children}
     </Tag>
   );
