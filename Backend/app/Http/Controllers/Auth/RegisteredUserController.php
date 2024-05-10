@@ -17,7 +17,8 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    // : Response
+    public function store(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:55'],
@@ -36,7 +37,7 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
-        return response()->noContent();
+        return response()->json($user);
+        // return response()->noContent();
     }
 }

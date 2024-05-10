@@ -80,7 +80,7 @@ const RegistrationForm = (props: Props) => {
       }
     } else if (response.status === 204 || response.status === 200) {
       reset();
-      router.push(RegisterData.successRedirectUrl);
+      // router.push(RegisterData.successRedirectUrl);
     }
   };
   return (

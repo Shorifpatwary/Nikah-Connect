@@ -12,3 +12,33 @@ export default function Component() {
     </div>
   );
 }
+
+/**
+ * {
+    "data": {
+        "message": "The email has already been taken.",
+        "errors": {
+            "email": [
+                "The email has already been taken."
+            ]
+        }
+    },
+    "status": 422,
+    "statusText": "Unprocessable Content"
+}
+ */
+
+/**
+ * {
+    "data": {
+        "name": "shorif",
+        "email": "some@gmail.com",
+        "phone": "1234234234234",
+        "updated_at": "2024-05-02T01:59:35.000000Z",
+        "created_at": "2024-05-02T01:59:35.000000Z",
+        "id": 37
+    },
+    "status": 200,
+    "statusText": "OK"
+}
+ */
