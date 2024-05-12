@@ -10,11 +10,11 @@ const DesktopHeader = () => {
     <>
       <Section
         tag="header"
-        className="mx-auto min-h-10 py-2 "
+        className="mx-auto min-h-10 p-0 py-2 "
         rowClassName=" gap-1"
       >
         {/* logo */}
-        <div className=" w-3/12 max-md:w-5/12">
+        <div className="w-3/12 max-md:w-4/12 max-sm:w-7/12">
           <Logo logo={header.logo} />
         </div>
         {/* menu */}
@@ -28,7 +28,7 @@ const DesktopHeader = () => {
           {/* <MenuItem  /> */}
         </nav>
         {/* header action */}
-        <div className="flex w-2/12 items-center justify-evenly  gap-1 max-md:w-4/12">
+        <div className="flex w-2/12 items-center justify-evenly  gap-1 max-md:w-3/12  max-sm:w-4/12">
           {/* design this button later */}
           <Button variant="outline" className="border-primary  capitalize">
             login

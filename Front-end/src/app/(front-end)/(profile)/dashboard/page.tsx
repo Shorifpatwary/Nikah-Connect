@@ -1,7 +1,7 @@
 type Props = {};
 
 const Profile = (props: Props) => {
-  return <div>Profile Page </div>;
+  return <div>User Profile Page </div>;
 };
 
 export default Profile;

@@ -17,12 +17,12 @@ const Section: React.FC<SectionProps> = ({
   return (
     <Tag
       className={cn(
-        "flex  w-11/12 flex-row items-center justify-center py-28",
+        "flex w-full flex-row items-center justify-center p-4 py-28",
         className
       )}
       {...props}
     >
-      <div className={cn("flex w-full justify-between gap-2", rowClassName)}>
+      <div className={cn("flex w-11/12 justify-between gap-2", rowClassName)}>
         {children}
       </div>
     </Tag>

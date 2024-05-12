@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -10,11 +11,13 @@ interface LogoProps {
     alt: string;
   };
   link?: string;
+  className?: string;
 }
-
-const Logo: React.FC<LogoProps> = ({ logo, link = "/" }) => {
+{
+}
+const Logo: React.FC<LogoProps> = ({ logo, link = "/", className }) => {
   return (
-    <Link href={link} className=" h-full">
+    <Link href={link} className={cn("h-full", className)}>
       <Image
         width={logo.width}
         height={logo.height}

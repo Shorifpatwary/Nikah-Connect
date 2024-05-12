@@ -31,7 +31,7 @@ interface SuccessResponse {
 // Combined type for both error and success responses
 type ResponseDataType = ErrorResponse | SuccessResponse;
 
-const csrf = () => axios.get("/sanctum/csrf-cookie");
+export const csrf = () => axios.get("/sanctum/csrf-cookie");
 export async function createUser(
   data: RegistrationSchemaType
 ): Promise<ResponseDataType> {
@@ -43,20 +43,8 @@ export async function createUser(
       "/register",
       data
     );
-    console.log(response, "ax rs");
     return response;
   } catch (error) {
-    if (error.response.status === 422) {
-      console.log(error, "ax er");
-      console.log(error.response, "ax er res ");
-      const errorResponseData = {
-        data: error.response.data,
-        status: error.response.status,
-        statusText: error.response.statusText,
-      };
-      console.log(errorResponseData, "error response from create user");
-      return errorResponseData;
-    }
     return {
       error: `SERVER ERROR ${error}`,
     };
