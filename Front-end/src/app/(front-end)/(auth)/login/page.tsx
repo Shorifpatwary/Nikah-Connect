@@ -1,16 +1,17 @@
+import { formData } from "@/app/(front-end)/(auth)/data";
+import Section from "@/components/blocks/section";
 import AuthFormWrapper from "../auth-form-wrapper";
-import RegistrationForm from "../register/registration-form";
-import LoginPage from "./login-form";
+import LoginForm from "./login-form";
 
 type Props = {};
 
 const LoginPage = (props: Props) => {
   return (
-    <AuthFormWrapper formType="login" formTitle="login title">
-      {/* registration form */}
-      <RegistrationForm />
-      <LoginPage />
-    </AuthFormWrapper>
+    <Section rowClassName="justify-center">
+      <AuthFormWrapper formType="login" formTitle={formData.login.title}>
+        <LoginForm />
+      </AuthFormWrapper>
+    </Section>
   );
 };
 

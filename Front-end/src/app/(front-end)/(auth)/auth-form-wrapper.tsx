@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { FC, ReactNode } from "react";
 type AuthFormWrapperProps = {
-  formType?: "registration" | "login";
+  formType?: "registration" | "login" | "forget-password" | "reset-password";
   children?: ReactNode;
   formTitle: string;
 };
@@ -16,7 +16,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
 }) => {
   return (
     <main className="flex items-center justify-center">
-      <Card className="mx-auto w-[26rem] max-w-md space-y-4 p-2 py-10 ">
+      <Card className="mx-auto  max-w-md space-y-4 p-2 py-10 ">
         <CardHeader>
           <TitleSm className="text-center text-3xl font-bold capitalize">
             {formTitle}
@@ -50,7 +50,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
             {children}
           </div>
         </CardContent>
-        {formType === "registration" ? (
+        {formType === "registration" && (
           <div className="flex flex-col gap-4 text-center text-sm">
             <div className="text-center text-sm">
               Already have an account?{" "}
@@ -70,10 +70,27 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
               .{"\n "}
             </p>
           </div>
-        ) : (
+        )}
+        {formType === "login" && (
           <div className="text-center text-sm">
             Don't have an account?{" "}
             <Link className="underline" href={Routes.Registration}>
+              Sign up
+            </Link>
+          </div>
+        )}
+        {formType === "forget-password" && (
+          <div className="text-center text-sm">
+            Remember your password?{" "}
+            <Link className="underline" href={Routes.Login}>
+              Sign up
+            </Link>
+          </div>
+        )}
+        {formType === "reset-password" && (
+          <div className="text-center text-sm">
+            Don't want to reset your password?{" "}
+            <Link className="underline" href={Routes.Login}>
               Sign up
             </Link>
           </div>

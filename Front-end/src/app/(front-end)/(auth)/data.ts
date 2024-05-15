@@ -1,5 +1,4 @@
-export const RegisterData = {
-  title: "রেজিস্ট্রেশন",
+export const formData = {
   inputs: {
     name: {
       title: "আপনার নাম",
@@ -16,17 +15,55 @@ export const RegisterData = {
     password: {
       title: "পাসওয়ার্ড",
       placeholder: "********",
+      forget: "পাসওয়ার্ড মনে নেই?",
+      forgetLink: "/forget-password",
     },
     password_confirmation: {
       title: "পাসওয়ার্ড নিশ্চিত করুন",
       placeholder: "********",
     },
   },
-  successRedirectUrl: "/dashboard",
-  submit: "রেজিস্ট্রেশন সম্পন্ন করুন",
+  register: {
+    title: "রেজিস্ট্রেশন",
+    submit: "রেজিস্ট্রেশন সম্পন্ন করুন",
+
+    success: {
+      title: "একাউন্ট সফলভাবে খোলা হয়েছে।",
+      description:
+        "আপনার একাউন্ট সফলভাবে খোলা হয়েছে। অনুগ্রহ করে Dashboard এ যান। ",
+      redirectUrl: "/mail-verification",
+    },
+    error: {
+      title: "একাউন্ট খোলা সম্ভব হয়নি।",
+      description:
+        "আপনার একাউন্ট খোলা সম্ভব হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    },
+  },
+  login: {
+    title: "লগিন",
+    success: {
+      title: "একাউন্ট লগিন সফল হয়েছে।",
+      description: "অনুগ্রহ করে Dashboard এ যান।",
+      redirectUrl: "/dashboard",
+    },
+    error: {
+      title: "একাউন্ট লগিন সফল হয়নি।",
+      description: "অনুগ্রহ করে আবার চেষ্টা করুন।",
+    },
+    submit: "লগিন সম্পন্ন করুন",
+  },
+  forgetPassword: {
+    title: "পাসওয়ার্ড ভূল ",
+    submit: "পাসওয়ার্ড রিসেট লিংক পাঠান",
+  },
+  resetPassword: {
+    title: "পাসওয়ার্ড পরিবর্তন করুন",
+    successRedirectUrl: "",
+    submit: "পাসওয়ার্ড পরিবর্তন করুন",
+  },
 };
-// RegisterValidationMassage
-export const RVMassage = {
+// ValidationMassage
+export const ValidationMassage = {
   name: {
     required: "অনুগ্রহ করে আপনার নাম টাইপ করুন।",
     minLength: "আপনার নাম অনেক ছোট।",

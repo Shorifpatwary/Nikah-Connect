@@ -26,15 +26,14 @@ const VerificationBlock = (props: Props) => {
       const response = await resendVerification();
       toast({
         title: "সফলভাবে ই-মেইল পাঠানো হয়েছে।",
-        description: "Friday, February 10, 2023 at 5:57 PM",
+        variant: "primary",
+        description: "আপনার ই-মেইল যাচাই করুন।",
       });
       setTimeout(() => {
         setResendDisabled(false); // Enable the button after 30 seconds
       }, 30000);
-      console.log(response, "response");
     } catch (error) {
       setResendDisabled(false);
-      console.error("Error occurred while resending verification:", error);
     }
   };
 
@@ -73,7 +72,7 @@ const VerificationBlock = (props: Props) => {
           onClick={handleResendVerification}
           disabled={resendDisabled}
         >
-          Verify Email
+          Resend Email
         </Button>
         <Link
           className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"

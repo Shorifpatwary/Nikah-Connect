@@ -1,4 +1,4 @@
-export const RegisterData = {
+export const LoginData = {
   title: "রেজিস্ট্রেশন",
   inputs: {
     name: {
@@ -16,6 +16,8 @@ export const RegisterData = {
     password: {
       title: "পাসওয়ার্ড",
       placeholder: "********",
+      forget: "পাসওয়ার্ড মনে নেই?",
+      forgetLink: "/forget-password",
     },
     password_confirmation: {
       title: "পাসওয়ার্ড নিশ্চিত করুন",
@@ -23,15 +25,11 @@ export const RegisterData = {
     },
   },
   successRedirectUrl: "/dashboard",
-  submit: "রেজিস্ট্রেশন সম্পন্ন করুন",
+  submit: "লগইন সম্পন্ন করুন",
 };
-// RegisterValidationMassage
-export const RVMassage = {
-  name: {
-    required: "অনুগ্রহ করে আপনার নাম টাইপ করুন।",
-    minLength: "আপনার নাম অনেক ছোট।",
-    maxLength: "আপনার নাম অনেক বড়।",
-  },
+
+// login Validation Message
+export const LVMassage = {
   email: {
     required: "অনুগ্রহ করে আপনার ই-মেইল টাইপ করুন।",
     minLength: "আপনার ই-মেইল অনেক ছোট।",
@@ -42,12 +40,5 @@ export const RVMassage = {
     required: "অনুগ্রহ করে আপনার পাসওয়ার্ড টাইপ করুন।",
     minLength: "আপনার পাসওয়ার্ড অনেক ছোট।",
     maxLength: "আপনার পাসওয়ার্ড অনেক বড়।",
-  },
-  password_confirmation: {
-    required: "অনুগ্রহ করে আপনার পাসওয়ার্ড পুনরায় টাইপ করুন।",
-    confirm: "দুটি পাসওয়ার্ড মিলে নাই।",
-  },
-  phone: {
-    maxLength: "আপনার মোবাইল নম্বর অনেক বড়।",
   },
 };

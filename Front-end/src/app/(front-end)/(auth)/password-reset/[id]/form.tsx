@@ -1,13 +1,9 @@
 "use client";
-import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import Error from "@/components/blocks/error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   custom,
@@ -19,23 +15,19 @@ import {
   Output,
   string,
 } from "valibot";
-import { createUser } from "./createUser";
+
+import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
+import Routes from "@/assets/data/route";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import ResetPassword from "./reset-password";
+
 type Props = {};
 
 // Valibot
-const RegistrationSchema = object(
+const Schema = object(
   {
-    name: string([
-      minLength(1, ValidationMassage.name.required),
-      minLength(4, ValidationMassage.name.minLength),
-      maxLength(50, ValidationMassage.name.maxLength),
-    ]),
-    email: string([
-      minLength(1, ValidationMassage.email.required),
-      minLength(4, ValidationMassage.email.minLength),
-      email(ValidationMassage.email.email),
-      maxLength(50, ValidationMassage.email.maxLength),
-    ]),
     password: string([
       minLength(1, ValidationMassage.password.required),
       minLength(4, ValidationMassage.password.minLength),
@@ -44,7 +36,13 @@ const RegistrationSchema = object(
     password_confirmation: string([
       minLength(1, ValidationMassage.password_confirmation.required),
     ]),
-    phone: string([maxLength(50, ValidationMassage.phone.maxLength)]),
+    token: string([minLength(1, "This field is required!")]),
+    email: string([
+      minLength(1, ValidationMassage.email.required),
+      minLength(4, ValidationMassage.email.minLength),
+      email(ValidationMassage.email.email),
+      maxLength(50, ValidationMassage.email.maxLength),
+    ]),
   },
   [
     forward(
@@ -56,92 +54,64 @@ const RegistrationSchema = object(
     ),
   ]
 );
-export type RegistrationSchemaType = Output<typeof RegistrationSchema>;
-const RegistrationForm = (props: Props) => {
-  const router = useRouter();
+export type ResetSchemaType = Output<typeof Schema>;
+const ResetPasswordForm = (props: Props) => {
+  const params = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+
   const { toast } = useToast();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
     reset,
-  } = useForm<RegistrationSchemaType>({
-    resolver: valibotResolver(RegistrationSchema),
+  } = useForm<ResetSchemaType>({
+    resolver: valibotResolver(Schema),
   });
-  const onSubmit: SubmitHandler<RegistrationSchemaType> = async FormData => {
-    const response = await createUser<RegistrationSchemaType>(FormData);
+
+  const onSubmit: SubmitHandler<ResetSchemaType> = async FormData => {
+    const response = await ResetPassword<ResetSchemaType>(FormData);
     // If there are errors in the response, set each error using setError
     if (response?.status === 422) {
       if (response.data?.errors) {
         Object.keys(response.data?.errors).forEach(fieldName => {
-          setError(fieldName as keyof RegistrationSchemaType, {
+          setError(fieldName as keyof ResetSchemaType, {
             type: "server",
             message: response.data?.errors?.[fieldName]?.[0],
           });
         });
       }
       toast({
-        title: formData.register.error.title,
+        title: response.data?.message,
         variant: "destructive",
-        description: formData.register.error.description,
-      });
-    } else if (response.status === 204 || response.status === 200) {
-      reset();
-      toast({
-        title: formData.register.success.title,
-        variant: "primary",
-        description: formData.register.success.description,
+        description:
+          "পসওয়ার্ড পরিবর্তন সফল হয়নি। আপনি Forget Password পেজ এ গিয়ে আবার চেষ্টা করুন।",
       });
       // wait and redirect
       setTimeout(() => {
-        router.push(formData.register.success.redirectUrl);
+        router.push(Routes.ForgetPassword);
+      }, 3000);
+    } else if (response.status === 204 || response.status === 200) {
+      reset();
+      toast({
+        title: "পাসওয়ার্ড পরিবর্তন করা হয়েছে।",
+        variant: "primary",
+        description:
+          "আপনার পাসওয়ার্ড পরিবর্তন করা হয়েছে। অনুগ্রহ করে Login পেজ হতে লগিন করার চেষ্টা করুন। ",
+      });
+      // wait and redirect
+      setTimeout(() => {
+        router.push(Routes.Login);
       }, 3000);
     }
   };
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
-        {/* name */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="name" className="capitalize">
-            {formData.inputs.name.title}
-          </Label>
-          <Input
-            id="name"
-            placeholder={formData.inputs.name.placeholder}
-            type="text"
-            {...register("name")}
-          />
-          {errors.name && <Error>{errors.name.message}</Error>}
-        </div>
-        {/* email */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="email" className="capitalize">
-            {formData.inputs.email.title}
-          </Label>
-          <Input
-            id="email"
-            placeholder={formData.inputs.email.placeholder}
-            required
-            type="email"
-            {...register("email")}
-          />
-          {errors.email && <Error>{errors.email.message}</Error>}
-        </div>
-        {/* phone */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="phone" className="capitalize">
-            {formData.inputs.phone.title}
-          </Label>
-          <Input
-            id="phone"
-            type="phone"
-            placeholder={formData.inputs.phone.placeholder}
-            {...register("phone")}
-          />
-          {errors.phone && <Error>{errors.phone.message}</Error>}
-        </div>
         {/* password */}
         <div className="flex flex-col gap-1">
           <Label htmlFor="password" className="capitalize ">
@@ -170,14 +140,28 @@ const RegistrationForm = (props: Props) => {
             <Error>{errors.password_confirmation.message}</Error>
           )}
         </div>
+        {/* token as hidden inputs [token & email] */}
+        <Input
+          id="token"
+          type="hidden"
+          {...register("token")}
+          value={params.id}
+        />
+        <Input
+          id="email"
+          type="email"
+          className="read-only  hidden"
+          {...register("email")}
+          value={email as string}
+        />
         {/* submit */}
         <Button className="mt-3 w-full text-base" type="submit">
-          {formData.register.submit}
+          {formData.resetPassword.submit}
         </Button>
+        <Toaster />
       </div>
-      <Toaster />
     </form>
   );
 };
 
-export default RegistrationForm;
+export default ResetPasswordForm;

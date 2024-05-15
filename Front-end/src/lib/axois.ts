@@ -1,8 +1,5 @@
-import Axios, { AxiosResponse } from "axios";
-// Define a function to parse the response data
-function parseResponseData(response: AxiosResponse): AxiosResponse["data"] {
-  return response.data;
-}
+import Axios from "axios";
+
 const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: {
@@ -10,13 +7,6 @@ const axios = Axios.create({
   },
   withCredentials: true,
   withXSRFToken: true,
-  // transformResponse: [parseResponseData],
-  // transformResponse: [
-  //   function (data) {
-  //     // Do whatever you want to transform the data
-  //     return { data };
-  //   },
-  // ],
 });
 
 // Add a response interceptor to modify the response object
