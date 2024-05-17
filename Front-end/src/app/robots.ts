@@ -5,9 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "*",
-      disallow: ["/profile/", "/admin/"],
+      disallow: ["/dashboard/", "/admin/"],
     },
-    sitemap: "https://connectnikah.com/sitemap.xml",
+    sitemap: "/sitemap.xml",
     host: "https://connectnikah.com",
   };
 }

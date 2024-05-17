@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
+import { createCookie } from "../authCookie";
 import Login from "./login";
 
 type Props = {};
@@ -66,6 +67,10 @@ const LoginForm = (props: Props) => {
         variant: "primary",
         description: formData.register.success.description,
       });
+      // set user data to the cookie only when response send a user data
+      if (response.data.id) {
+        createCookie(response.data);
+      }
       // wait and redirect
       setTimeout(() => {
         router.push(formData.login.success.redirectUrl);

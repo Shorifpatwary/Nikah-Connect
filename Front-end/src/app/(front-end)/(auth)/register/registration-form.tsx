@@ -19,6 +19,7 @@ import {
   Output,
   string,
 } from "valibot";
+import { createCookie } from "../authCookie";
 import { createUser } from "./createUser";
 type Props = {};
 
@@ -93,6 +94,10 @@ const RegistrationForm = (props: Props) => {
         variant: "primary",
         description: formData.register.success.description,
       });
+      // set user data to the cookie only when response send a user data
+      if (response.data.id) {
+        createCookie(response.data);
+      }
       // wait and redirect
       setTimeout(() => {
         router.push(formData.register.success.redirectUrl);
