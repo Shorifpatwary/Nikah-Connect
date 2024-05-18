@@ -21,6 +21,7 @@ import Routes from "@/assets/data/route";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import ResetPassword from "./reset-password";
 
 type Props = {};
@@ -109,6 +110,23 @@ const ResetPasswordForm = (props: Props) => {
       }, 3000);
     }
   };
+
+  // return user when entering wrong URL:
+  useEffect(() => {
+    if (!email && params.id) {
+      toast({
+        title: "ভূল URL প্রদান করা হয়েছে।",
+        variant: "destructive",
+        description:
+          "আপনার দেওয়া URL টিতে ভূল রয়েছে। দয়া করে ই-মেইল এ দেওয়া লিংক এ ক্লিক করুন।",
+      });
+      // wait and redirect
+      setTimeout(() => {
+        router.push(Routes.ForgetPassword);
+      }, 3000);
+    }
+  }, []);
+
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">

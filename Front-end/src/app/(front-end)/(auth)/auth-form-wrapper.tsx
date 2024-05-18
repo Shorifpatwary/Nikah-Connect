@@ -15,8 +15,8 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
   formTitle,
 }) => {
   return (
-    <main className="flex items-center justify-center">
-      <Card className="mx-auto  max-w-md space-y-4 p-2 py-10 ">
+    <main className="flex w-96 items-center	justify-center	 ">
+      <Card className="mx-auto w-full space-y-4 p-2 py-10 ">
         <CardHeader>
           <TitleSm className="text-center text-3xl font-bold capitalize">
             {formTitle}
@@ -51,7 +51,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
           </div>
         </CardContent>
         {formType === "registration" && (
-          <div className="flex flex-col gap-4 text-center text-sm">
+          <div className="flex flex-col gap-4 text-center text-sm ">
             <div className="text-center text-sm">
               Already have an account?{" "}
               <Link className="linked underline" href={Routes.Login}>
@@ -59,15 +59,15 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
               </Link>
             </div>
             <p>
-              By registering you agree to our{" \n"}
+              By registering you agree to our{" "}
               <Link className="underline" href={Routes.TermsAndCondition}>
                 Terms of Service
               </Link>{" "}
-              and {" \n "}
+              and{" "}
               <Link className="underline" href={Routes.PrivacyPolicy}>
                 Privacy Policy
               </Link>
-              .{"\n "}
+              .
             </p>
           </div>
         )}
