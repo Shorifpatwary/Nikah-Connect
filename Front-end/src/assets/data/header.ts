@@ -9,19 +9,20 @@ export const header = {
   image: "@/",
   menus: [
     {
-      title: "Man Clothes",
-      href: "/product/search/man-clothes",
-      icon: "",
-      subMenus: [
-        {
-          title: "Shirt",
-          href: "/product/search/shirt",
-        },
-        {
-          title: "another one",
-          href: "/product/search/shirt",
-        },
-      ],
+      title: "বায়ো ডাটা",
+      href: "/bio",
+    },
+    {
+      title: "বুকমার্ক",
+      href: "/bookmark",
+    },
+    {
+      title: "প্রশ্ন",
+      href: "/faq",
+    },
+    {
+      title: "আমাদের সম্পর্কে",
+      href: "/about-us",
     },
   ],
 };

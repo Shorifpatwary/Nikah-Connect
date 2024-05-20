@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import Footer from "@/components/sections/footer";
 import DesktopHeader from "@/components/sections/header";
 import { cn } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
@@ -231,6 +232,7 @@ export default function RootLayout({
       >
         <DesktopHeader />
         {children}
+        <Footer />
       </body>
     </html>
   );

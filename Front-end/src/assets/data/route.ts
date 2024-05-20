@@ -7,5 +7,13 @@ const Routes = {
   Profile: "/dashboard",
   PrivacyPolicy: "/privacy-policy",
   TermsAndCondition: "/terms-and-condition",
+  ourTeam: "/our-team",
+  careers: "/careers",
+  support: "/support",
+  FAQs: "/FAQs",
+  contactUs: "/contactUs",
+  services: "/services",
+  affiliates: "/affiliates",
+  blog: "/blog",
 };
 export default Routes;
