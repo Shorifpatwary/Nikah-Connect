@@ -39,7 +39,7 @@ const Footer = (props: Props) => {
           </div>
         ))}
       </div>
-      <div className="col-span-4 mt-6 text-center">
+      <div className="col-span-4 mb-14 mt-6 text-center md:mb-2">
         <ParagraphSm
           dangerouslySetInnerHTML={{ __html: footerData.bottomInfo }}
         />

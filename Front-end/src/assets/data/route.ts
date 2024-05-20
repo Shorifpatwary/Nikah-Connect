@@ -15,5 +15,8 @@ const Routes = {
   services: "/services",
   affiliates: "/affiliates",
   blog: "/blog",
+  bio: "/bio",
+  bookmark: "/bookmark",
+  aboutUs: "/about-us",
 };
 export default Routes;

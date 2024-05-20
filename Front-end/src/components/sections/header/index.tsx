@@ -2,6 +2,7 @@ import { header } from "@/assets/data/header";
 import ChangeThemeButton from "@/components/blocks/changeTheme";
 import Logo from "@/components/blocks/logo";
 import Section from "@/components/blocks/section";
+import MobileHeader from "@/components/sections/header/mobile-header";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import MenuItem from "./menu-item";
@@ -38,6 +39,7 @@ const DesktopHeader = () => {
           <ChangeThemeButton />
         </div>
       </Section>
+      <MobileHeader />
     </>
   );
 };
