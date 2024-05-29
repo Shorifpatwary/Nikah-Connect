@@ -23,9 +23,6 @@ export default async function middleware(req: NextRequest) {
   const sessionCookie = cookies().get(sessionCookieName)?.value;
   const userCookie = cookies().get(userCookieName)?.value;
 
-  console.log(sessionCookie, "session cookie");
-  console.log(userCookie, "user cookie");
-
   // 4. Determine if the user is authenticated
   const isAuthenticated = sessionCookie && userCookie;
 

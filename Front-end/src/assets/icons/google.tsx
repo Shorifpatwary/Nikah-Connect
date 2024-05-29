@@ -9,9 +9,9 @@ interface GoogleIconProps {
 }
 
 const GoogleIcon: FC<GoogleIconProps> = ({
-  width = 18,
-  height = 18,
-  fillColor = "#4285F4",
+  // width = 18,
+  // height = 18,
+  // fillColor = "#4285F4",
   className,
 }) => {
   return (

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // user
+    Route::apiResource('user', UserController::class);
+    Route::post('/update-user-role', [UserController::class, 'updateUserRole'])->name('user.update-role');
 });

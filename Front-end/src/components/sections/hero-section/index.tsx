@@ -1,47 +1,50 @@
+import Section from "@/components/blocks/section";
+import { ParagraphMd, TitleMd } from "@/components/blocks/typography";
+import { Button } from "@/components/ui/button";
+
 const HeroSection = () => {
-  return <div className="flex h-screen w-full flex-col"></div>;
+  return (
+    <Section rowClassName="max-md:flex-col gap-4 max-md:gap-20">
+      {/* call to action block */}
+      <div className=" flex w-7/12 flex-1 flex-col items-start justify-start gap-10 text-left max-md:order-2 max-md:w-full">
+        <TitleMd className="*:text-secondary">
+          বাংলাদেশী মুসলিম ম্যাট্রিমোনি ওয়েবসাইট <span>Delivered</span> .
+        </TitleMd>
+        <div>
+          <ParagraphMd className="font-primary text-xl">
+            দিনাজপুর-৪ (চিরিরবন্দর-খানসামা) আসনে সংসদ সদস্য আবুল হাসান মাহমুদ
+            আলী নতুন মন্ত্রিসভায় অর্থমন্ত্রীর দায়িত্ব পাওয়ায় চিরিরবন্দর উপজেলা এ
+            সংবর্ধনা অনুষ্ঠানের আয়োজন করে। অর্থমন্ত্রী বলেন, অর্থনীতি যেখানে
+            থাকার দরকার সেখানে আছে। বর্তমান সরকার অনেক পদক্ষেপ নিয়েছে। ভারতের
+            সঙ্গে লেনদেনে মাল্টিকারেন্সি চালু করেছি। ভারতের সঙ্গে রুপি, ডলার ও
+            টাকার পাশাপাশি সব ধরনের লেনদেন করতে পারছি। আমরা অন্যান্য দেশের সঙ্গে
+            মাল্টিকারেন্সি চালুর পদক্ষেপ গ্রহণ করতে যাচ্ছি। কিন্তু আমাদের
+            প্রতিপক্ষ স্বাধীনতা বিরোধীরা সব সময় দেশের বিরুদ্ধে গুজব ছড়াচ্ছে।
+            তারা তো কিছুই করতে পারে না।
+          </ParagraphMd>
+        </div>
+        {/* call to actions */}
+        <div className="flex justify-start gap-8">
+          <Button variant="default">Button</Button>
+          <Button variant="secondary">Button</Button>
+        </div>
+      </div>
+      {/* search bio data  */}
+      <div className=" w-5/12 max-w-3xl max-md:order-1 max-md:w-full">
+        <img
+          alt="Hero image"
+          className="overflow-hidden rounded-xl object-cover"
+          height="400"
+          src="https://placehold.co/600x400"
+          style={{
+            aspectRatio: "720/400",
+            objectFit: "cover",
+          }}
+          width="720"
+        />
+      </div>
+    </Section>
+  );
 };
 
 export default HeroSection;
-
-function PackageIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m7.5 4.27 9 5.15" />
-      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-      <path d="m3.3 7 8.7 5 8.7-5" />
-      <path d="M12 22V12" />
-    </svg>
-  );
-}
-
-function UserIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}

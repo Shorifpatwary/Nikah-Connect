@@ -21,7 +21,7 @@ import {
 } from "valibot";
 import { createCookie } from "../authCookie";
 import { createUser } from "./createUser";
-type Props = {};
+
 
 // Valibot
 const RegistrationSchema = object(
@@ -58,7 +58,7 @@ const RegistrationSchema = object(
   ]
 );
 export type RegistrationSchemaType = Output<typeof RegistrationSchema>;
-const RegistrationForm = (props: Props) => {
+const RegistrationForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const {

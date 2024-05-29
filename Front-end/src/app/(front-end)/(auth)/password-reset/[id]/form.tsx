@@ -24,8 +24,6 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import ResetPassword from "./reset-password";
 
-type Props = {};
-
 // Valibot
 const Schema = object(
   {
@@ -56,7 +54,7 @@ const Schema = object(
   ]
 );
 export type ResetSchemaType = Output<typeof Schema>;
-const ResetPasswordForm = (props: Props) => {
+const ResetPasswordForm = () => {
   const params = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");

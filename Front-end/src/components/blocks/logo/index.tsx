@@ -13,8 +13,7 @@ interface LogoProps {
   link?: string;
   className?: string;
 }
-{
-}
+
 const Logo: React.FC<LogoProps> = ({ logo, link = "/", className }) => {
   return (
     <Link href={link} className={cn("h-full", className)}>

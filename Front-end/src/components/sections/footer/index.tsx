@@ -1,11 +1,10 @@
 import footerData from "@/assets/data/footer";
 import Logo from "@/components/blocks/logo";
+import Section from "@/components/blocks/section";
 import { ParagraphMd, ParagraphSm } from "@/components/blocks/typography";
 import Link from "next/link";
-import Section from "../../blocks/section";
-type Props = {};
 
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <Section rowClassName="flex-col" className="py-10" tag="footer">
       {/* <footer className="flex flex-col items-center   justify-between  px-10 py-6"> */}

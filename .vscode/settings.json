@@ -37,7 +37,8 @@
   "markdown.validate.enabled": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.inlayHints.enumMemberValues.enabled": true,
-  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
 
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -87,6 +88,8 @@
     "valibot",
     "hookform",
     "axois",
+    "tanstack",
+    "cmdk",
 
     "SolaimanLipi",
     "SutonnyMJ",

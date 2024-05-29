@@ -30,13 +30,13 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
                 <span className="flex items-center justify-around gap-6">
                   <GoogleIcon />
                   <p className="capitalize">continue using Google</p>
-                </span>{" "}
+                </span>&nbsp;
               </Button>
               <Button className="w-full" variant="outline">
                 <span className="flex items-center justify-around gap-6">
                   <FacebookIcon />
                   <p className="capitalize">continue using Facebook</p>
-                </span>{" "}
+                </span>&nbsp;
               </Button>
             </div> */}
             {/* separator */}
@@ -53,17 +53,17 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         {formType === "registration" && (
           <div className="flex flex-col gap-4 text-center text-sm ">
             <div className="text-center text-sm">
-              Already have an account?{" "}
+              Already have an account?&nbsp;
               <Link className="linked underline" href={Routes.Login}>
                 Login
               </Link>
             </div>
             <p>
-              By registering you agree to our{" "}
+              By registering you agree to our&nbsp;
               <Link className="underline" href={Routes.TermsAndCondition}>
                 Terms of Service
-              </Link>{" "}
-              and{" "}
+              </Link>
+              &nbsp; and&nbsp;
               <Link className="underline" href={Routes.PrivacyPolicy}>
                 Privacy Policy
               </Link>
@@ -73,7 +73,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         )}
         {formType === "login" && (
           <div className="text-center text-sm">
-            Don't have an account?{" "}
+            Don't have an account?&nbsp;
             <Link className="underline" href={Routes.Registration}>
               Sign up
             </Link>
@@ -81,7 +81,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         )}
         {formType === "forget-password" && (
           <div className="text-center text-sm">
-            Remember your password?{" "}
+            Remember your password?&nbsp;
             <Link className="underline" href={Routes.Login}>
               Sign up
             </Link>
@@ -89,7 +89,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         )}
         {formType === "reset-password" && (
           <div className="text-center text-sm">
-            Don't want to reset your password?{" "}
+            Don't want to reset your password?&nbsp;
             <Link className="underline" href={Routes.Login}>
               Sign up
             </Link>

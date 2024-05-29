@@ -26,6 +26,7 @@
     "plugin:storybook/recommended"
   ],
   "plugins": ["@typescript-eslint", "react", "react-hooks"],
+
   "globals": {
     "React": "readonly"
   },
@@ -45,6 +46,8 @@
   ],
   "rules": {
     "no-unused-vars": [1, { "args": "after-used", "argsIgnorePattern": "^_" }],
-    "@typescript-eslint/explicit-module-boundary-types": "off" // Disable this rule if you prefer not to explicitly specify return types for functions
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Disable this rule if you prefer not to explicitly specify return types for functions
+    "no-undef": "off",
+    "no-empty": "warn"
   }
 }

@@ -1,7 +1,12 @@
-type Props = {};
+import UsersDataTable from "@/components/dashboard/users-table";
 
-const Profile = (props: Props) => {
-  return <div>User Profile Page </div>;
+const Profile = () => {
+  return (
+    <div>
+      <p>User Profile Page</p>
+      <UsersDataTable />
+    </div>
+  );
 };
 
 export default Profile;

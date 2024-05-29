@@ -31,7 +31,6 @@
     font-size: calc(0.6vw + 12px);
     scroll-behavior: smooth;
     font-family: var(--font-SolaimanLipi);
-    transition: all 2s;
 
     /* touch-action: auto; */
     -webkit-font-smoothing: antialiased;

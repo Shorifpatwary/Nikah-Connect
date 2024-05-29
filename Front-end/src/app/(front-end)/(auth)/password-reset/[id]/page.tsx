@@ -3,9 +3,7 @@ import { formData } from "@/app/(front-end)/(auth)/data";
 import Section from "@/components/blocks/section";
 import ResetPasswordForm from "./form";
 
-type Props = {};
-
-const ResetPasswordID = (props: Props) => {
+const ResetPasswordID = () => {
   return (
     <Section rowClassName="justify-center">
       <AuthFormWrapper

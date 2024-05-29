@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,14 +16,19 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-
+    "types": [
+      "@types/react",
+      "@types/react-dom"
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   // !! WARN !!
@@ -33,5 +42,7 @@
     "src/app/error.js",
     "src/components/dashboard/sidebar/nav-data.tss"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

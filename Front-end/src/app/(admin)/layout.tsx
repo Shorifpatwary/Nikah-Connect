@@ -1,6 +1,5 @@
 import "@/app/globals.css";
 import DashboardHeader from "@/components/dashboard/header";
-// import { SheetSide } from "@/components/dashboard/sidebar";
 import { cn } from "@/lib/utils";
 import { Metadata, Viewport } from "next";
 import { Noto_Serif_Bengali } from "next/font/google";
@@ -25,11 +24,11 @@ export const metadata: Metadata = {
   applicationName: "Connect Nikah",
 };
 
-export default function DashboardLayout({
+const DashboardLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="bn" className="dark" id="rootElement">
       <body>
@@ -40,11 +39,11 @@ export default function DashboardLayout({
           )}
         >
           <DashboardHeader />
-          {/* <SheetSide /> */}
           {children}
-          <h2>how are you ?</h2>
         </div>
       </body>
     </html>
   );
-}
+};
+
+export default DashboardLayout;

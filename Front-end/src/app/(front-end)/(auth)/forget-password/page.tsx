@@ -3,9 +3,7 @@ import AuthFormWrapper from "../auth-form-wrapper";
 import { formData } from "../data";
 import ForgetPasswordForm from "./forget-form";
 
-type Props = {};
-
-const ForgetPasswordPage = (props: Props) => {
+const ForgetPasswordPage = () => {
   return (
     <Section rowClassName="justify-center">
       <AuthFormWrapper

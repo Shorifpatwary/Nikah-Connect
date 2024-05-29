@@ -3,9 +3,7 @@ import Section from "@/components/blocks/section";
 import AuthFormWrapper from "../auth-form-wrapper";
 import LoginForm from "./login-form";
 
-type Props = {};
-
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
   return (
     <Section rowClassName="justify-center">
       <AuthFormWrapper formType="login" formTitle={formData.login.title}>

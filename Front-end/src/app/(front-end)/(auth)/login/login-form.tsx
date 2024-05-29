@@ -14,8 +14,6 @@ import { email, maxLength, minLength, object, Output, string } from "valibot";
 import { createCookie } from "../authCookie";
 import Login from "./login";
 
-type Props = {};
-
 // Valibot
 const LoginSchema = object({
   email: string([
@@ -31,7 +29,7 @@ const LoginSchema = object({
   ]),
 });
 export type LoginSchemaType = Output<typeof LoginSchema>;
-const LoginForm = (props: Props) => {
+const LoginForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const {

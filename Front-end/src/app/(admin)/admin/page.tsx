@@ -1,5 +1,17 @@
+import DefaultLoading from "@/components/blocks/loading/default";
+import dynamic from "next/dynamic";
+const UsersTable = dynamic(
+  () => import("@/components/dashboard/tables/users-table"),
+  {
+    loading: () => <DefaultLoading />,
+  }
+);
 const Dashboard = () => {
-  return <div>Dashboard আঞ্জু ভবন</div>;
+  return (
+    <>
+      <UsersTable />
+    </>
+  );
 };
 
 export default Dashboard;

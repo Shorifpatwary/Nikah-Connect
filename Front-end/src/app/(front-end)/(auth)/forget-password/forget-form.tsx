@@ -23,7 +23,7 @@ const Schema = object({
   ]),
 });
 export type ForgetSchemaType = Output<typeof Schema>;
-const ForgetPasswordForm = (props: Props) => {
+const ForgetPasswordForm = () => {
   // hooks
   const { toast } = useToast();
   const {
@@ -48,7 +48,7 @@ const ForgetPasswordForm = (props: Props) => {
         });
       }
       toast({
-        title: "ই-মেইল পাঠানো সম্ভব হয়নি। ",
+        title: "ই-মেইল পাঠানো সম্ভব হয়নি।",
         variant: "destructive",
         description: "অনুগ্রহ করে আবার চেষ্টা করুন।",
       });

@@ -13,9 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 import resendVerification from "./resend-verification";
 
-type Props = {};
-
-const VerificationBlock = (props: Props) => {
+const VerificationBlock = () => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const { toast } = useToast();
 
