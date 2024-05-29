@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
-import getUsers from "@/components/dashboard/tables/users-table/getUsers";
+import getUsersF from "@/components/dashboard/tables/users-table/getUsersSample";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -60,8 +60,11 @@ const UsersTable = () => {
   const [users, setUsers] = useState<UsersWithPagination | null>(null);
   const fetchUsers = async () => {
     try {
-      const response = await getUsers();
-      setUsers(response.data);
+      // const response = await getUsers();
+      //       setUsers(response.data);
+
+      const { data } = await getUsersF();
+      setUsers(data);
     } catch (error: any) {
       console.error(error.message);
     }

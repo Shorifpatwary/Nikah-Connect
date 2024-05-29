@@ -1,6 +1,6 @@
 import ChangeThemeButton from "@/components/blocks/changeTheme";
+import DefaultLoading from "@/components/blocks/loading/default";
 import DashboardBreadcrumb from "@/components/dashboard/header/breadcrumb";
-import SideBar from "@/components/dashboard/sidebar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,7 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { SearchIcon, UserRoundCog } from "lucide-react";
+import dynamic from "next/dynamic";
 import React from "react";
+const SideBar = dynamic(() => import("@/components/dashboard/sidebar"), {
+  loading: () => <DefaultLoading />,
+});
 
 const DashboardHeader = () => {
   return (

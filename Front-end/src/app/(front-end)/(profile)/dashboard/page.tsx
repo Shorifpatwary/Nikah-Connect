@@ -1,4 +1,4 @@
-import UsersDataTable from "@/components/dashboard/users-table";
+import UsersDataTable from "@/components/dashboard/tables/users-table";
 
 const Profile = () => {
   return (
