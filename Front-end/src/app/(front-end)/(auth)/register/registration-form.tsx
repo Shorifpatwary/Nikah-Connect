@@ -19,9 +19,7 @@ import {
   Output,
   string,
 } from "valibot";
-import { createCookie } from "../authCookie";
 import { createUser } from "./createUser";
-
 
 // Valibot
 const RegistrationSchema = object(
@@ -73,35 +71,29 @@ const RegistrationForm = () => {
   const onSubmit: SubmitHandler<RegistrationSchemaType> = async FormData => {
     const response = await createUser<RegistrationSchemaType>(FormData);
     // If there are errors in the response, set each error using setError
-    if (response?.status === 422) {
-      if (response.data?.errors) {
-        Object.keys(response.data?.errors).forEach(fieldName => {
-          setError(fieldName as keyof RegistrationSchemaType, {
-            type: "server",
-            message: response.data?.errors?.[fieldName]?.[0],
-          });
+    if (response.errors) {
+      (
+        Object.keys(response?.errors) as (keyof RegistrationSchemaType)[]
+      ).forEach(fieldName => {
+        setError(fieldName, {
+          type: "server",
+          message: response.errors?.[fieldName]?.[0],
         });
-      }
+      });
       toast({
         title: formData.register.error.title,
         variant: "destructive",
         description: formData.register.error.description,
       });
-    } else if (response.status === 204 || response.status === 200) {
+    } else {
       reset();
       toast({
         title: formData.register.success.title,
         variant: "primary",
         description: formData.register.success.description,
       });
-      // set user data to the cookie only when response send a user data
-      if (response.data.id) {
-        createCookie(response.data);
-      }
-      // wait and redirect
-      setTimeout(() => {
-        router.push(formData.register.success.redirectUrl);
-      }, 3000);
+      // redirect
+      router.push(formData.register.success.redirectUrl);
     }
   };
   return (

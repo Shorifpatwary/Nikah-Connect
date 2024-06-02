@@ -20,7 +20,6 @@ import React from "react";
 const DashboardBreadcrumb = () => {
   const paths = usePathname();
   const pathNames = paths.split("/").filter(path => path);
-  console.log(paths, "paths ", pathNames, "pathNames");
   let dropdownPathNames: string[] = [];
   if (pathNames.length > 2) {
     dropdownPathNames = pathNames.slice(1, -2);

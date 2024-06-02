@@ -75,26 +75,22 @@ const ResetPasswordForm = () => {
   const onSubmit: SubmitHandler<ResetSchemaType> = async FormData => {
     const response = await ResetPassword<ResetSchemaType>(FormData);
     // If there are errors in the response, set each error using setError
-    if (response?.status === 422) {
-      if (response.data?.errors) {
-        Object.keys(response.data?.errors).forEach(fieldName => {
-          setError(fieldName as keyof ResetSchemaType, {
+    if (response.errors) {
+      (Object.keys(response?.errors) as (keyof ResetSchemaType)[]).forEach(
+        fieldName => {
+          setError(fieldName, {
             type: "server",
-            message: response.data?.errors?.[fieldName]?.[0],
+            message: response.errors?.[fieldName]?.[0],
           });
-        });
-      }
+        }
+      );
       toast({
-        title: response.data?.message,
+        title: response?.message,
         variant: "destructive",
         description:
           "পসওয়ার্ড পরিবর্তন সফল হয়নি। আপনি Forget Password পেজ এ গিয়ে আবার চেষ্টা করুন।",
       });
-      // wait and redirect
-      setTimeout(() => {
-        router.push(Routes.ForgetPassword);
-      }, 3000);
-    } else if (response.status === 204 || response.status === 200) {
+    } else {
       reset();
       toast({
         title: "পাসওয়ার্ড পরিবর্তন করা হয়েছে।",
@@ -102,10 +98,7 @@ const ResetPasswordForm = () => {
         description:
           "আপনার পাসওয়ার্ড পরিবর্তন করা হয়েছে। অনুগ্রহ করে Login পেজ হতে লগিন করার চেষ্টা করুন। ",
       });
-      // wait and redirect
-      setTimeout(() => {
-        router.push(Routes.Login);
-      }, 3000);
+      router.push(Routes.Login);
     }
   };
 
@@ -118,10 +111,8 @@ const ResetPasswordForm = () => {
         description:
           "আপনার দেওয়া URL টিতে ভূল রয়েছে। দয়া করে ই-মেইল এ দেওয়া লিংক এ ক্লিক করুন।",
       });
-      // wait and redirect
-      setTimeout(() => {
-        router.push(Routes.ForgetPassword);
-      }, 3000);
+      //  redirect
+      router.push(Routes.ForgetPassword);
     }
   }, []);
 
@@ -131,7 +122,7 @@ const ResetPasswordForm = () => {
         {/* password */}
         <div className="flex flex-col gap-1">
           <Label htmlFor="password" className="capitalize ">
-            {formData.inputs.password.title}
+            {formData.inputs.newPassword.title}
           </Label>
           <Input
             id="password"
@@ -161,7 +152,7 @@ const ResetPasswordForm = () => {
           id="token"
           type="hidden"
           {...register("token")}
-          value={params.id}
+          value={params.id || ""}
         />
         <Input
           id="email"

@@ -18,6 +18,9 @@ export const formData = {
       forget: "পাসওয়ার্ড মনে নেই?",
       forgetLink: "/forget-password",
     },
+    newPassword: {
+      title: "নতুন পাসওয়ার্ড",
+    },
     password_confirmation: {
       title: "পাসওয়ার্ড নিশ্চিত করুন",
       placeholder: "********",

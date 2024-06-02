@@ -14,8 +14,7 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
-    //  'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'register', "password/email", "password/reset", "email/verify/*"],
-
+    // 'paths' => ['sanctum/csrf-cookie', 'login', 'logout', 'register', "password/email", "password/reset", "email/verify/*"],
     'paths' => ['*'],
 
     'allowed_methods' => ['*'],
@@ -26,9 +25,11 @@ return [
 
     'allowed_headers' => ['*'],
 
+    // 'allowed_headers' => ['Accept', 'Accept-Language', 'Content-Language', 'Content-Type', 'X-Requested-With', 'X-XSRF-TOKEN'],
+
     'exposed_headers' => [],
 
-    'max_age' => 0,
+    'max_age' => 3600,
 
     'supports_credentials' => true,
 

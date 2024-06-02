@@ -1,5 +1,6 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
+import { Login } from "@/app/(front-end)/(auth)/login/login";
 import Error from "@/components/blocks/error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +12,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
-import { createCookie } from "../authCookie";
-import Login from "./login";
 
 // Valibot
 const LoginSchema = object({
@@ -44,35 +43,29 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<LoginSchemaType> = async FormData => {
     const response = await Login<LoginSchemaType>(FormData);
     // If there are errors in the response, set each error using setError
-    if (response?.status === 422) {
-      if (response.data?.errors) {
-        Object.keys(response.data?.errors).forEach(fieldName => {
-          setError(fieldName as keyof LoginSchemaType, {
+    if (response.errors) {
+      (Object.keys(response?.errors) as (keyof LoginSchemaType)[]).forEach(
+        fieldName => {
+          setError(fieldName, {
             type: "server",
-            message: response.data?.errors?.[fieldName]?.[0],
+            message: response.errors?.[fieldName]?.[0],
           });
-        });
-      }
+        }
+      );
       toast({
         title: formData.login.error.title,
         variant: "destructive",
-        description: formData.login.error.description,
+        description: formData.register.error.description,
       });
-    } else if (response.status === 204 || response.status === 200) {
+    } else {
       reset();
       toast({
-        title: formData.register.success.title,
+        title: formData.login.success.title,
         variant: "primary",
-        description: formData.register.success.description,
+        description: formData.login.success.description,
       });
-      // set user data to the cookie only when response send a user data
-      if (response.data.id) {
-        createCookie(response.data);
-      }
-      // wait and redirect
-      setTimeout(() => {
-        router.push(formData.login.success.redirectUrl);
-      }, 3000);
+      // redirect
+      router.push(formData.login.success.redirectUrl);
     }
   };
   return (

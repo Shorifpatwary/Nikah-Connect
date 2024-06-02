@@ -1,5 +1,6 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
+import ForgetPassword from "@/app/(front-end)/(auth)/forget-password/forget-password";
 import Error from "@/components/blocks/error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,9 +10,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
-import ForgetPassword from "./forget-password";
-
-type Props = {};
 
 // Valibot
 const Schema = object({
@@ -38,21 +36,21 @@ const ForgetPasswordForm = () => {
   const onSubmit: SubmitHandler<ForgetSchemaType> = async FormData => {
     const response = await ForgetPassword<ForgetSchemaType>(FormData);
     // If there are errors in the response, set each error using setError
-    if (response?.status === 422) {
-      if (response.data?.errors) {
-        Object.keys(response.data?.errors).forEach(fieldName => {
-          setError(fieldName as keyof ForgetSchemaType, {
+    if (response.errors) {
+      (Object.keys(response?.errors) as (keyof ForgetSchemaType)[]).forEach(
+        fieldName => {
+          setError(fieldName, {
             type: "server",
-            message: response.data?.errors?.[fieldName]?.[0],
+            message: response.errors?.[fieldName]?.[0],
           });
-        });
-      }
+        }
+      );
       toast({
         title: "ই-মেইল পাঠানো সম্ভব হয়নি।",
         variant: "destructive",
         description: "অনুগ্রহ করে আবার চেষ্টা করুন।",
       });
-    } else if (response.status === 204 || response.status === 200) {
+    } else {
       reset();
       toast({
         title: "সফলভাবে ই-মেইল পাঠানো হয়েছে।",

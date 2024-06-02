@@ -16,6 +16,16 @@ import resendVerification from "./resend-verification";
 const VerificationBlock = () => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const { toast } = useToast();
+  // do not redirect when verification are present 
+  // const router = useRouter();
+  // useEffect(() => {
+  //   const cookie = cookies();
+  //   const userCookieValue = cookie.get(userCookieName)?.value;
+  //   if (userCookieValue) {
+  //     console.log(userCookieValue, "userCookieValue");
+  //     // router.push(Routes.Profile);
+  //   }
+  // }, []);
 
   const handleResendVerification = async () => {
     try {

@@ -22,7 +22,9 @@ const Logo: React.FC<LogoProps> = ({ logo, link = "/", className }) => {
         height={logo.height}
         src={logo.src}
         alt={logo.alt}
-        objectFit="cover"
+        style={{
+          objectFit: "cover",
+        }}
         className="rounded-md"
       />
     </Link>

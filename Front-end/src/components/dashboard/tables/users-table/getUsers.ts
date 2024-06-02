@@ -1,23 +1,28 @@
+import { allUsersTag, backendUrl } from "@/assets/data/config/app.config";
 import { UsersWithPagination } from "@/assets/data/response-types/users";
-import axios from "@/lib/axois";
 import { getQueryString } from "@/lib/query/getQueryString";
-import { AxiosResponse } from "axios";
+import { fetchRequest } from "@/lib/request/fetchRequest";
 
-// Combined type for both error and success responses
-
-const getUsers = async (): Promise<AxiosResponse<UsersWithPagination>> => {
+const getUsers = async (): Promise<UsersWithPagination> => {
   try {
     const queryString = getQueryString();
 
     // Construct the request URL with query string
-    const url = `/api/user${queryString ? "?" + queryString : ""}`;
-    // Make fetch request to register user
-    const response = await axios.get<UsersWithPagination>(url);
+    const url = `${backendUrl}/api/user${queryString ? "?" + queryString : ""}`;
+
+    const response = await fetchRequest<UsersWithPagination>(url, {
+      method: "GET",
+      // Revalidate at most every hour
+      cache: "force-cache",
+      next: { revalidate: 3600, tags: [allUsersTag] },
+    });
     return response;
   } catch (error) {
-    return {
+    console.error({
       error: `SERVER ERROR: ${error instanceof Error ? error.message : String(error)}`,
-    };
+    });
+    // Re-throw the error to ensure the function doesn't end without a return value
+    throw error;
   }
 };
 export default getUsers;
