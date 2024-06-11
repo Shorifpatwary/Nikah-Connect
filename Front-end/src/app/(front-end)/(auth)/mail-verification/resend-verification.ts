@@ -1,9 +1,14 @@
-import axios from "@/lib/axois";
+import { backendUrl } from "@/assets/data/config/app.config";
+import { fetchRequest } from "@/lib/request/fetchRequest";
 
 const resendVerification = async () => {
   try {
     // Make fetch request to register user
-    const response = await axios.post("/email/verification-notification");
+    const url = `${backendUrl}/email/verification-notification`;
+    // Make fetch request to register user
+    const response = await fetchRequest<ResponseType>(url, {
+      method: "POST",
+    });
     return response;
   } catch (error) {
     return {

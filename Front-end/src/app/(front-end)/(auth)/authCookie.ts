@@ -1,12 +1,15 @@
 "use server";
 
-import { userCookieName } from "@/assets/data/config/app.config";
+import {
+  userAuthCookies,
+  userCookieName,
+} from "@/assets/data/config/app.config";
 import { cookies } from "next/headers";
- const cookieName = userCookieName;
+const cookieName = userCookieName;
 const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
 
 //  user cookie create function
-export async function createCookie( 
+export async function createCookie(
   data: any,
   cookieKey: string = cookieName,
   time: number = thirtyDaysInMilliseconds
@@ -23,6 +26,8 @@ export async function createCookie(
 }
 
 //  user cookie create function
-export async function deleteCookie(cookieName: string) {
-  cookies().delete(cookieName);
+export async function deleteAuthCookies() {
+  userAuthCookies.map(authCookie => {
+    cookies().delete(authCookie);
+  });
 }

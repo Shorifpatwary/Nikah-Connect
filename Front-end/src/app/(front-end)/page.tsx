@@ -36,7 +36,7 @@ export default function Home() {
         {" and more ___ "}
       </h2>
       <ChangeThemeButton />
-      <Link href="/admin" className="text-primary">
+      <Link href="/admin" className="text-primary" prefetch={false}>
         dashboard{" "}
       </Link>
     </div>

@@ -54,17 +54,29 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
           <div className="flex flex-col gap-4 text-center text-sm ">
             <div className="text-center text-sm">
               Already have an account?&nbsp;
-              <Link className="linked underline" href={Routes.Login}>
+              <Link
+                className="linked underline"
+                href={Routes.Login}
+                prefetch={false}
+              >
                 Login
               </Link>
             </div>
             <p>
               By registering you agree to our&nbsp;
-              <Link className="underline" href={Routes.TermsAndCondition}>
+              <Link
+                className="underline"
+                href={Routes.TermsAndCondition}
+                prefetch={false}
+              >
                 Terms of Service
               </Link>
               &nbsp; and&nbsp;
-              <Link className="underline" href={Routes.PrivacyPolicy}>
+              <Link
+                className="underline"
+                href={Routes.PrivacyPolicy}
+                prefetch={false}
+              >
                 Privacy Policy
               </Link>
               .
@@ -74,7 +86,11 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         {formType === "login" && (
           <div className="text-center text-sm">
             Don't have an account?&nbsp;
-            <Link className="underline" href={Routes.Registration}>
+            <Link
+              className="underline"
+              href={Routes.Registration}
+              prefetch={false}
+            >
               Sign up
             </Link>
           </div>
@@ -82,7 +98,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         {formType === "forget-password" && (
           <div className="text-center text-sm">
             Remember your password?&nbsp;
-            <Link className="underline" href={Routes.Login}>
+            <Link className="underline" href={Routes.Login} prefetch={false}>
               Sign up
             </Link>
           </div>
@@ -90,7 +106,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
         {formType === "reset-password" && (
           <div className="text-center text-sm">
             Don't want to reset your password?&nbsp;
-            <Link className="underline" href={Routes.Login}>
+            <Link className="underline" href={Routes.Login} prefetch={false}>
               Sign up
             </Link>
           </div>

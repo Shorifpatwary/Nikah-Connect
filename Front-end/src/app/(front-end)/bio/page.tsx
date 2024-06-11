@@ -7,8 +7,8 @@ export const metadata: Metadata = {
     "Connect Nikah is the leading Bangladeshi Muslim matrimony website",
 };
 
-const AboutPage = () => {
-  return <div>AboutPage shorif is the latest one </div>;
+const BioPage = () => {
+  return <div>BioPage Page </div>;
 };
 
-export default AboutPage;
+export default BioPage;

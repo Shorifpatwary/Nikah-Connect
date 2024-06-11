@@ -14,6 +14,8 @@ export const setCookiesFromResponse = async (
       const [nameValue, ...attributes] = cookie.split(";");
       const [name, value] = nameValue.split("=");
 
+      // Only set the cookie if the value is not empty
+      if (!value) continue;
       const options: {
         expires?: Date;
         maxAge?: number;
@@ -62,3 +64,4 @@ export const setCookiesFromResponse = async (
     }
   }
 };
+// getting error when calling this from client side

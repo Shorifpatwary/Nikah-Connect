@@ -1,3 +1,5 @@
+"use client";
+
 import { allUsersTag, backendUrl } from "@/assets/data/config/app.config";
 import { UsersWithPagination } from "@/assets/data/response-types/users";
 import { getQueryString } from "@/lib/query/getQueryString";
@@ -12,8 +14,8 @@ const getUsers = async (): Promise<UsersWithPagination> => {
 
     const response = await fetchRequest<UsersWithPagination>(url, {
       method: "GET",
-      // Revalidate at most every hour
-      cache: "force-cache",
+      // ! Use cache: "force-cache", for 'client' side data fetching
+      // cache: "force-cache",
       next: { revalidate: 3600, tags: [allUsersTag] },
     });
     return response;
@@ -21,7 +23,7 @@ const getUsers = async (): Promise<UsersWithPagination> => {
     console.error({
       error: `SERVER ERROR: ${error instanceof Error ? error.message : String(error)}`,
     });
-    // Re-throw the error to ensure the function doesn't end without a return value
+    // Re-throw the error to ensure the function doesn't end without a return value.
     throw error;
   }
 };

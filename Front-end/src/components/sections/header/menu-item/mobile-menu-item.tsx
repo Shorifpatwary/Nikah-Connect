@@ -10,6 +10,7 @@ const MobileMenuItem: React.FC<MenuProps> = ({ title, href, icon }) => {
     <Link
       className="hover:text-primary-500 dark:hover:text-primary-500 flex flex-col items-center gap-1 text-gray-500 dark:text-gray-400"
       href={href}
+      prefetch={false}
     >
       {icon}
       <span className="text-base">{title}</span>

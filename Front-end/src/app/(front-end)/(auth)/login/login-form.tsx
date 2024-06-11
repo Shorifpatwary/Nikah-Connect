@@ -95,6 +95,7 @@ const LoginForm = () => {
               <Link
                 className="underline"
                 href={formData.inputs.password.forgetLink}
+                prefetch={false}
               >
                 {formData.inputs.password.forget}
               </Link>

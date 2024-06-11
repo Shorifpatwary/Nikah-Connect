@@ -1,3 +1,4 @@
+// ! let them to be client component,  where getCsrfCookie() are in used.
 import { createCookie } from "@/app/(front-end)/(auth)/authCookie";
 import getCsrfCookie from "@/app/(front-end)/(auth)/get-csrf";
 import { RegistrationSchemaType } from "@/app/(front-end)/(auth)/register/registration-form";

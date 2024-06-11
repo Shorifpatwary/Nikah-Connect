@@ -48,7 +48,7 @@ const footerData = {
         },
         {
           title: "careers",
-          href: Routes.careers,
+          href: Routes.career,
         },
       ],
     },

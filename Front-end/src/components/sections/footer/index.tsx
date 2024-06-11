@@ -31,6 +31,7 @@ const Footer = () => {
                 key={menu.title}
                 className="text-gray-300 hover:text-white"
                 href={menu.href}
+                prefetch={false}
               >
                 <ParagraphSm>{menu.title}</ParagraphSm>
               </Link>

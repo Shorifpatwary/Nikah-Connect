@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 // 1. Specify protected and public routes
-const protectedRoutes = [Routes.Profile];
+const protectedRoutes = [Routes.Profile, Routes.Admin];
 const publicRoutes = [
   Routes.Login,
   Routes.Registration,

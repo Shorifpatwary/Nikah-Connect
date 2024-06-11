@@ -1,4 +1,5 @@
 "use client";
+import Routes from "@/assets/data/route";
 import Logo from "@/assets/images/website-logo.png";
 import {
   ParagraphMd,
@@ -16,7 +17,7 @@ import resendVerification from "./resend-verification";
 const VerificationBlock = () => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const { toast } = useToast();
-  // do not redirect when verification are present 
+  // do not redirect when verification are present
   // const router = useRouter();
   // useEffect(() => {
   //   const cookie = cookies();
@@ -84,7 +85,8 @@ const VerificationBlock = () => {
         </Button>
         <Link
           className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
-          href="#"
+          href={Routes.contactUs}
+          prefetch={false}
         >
           Need help?
         </Link>

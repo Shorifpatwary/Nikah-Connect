@@ -6,7 +6,7 @@ type MenuProps = {
 };
 const MenuItem: React.FC<MenuProps> = ({ title, href }) => {
   return (
-    <Link className="text-xl" href={href}>
+    <Link className="text-xl" href={href} prefetch={false}>
       {title}
     </Link>
   );

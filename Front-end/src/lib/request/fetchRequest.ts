@@ -1,3 +1,4 @@
+import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
 import { redirect } from "next/navigation";
@@ -9,6 +10,7 @@ export const fetchRequest = async <T>(
   authCheck: boolean = true
 ): Promise<T> => {
   const headers = await getHeaders();
+  console.log("fetch request: server | front end");
 
   const response = await fetch(url, {
     ...options,
@@ -20,8 +22,7 @@ export const fetchRequest = async <T>(
   });
   // update the credentials
   await setCookiesFromResponse(response);
-
-  // Check if the response is OK (status in the range 200-299)
+  // Check if the response is OK
   if (!response.ok) {
     // Parse the error response if available
     let errorData;
@@ -36,6 +37,8 @@ export const fetchRequest = async <T>(
       (response.status === 409 || response.status === 401) &&
       authCheck === true
     ) {
+      // remove auth cookie
+      deleteAuthCookies();
       redirect("/login");
     }
 

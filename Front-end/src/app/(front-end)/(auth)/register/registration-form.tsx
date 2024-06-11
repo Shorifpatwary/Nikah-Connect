@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
+import { useFormStatus } from "react-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   custom,
@@ -58,6 +59,7 @@ const RegistrationSchema = object(
 export type RegistrationSchemaType = Output<typeof RegistrationSchema>;
 const RegistrationForm = () => {
   const router = useRouter();
+  const { pending } = useFormStatus();
   const { toast } = useToast();
   const {
     register,
@@ -69,9 +71,10 @@ const RegistrationForm = () => {
     resolver: valibotResolver(RegistrationSchema),
   });
   const onSubmit: SubmitHandler<RegistrationSchemaType> = async FormData => {
+    // await getCsrfCookie();
     const response = await createUser<RegistrationSchemaType>(FormData);
     // If there are errors in the response, set each error using setError
-    if (response.errors) {
+    if (response?.errors) {
       (
         Object.keys(response?.errors) as (keyof RegistrationSchemaType)[]
       ).forEach(fieldName => {
@@ -168,8 +171,9 @@ const RegistrationForm = () => {
           )}
         </div>
         {/* submit */}
-        <Button className="mt-3 w-full text-base" type="submit">
-          {formData.register.submit}
+        <Button className="mt-3 w-full text-base" type="submit" disabled={pending}>
+          {pending ? 'loading' : "register"}
+          {/* {formData.register.submit} */}
         </Button>
       </div>
       <Toaster />
