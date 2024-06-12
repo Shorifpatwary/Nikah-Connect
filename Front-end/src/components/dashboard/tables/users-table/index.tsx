@@ -29,28 +29,33 @@ import Link from "next/link";
 const tableColumns: columnType[] = [
   {
     title: "id",
+    label: "ID",
     sortable: true,
   },
   {
     title: "name",
     sortable: true,
+    label: "Name",
   },
   {
     title: "email",
+    label: "E-Mail",
     sortable: true,
-    className: "",
   },
   {
     title: "phone",
+    label: "Phone",
     sortable: true,
   },
   {
     title: "created_at",
+    label: "Created At",
     sortable: true,
     className: "w-[100px]",
   },
   {
     title: "action",
+    label: "Action",
     sortable: false,
   },
 ];

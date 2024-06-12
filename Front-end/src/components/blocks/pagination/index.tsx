@@ -1,4 +1,5 @@
 import { PaginationProps } from "@/assets/data/response-types";
+import processPaginationLinks from "@/components/blocks/pagination/processPaginationLinks";
 import {
   Pagination,
   PaginationContent,
@@ -22,6 +23,11 @@ const CustomPagination = ({
   last_page,
   links,
 }: Props) => {
+  const processedLinks = processPaginationLinks({
+    current_page,
+    last_page,
+    links,
+  });
   const createQueryString = queryString();
   const router = useRouter();
   const handleUpdateQuery = (page: number) => {
@@ -49,7 +55,7 @@ const CustomPagination = ({
           />
         </PaginationItem>
 
-        {links
+        {processedLinks
           // Filter to keep only numeric page links
           .filter(link => !isNaN(Number(link.label)))
           .map(link => (
@@ -71,7 +77,8 @@ const CustomPagination = ({
               </PaginationLink>
             </PaginationItem>
           ))}
-        {current_page < last_page && (
+        {Number(processedLinks[processedLinks.length - 1].label) <
+          last_page && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>

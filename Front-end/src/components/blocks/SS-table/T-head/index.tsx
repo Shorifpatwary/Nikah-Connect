@@ -7,6 +7,7 @@ import { ArrowDownUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 export interface columnType {
   title: string;
+  label: string;
   sortable?: boolean;
   className?: string;
 }
@@ -41,13 +42,13 @@ const T_Head = ({ className, columns }: Props) => {
     router.push(`?${newQuery}`);
   };
   return (
-    <TableHeader className={cn("", className)}>
+    <TableHeader className={cn("capitalize", className)}>
       <TableRow>
         {columns.map(column => {
           if (!column.sortable) {
             return (
               <TableHead
-                key={column.title}
+                key={column.label}
                 className={cn("", column.className)}
               >
                 {column.title}{" "}
@@ -56,8 +57,8 @@ const T_Head = ({ className, columns }: Props) => {
           } else {
             return (
               <TableHead
-                key={column.title}
-                className={cn("", column.className)}
+                key={column.label}
+                className={cn(" capitalize", column.className)}
               >
                 <Button
                   variant="ghost"
@@ -65,7 +66,7 @@ const T_Head = ({ className, columns }: Props) => {
                   className="-ml-3 h-8 data-[state=open]:bg-accent"
                   onClick={() => handleSort(column.title)}
                 >
-                  <span>{column.title}</span>
+                  <span>{column.label}</span>
                   <ArrowDownUp className="ml-2 size-4" aria-hidden="true" />
                 </Button>
               </TableHead>

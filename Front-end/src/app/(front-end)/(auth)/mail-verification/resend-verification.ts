@@ -1,3 +1,4 @@
+"use server";
 import { backendUrl } from "@/assets/data/config/app.config";
 import { fetchRequest } from "@/lib/request/fetchRequest";
 
