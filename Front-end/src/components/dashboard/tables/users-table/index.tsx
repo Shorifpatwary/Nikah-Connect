@@ -101,11 +101,7 @@ const UsersTable = () => {
         {!users ? (
           <Skeleton className="h-full min-h-10  w-full" />
         ) : (
-          <CustomPagination
-            links={users?.links}
-            current_page={users?.current_page}
-            last_page={users?.last_page}
-          />
+          <CustomPagination meta={users?.meta} />
         )}
       </div>
       {/* table  */}
@@ -141,22 +137,23 @@ const UsersTable = () => {
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>
-                        <Link
-                          className="w-full"
-                          href={`/admin/user/edit/${user.id}`}
-                        >
-                          edit
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
                         {" "}
                         <Link
                           className="w-full"
-                          href={`/admin/user/view/${user.id}`}
+                          href={`/admin/user/${user.id}/view`}
                         >
                           view
                         </Link>
                       </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link
+                          className="w-full"
+                          href={`/admin/user/${user.id}/edit`}
+                        >
+                          edit
+                        </Link>
+                      </DropdownMenuItem>
+
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className=" bold cursor-pointer text-destructive"

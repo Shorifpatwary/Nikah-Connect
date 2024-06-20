@@ -27,14 +27,13 @@ const processPaginationLinks = ({
 
   if (current_page > last_page - maxLinks) {
     // Show the last maxLinks pages if the current page is within the last maxLinks pages
-    start = last_page - maxLinks + 1;
-    end = last_page + 1;
+    start = last_page - maxLinks;
+    end = last_page;
   } else {
     // Show the pages from the current page onwards
-    start = current_page;
-    end = current_page + maxLinks;
+    start = current_page - 1;
+    end = current_page + maxLinks - 1;
   }
-
   // Ensure the indices are within the bounds of the array
   start = Math.max(0, start);
   end = Math.min(links.length, end);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -52,7 +53,8 @@ class UserController extends Controller
         $users = $query->paginate($perPage, ['*'], 'page', $currentPage);
 
 
-        return response()->json($users);
+        // return response()->json($users);
+        return UserResource::collection($users);
     }
 
 
@@ -61,7 +63,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json($user);
+        $roles = $user->getRoleNames();
+        return response()->json($roles);
+        // Load roles for a single user
+        // $user->with('roles');
+
+        // return new UserResource($user->getRoleNames());
     }
 
     /**

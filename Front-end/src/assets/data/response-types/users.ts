@@ -1,4 +1,4 @@
-import { Links, Meta, Timestamps } from ".";
+import { DataWithPagination, Timestamps } from ".";
 
 export interface UserInterface extends Timestamps {
   id: number;
@@ -14,7 +14,9 @@ export interface UserFormInterface<Error> extends UserInterface {
   // errors?: Partial<Record<keyof Error, string[]>>;
 }
 
-export interface UsersWithPagination extends Meta, Links {
-  data: UserInterface[];
-}
-export interface UsersPagination extends Meta, Links {}
+// export interface UsersWithPagination {
+//   data: UserInterface[];
+//   links: Links;
+//   meta: Meta;
+// }
+export type UsersWithPagination = DataWithPagination<UserInterface>;

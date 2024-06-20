@@ -45,6 +45,7 @@ const DashboardBreadcrumb = () => {
                 {dropdownPathNames.map((item, index) => (
                   <DropdownMenuItem key={index}>
                     <BreadcrumbLink
+                      className="capitalize"
                       href={`/${pathNames.slice(0, index + 2).join("/")}`}
                     >
                       {item}
@@ -56,13 +57,18 @@ const DashboardBreadcrumb = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/${pathNames.slice(0, -1).join("/")}`}>
+            <BreadcrumbLink
+              className="capitalize"
+              href={`/${pathNames.slice(0, -1).join("/")}`}
+            >
               {pathNames[pathNames.length - 2]}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{pathNames[pathNames.length - 1]}</BreadcrumbPage>
+            <BreadcrumbPage className="capitalize">
+              {pathNames[pathNames.length - 1]}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -77,6 +83,7 @@ const DashboardBreadcrumb = () => {
             {index !== pathNames.length - 1 ? (
               <>
                 <BreadcrumbLink
+                  className="capitalize"
                   href={`/${pathNames.slice(0, index + 1).join("/")}`}
                 >
                   {item}
@@ -84,7 +91,7 @@ const DashboardBreadcrumb = () => {
                 <BreadcrumbSeparator />
               </>
             ) : (
-              <BreadcrumbPage>{item}</BreadcrumbPage>
+              <BreadcrumbPage className="capitalize">{item}</BreadcrumbPage>
             )}
           </BreadcrumbItem>
         ))}

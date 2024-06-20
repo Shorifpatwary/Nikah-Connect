@@ -1,4 +1,4 @@
-import { PaginationProps } from "@/assets/data/response-types";
+import { Meta } from "@/assets/data/response-types";
 import processPaginationLinks from "@/components/blocks/pagination/processPaginationLinks";
 import {
   Pagination,
@@ -13,21 +13,22 @@ import { getQueryParams } from "@/lib/query/getQueryParams";
 import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-interface Props extends PaginationProps {
+interface Props {
   className?: string;
+  meta: Meta;
 }
 
-const CustomPagination = ({
-  className,
-  current_page,
-  last_page,
-  links,
-}: Props) => {
+const CustomPagination = ({ className, meta }: Props) => {
+  const { current_page, last_page, links } = meta;
+  // Filter to keep only numeric page links
+  const numberPageLinks = links.filter(link => !isNaN(Number(link.label)));
+
   const processedLinks = processPaginationLinks({
     current_page,
     last_page,
-    links,
+    links: numberPageLinks,
   });
+
   const createQueryString = queryString();
   const router = useRouter();
   const handleUpdateQuery = (page: number) => {
@@ -55,28 +56,25 @@ const CustomPagination = ({
           />
         </PaginationItem>
 
-        {processedLinks
-          // Filter to keep only numeric page links
-          .filter(link => !isNaN(Number(link.label)))
-          .map(link => (
-            <PaginationItem key={link.label}>
-              <PaginationLink
-                className={` ${link.active ? " pointer-events-none cursor-not-allowed " : "cursor-pointer"}`}
-                isActive={link.active}
-                onClick={() => {
-                  if (link.url && !link.active) {
-                    const url = new URL(link.url);
-                    const page = url.searchParams.get("page");
-                    if (page) {
-                      handleUpdateQuery(Number(page));
-                    }
+        {processedLinks.map(link => (
+          <PaginationItem key={link.label}>
+            <PaginationLink
+              className={` ${link.active ? " pointer-events-none cursor-not-allowed " : "cursor-pointer"}`}
+              isActive={link.active}
+              onClick={() => {
+                if (link.url && !link.active) {
+                  const url = new URL(link.url);
+                  const page = url.searchParams.get("page");
+                  if (page) {
+                    handleUpdateQuery(Number(page));
                   }
-                }}
-              >
-                {link.label}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+                }
+              }}
+            >
+              {link.label}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
         {Number(processedLinks[processedLinks.length - 1].label) <
           last_page && (
           <PaginationItem>

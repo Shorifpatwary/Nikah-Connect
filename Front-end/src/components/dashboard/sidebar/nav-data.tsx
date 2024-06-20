@@ -1,4 +1,4 @@
-import { FolderTree, HelpCircle, Home, Mail, Settings } from "lucide-react";
+import { BookHeart, HelpCircle, Home, Settings, Users } from "lucide-react";
 
 export type SideNavItem = {
   title: string;
@@ -14,20 +14,14 @@ export const SideNavItems: SideNavItem[] = [
     icon: <Home />,
   },
   {
-    title: "Projects",
-    path: "/projects",
-    icon: <FolderTree />,
-    submenu: true,
-    subMenuItems: [
-      { title: "All", path: "/projects" },
-      { title: "Web Design", path: "/projects/web-design" },
-      { title: "Graphic Design", path: "/projects/graphic-design" },
-    ],
+    title: "Users",
+    path: "/admin/user",
+    icon: <Users />,
   },
   {
-    title: "Messages",
-    path: "/messages",
-    icon: <Mail />,
+    title: "bios",
+    path: "/admin/bio",
+    icon: <BookHeart />,
   },
   {
     title: "Settings",

@@ -12,6 +12,14 @@ export const userAuthCookies = [
   connect_nikah_session,
 ];
 
-// cache
+// ! user  roles from "RolesEnum.php"
+export const roles = [
+  { name: "user", label: "user" },
+  { name: "admin", label: "admin" },
+  { name: "super-admin", label: "super admin" },
+  { name: "editor", label: "editor" },
+  { name: "writer", label: "writer" },
+];
 
+// cache
 export const allUsersTag = "users";

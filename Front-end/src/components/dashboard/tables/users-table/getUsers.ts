@@ -15,7 +15,7 @@ const getUsers = async (): Promise<UsersWithPagination> => {
     const response = await fetchRequest<UsersWithPagination>(url, {
       method: "GET",
       // ! Use cache: "force-cache", for 'client' side data fetching
-      // cache: "force-cache",
+      cache: "force-cache",
       next: { revalidate: 3600, tags: [allUsersTag] },
     });
     return response;
