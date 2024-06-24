@@ -1,19 +1,9 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import { roles } from "@/assets/data/config/app.config";
-import Error from "@/components/blocks/error";
+import SelectBox from "@/components/blocks/inputBox/selectBox";
+import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -23,7 +13,6 @@ import {
   email,
   maxLength,
   minLength,
-  nullable,
   object,
   Output,
   picklist,
@@ -43,10 +32,11 @@ const Schema = object({
     email(ValidationMassage.email.email),
     maxLength(50, ValidationMassage.email.maxLength),
   ]),
-  role: nullable(
-    picklist(roles.map(role => role.name)),
-    "Please select User role."
-  ),
+  // role: nullable(
+  //   picklist(roles.map(role => role.value)),
+  //   "Please select User role."
+  // ),
+  role: picklist(roles.map(role => role.value)),
   // assign user role field
   phone: string([maxLength(50, ValidationMassage.phone.maxLength)]),
 });
@@ -99,72 +89,41 @@ const UserEditForm = () => {
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         {/* name */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="name" className="capitalize">
-            {formData.inputs.name.title}
-          </Label>
-          <Input
-            id="name"
-            placeholder={formData.inputs.name.placeholder}
-            type="text"
-            {...register("name")}
-          />
-          {errors.name && <Error>{errors.name.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.name.title}
+          errorMessage={errors.name?.message}
+          fieldName="name"
+          placeholder={formData.inputs.name.placeholder}
+          type="text"
+          {...register("name")}
+        />
         {/* email */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="email" className="capitalize">
-            {formData.inputs.email.title}
-          </Label>
-          <Input
-            id="email"
-            placeholder={formData.inputs.email.placeholder}
-            required
-            type="email"
-            {...register("email")}
-          />
-          {errors.email && <Error>{errors.email.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.email.title}
+          errorMessage={errors.email?.message}
+          fieldName="email"
+          placeholder={formData.inputs.email.placeholder}
+          type="text"
+          {...register("email")}
+        />
         {/* user role */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="role" className="capitalize">
-            {formData.inputs.phone.title}
-          </Label>
-          <Select onValueChange={value => setValue("role", value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a user role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel className="capitalize">user roles</SelectLabel>
-                {roles.map(role => (
-                  <SelectItem
-                    key={role.label + role.name}
-                    className="capitalize"
-                    value={role.name}
-                  >
-                    {role.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          {errors.role && <Error>{errors.role.message}</Error>}
-        </div>
+        <SelectBox
+          label={formData.inputs.phone.title}
+          triggerText={formData.inputs.phone.title}
+          options={roles}
+          errorMessage={errors.role?.message}
+          // @ts-ignore
+          setValue={(value: string) => setValue("role", value)}
+        />
         {/* phone */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="phone" className="capitalize">
-            {formData.inputs.phone.title}
-          </Label>
-          <Input
-            id="phone"
-            type="phone"
-            placeholder={formData.inputs.phone.placeholder}
-            {...register("phone")}
-          />
-          {errors.phone && <Error>{errors.phone.message}</Error>}
-        </div>
-
+        <TextInputBox
+          label={formData.inputs.phone.title}
+          errorMessage={errors.phone?.message}
+          fieldName="phone"
+          placeholder={formData.inputs.phone.placeholder}
+          type="text"
+          {...register("phone")}
+        />
         {/* submit */}
         <Button className="mt-3 w-full text-base" type="submit">
           {formData.register.submit}

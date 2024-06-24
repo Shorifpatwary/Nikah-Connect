@@ -1,10 +1,8 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import ForgetPassword from "@/app/(front-end)/(auth)/forget-password/forget-password";
-import Error from "@/components/blocks/error";
+import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -64,19 +62,15 @@ const ForgetPasswordForm = () => {
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         {/* email */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="email" className="capitalize">
-            {formData.inputs.email.title}
-          </Label>
-          <Input
-            id="email"
-            placeholder={formData.inputs.email.placeholder}
-            required
-            type="email"
-            {...register("email")}
-          />
-          {errors.email && <Error>{errors.email.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.email.title}
+          errorMessage={errors.email?.message}
+          fieldName="email"
+          placeholder={formData.inputs.email.placeholder}
+          type="text"
+          {...register("email")}
+        />
+
         {/* submit */}
         <Button className="mt-3 w-full text-base" type="submit">
           {formData.forgetPassword.submit}

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\App\LocationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('user', UserController::class);
     Route::post('/update-user-role', [UserController::class, 'updateUserRole'])->name('user.update-role');
 });
+
+
+// non protected route 
+Route::apiResource('location', LocationController::class);

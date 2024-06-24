@@ -22,7 +22,7 @@ const AdminFormContainer: React.FC<AdminFormProps> = ({
   className,
 }) => {
   return (
-    <main className={cn("flex w-96	items-center justify-center", className)}>
+    <main className={cn("flex w-96 items-center justify-center", className)}>
       <Card className="mx-auto w-full  p-2 py-10 ">
         <CardHeader>
           <TitleSm className="text-center text-3xl font-bold capitalize">

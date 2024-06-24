@@ -33,7 +33,10 @@ const DesktopHeader = () => {
         {/* header action */}
         <div className="flex w-2/12 items-center justify-evenly  gap-1 max-md:w-3/12  max-sm:w-4/12">
           {/* design this button later */}
-          <Button variant="outline" className="border-primary  capitalize">
+          <Button
+            variant="outline"
+            className="border-x-2 border-primary capitalize"
+          >
             login
           </Button>
           <ChangeThemeButton />

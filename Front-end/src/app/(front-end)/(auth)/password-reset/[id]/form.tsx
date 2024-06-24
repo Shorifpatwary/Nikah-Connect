@@ -1,8 +1,6 @@
 "use client";
-import Error from "@/components/blocks/error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -18,6 +16,7 @@ import {
 
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import Routes from "@/assets/data/route";
+import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -120,33 +119,25 @@ const ResetPasswordForm = () => {
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         {/* password */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="password" className="capitalize ">
-            {formData.inputs.newPassword.title}
-          </Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder={formData.inputs.password.placeholder}
-            {...register("password")}
-          />
-          {errors.password && <Error>{errors.password.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.newPassword.title}
+          errorMessage={errors.password?.message}
+          fieldName="password"
+          placeholder={formData.inputs.password.placeholder}
+          type="text"
+          {...register("password")}
+        />
+
         {/* confirm password */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="password_confirmation" className="capitalize ">
-            {formData.inputs.password_confirmation.title}
-          </Label>
-          <Input
-            id="password_confirmation"
-            type="password"
-            placeholder={formData.inputs.password_confirmation.placeholder}
-            {...register("password_confirmation")}
-          />
-          {errors.password_confirmation && (
-            <Error>{errors.password_confirmation.message}</Error>
-          )}
-        </div>
+        <TextInputBox
+          label={formData.inputs.password_confirmation.title}
+          errorMessage={errors.password_confirmation?.message}
+          fieldName="password_confirmation"
+          placeholder={formData.inputs.password_confirmation.placeholder}
+          type="text"
+          {...register("password_confirmation")}
+        />
+
         {/* token as hidden inputs [token & email] */}
         <Input
           id="token"

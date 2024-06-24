@@ -1,3 +1,5 @@
+import { Option } from "@/components/blocks/inputBox/selectBox";
+
 export const backendUrl = "http://localhost:8000";
 export const frontEndUrl = "http://localhost:3000";
 
@@ -13,13 +15,15 @@ export const userAuthCookies = [
 ];
 
 // ! user  roles from "RolesEnum.php"
-export const roles = [
-  { name: "user", label: "user" },
-  { name: "admin", label: "admin" },
-  { name: "super-admin", label: "super admin" },
-  { name: "editor", label: "editor" },
-  { name: "writer", label: "writer" },
+
+export const roles : Option[] = [
+  { value: "user", title: "user" },
+  { value: "admin", title: "admin" },
+  { value: "super-admin", title: "super admin" },
+  { value: "editor", title: "editor" },
+  { value: "writer", title: "writer" },
 ];
 
 // cache
 export const allUsersTag = "users";
+export const allLocations = "locations";

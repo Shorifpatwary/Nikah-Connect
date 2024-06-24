@@ -1,3 +1,4 @@
+import BioSearchBox from "@/components/blocks/bioSearchBox";
 import Section from "@/components/blocks/section";
 import { ParagraphMd, TitleMd } from "@/components/blocks/typography";
 import { Button } from "@/components/ui/button";
@@ -31,17 +32,7 @@ const HeroSection = () => {
       </div>
       {/* search bio data  */}
       <div className=" w-5/12 max-w-3xl max-md:order-1 max-md:w-full">
-        <img
-          alt="Hero image"
-          className="overflow-hidden rounded-xl object-cover"
-          height="400"
-          src="https://placehold.co/600x400"
-          style={{
-            aspectRatio: "720/400",
-            objectFit: "cover",
-          }}
-          width="720"
-        />
+        <BioSearchBox />
       </div>
     </Section>
   );

@@ -1,9 +1,7 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
-import Error from "@/components/blocks/error";
+import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -101,73 +99,50 @@ const RegistrationForm = () => {
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         {/* name */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="name" className="capitalize">
-            {formData.inputs.name.title}
-          </Label>
-          <Input
-            id="name"
-            placeholder={formData.inputs.name.placeholder}
-            type="text"
-            {...register("name")}
-          />
-          {errors.name && <Error>{errors.name.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.name.title}
+          errorMessage={errors.name?.message}
+          fieldName="name"
+          placeholder={formData.inputs.name.placeholder}
+          type="text"
+          {...register("name")}
+        />
         {/* email */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="email" className="capitalize">
-            {formData.inputs.email.title}
-          </Label>
-          <Input
-            id="email"
-            placeholder={formData.inputs.email.placeholder}
-            required
-            type="email"
-            {...register("email")}
-          />
-          {errors.email && <Error>{errors.email.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.email.title}
+          errorMessage={errors.email?.message}
+          fieldName="email"
+          placeholder={formData.inputs.email.placeholder}
+          type="text"
+          {...register("email")}
+        />
         {/* phone */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="phone" className="capitalize">
-            {formData.inputs.phone.title}
-          </Label>
-          <Input
-            id="phone"
-            type="phone"
-            placeholder={formData.inputs.phone.placeholder}
-            {...register("phone")}
-          />
-          {errors.phone && <Error>{errors.phone.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.phone.title}
+          errorMessage={errors.phone?.message}
+          fieldName="phone"
+          placeholder={formData.inputs.phone.placeholder}
+          type="text"
+          {...register("phone")}
+        />
         {/* password */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="password" className="capitalize ">
-            {formData.inputs.password.title}
-          </Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder={formData.inputs.password.placeholder}
-            {...register("password")}
-          />
-          {errors.password && <Error>{errors.password.message}</Error>}
-        </div>
+        <TextInputBox
+          label={formData.inputs.password.title}
+          errorMessage={errors.password?.message}
+          fieldName="password"
+          placeholder={formData.inputs.password.placeholder}
+          type="text"
+          {...register("password")}
+        />
         {/* confirm password */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="password_confirmation" className="capitalize ">
-            {formData.inputs.password_confirmation.title}
-          </Label>
-          <Input
-            id="password_confirmation"
-            type="password"
-            placeholder={formData.inputs.password_confirmation.placeholder}
-            {...register("password_confirmation")}
-          />
-          {errors.password_confirmation && (
-            <Error>{errors.password_confirmation.message}</Error>
-          )}
-        </div>
+        <TextInputBox
+          label={formData.inputs.password_confirmation.title}
+          errorMessage={errors.password_confirmation?.message}
+          fieldName="password_confirmation"
+          placeholder={formData.inputs.password_confirmation.placeholder}
+          type="text"
+          {...register("password_confirmation")}
+        />
         {/* submit */}
         <Button className="mt-3 w-full text-base" type="submit">
           {formData.register.submit}

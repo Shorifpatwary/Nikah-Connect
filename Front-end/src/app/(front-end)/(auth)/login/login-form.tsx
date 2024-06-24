@@ -1,15 +1,15 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import { Login } from "@/app/(front-end)/(auth)/login/login";
-import Error from "@/components/blocks/error";
+import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { memo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
 
@@ -72,24 +72,18 @@ const LoginForm = () => {
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         {/* email */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="email" className="capitalize">
-            {formData.inputs.email.title}
-          </Label>
-          <Input
-            id="email"
-            placeholder={formData.inputs.email.placeholder}
-            required
-            type="email"
-            {...register("email")}
-          />
-          {errors.email && <Error>{errors.email.message}</Error>}
-        </div>
-
+        <TextInputBox
+          label={formData.inputs.email.title}
+          errorMessage={errors.email?.message}
+          fieldName="email"
+          placeholder={formData.inputs.email.placeholder}
+          type="text"
+          {...register("email")}
+        />
         {/* password */}
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="password" className="capitalize ">
-            {/*  */}
+        <TextInputBox
+          // label={formData.inputs.password.title}
+          label={
             <div className="flex items-center justify-between">
               <Label htmlFor="password">{formData.inputs.password.title}</Label>
               <Link
@@ -100,16 +94,13 @@ const LoginForm = () => {
                 {formData.inputs.password.forget}
               </Link>
             </div>
-          </Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder={formData.inputs.password.placeholder}
-            {...register("password")}
-          />
-          {errors.password && <Error>{errors.password.message}</Error>}
-        </div>
-
+          }
+          errorMessage={errors.password?.message}
+          fieldName="password"
+          placeholder={formData.inputs.password.placeholder}
+          type="text"
+          {...register("password")}
+        />
         {/* submit */}
         <Button className="mt-3 w-full text-base" type="submit">
           {formData.login.submit}
@@ -120,4 +111,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default memo(LoginForm);
