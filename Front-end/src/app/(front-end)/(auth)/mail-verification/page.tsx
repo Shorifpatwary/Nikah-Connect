@@ -8,12 +8,15 @@ const MailVerification = () => {
   // Redirect when user email is verified.
   const cookieStore = cookies();
   const userCookie = cookieStore.get(userCookieName);
-  const authUser = JSON.parse(userCookie?.value);
-
-  if (authUser) {
-    if (authUser.email_verified_at) {
-      redirect(Routes.Profile);
+  if (userCookie) {
+    const authUser = JSON.parse(userCookie?.value);
+    if (authUser) {
+      if (authUser.email_verified_at) {
+        redirect(Routes.Profile);
+      }
     }
+  } else {
+    console.error(userCookie, "userCookie are undefined ");
   }
 
   return (

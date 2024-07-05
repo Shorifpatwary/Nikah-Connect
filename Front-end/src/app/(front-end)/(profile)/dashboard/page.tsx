@@ -10,7 +10,6 @@ const UsersTable = dynamic(
 const Profile = () => {
   return (
     <div>
-      <p>User Profile Page</p>
       <UsersTable />
     </div>
   );

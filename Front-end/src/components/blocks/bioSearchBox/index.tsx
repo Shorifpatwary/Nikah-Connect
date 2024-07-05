@@ -20,6 +20,7 @@ const BioSearchBox = ({ className }: Props) => {
   const [marriageStatusTypes, setMarriageStatusTypes] =
     useState<marriageStatusTypes>("all");
   const [locations, setLocations] = useState<LocationTypeWithoutChildren[]>([]);
+
   return (
     <main
       className={cn("flex w-full items-center justify-center p-2", className)}

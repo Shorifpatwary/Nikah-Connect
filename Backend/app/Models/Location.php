@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 class Location extends Model
 {
     use HasFactory;
-
+    public $timestamps = false; // Disable timestamps
     protected $fillable = ['name', 'location_type', 'parent_id'];
 
     public function children()

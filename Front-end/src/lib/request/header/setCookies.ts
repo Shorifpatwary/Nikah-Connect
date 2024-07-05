@@ -1,3 +1,4 @@
+// ! server | client with auto detect
 import { cookies } from "next/headers";
 
 export const setCookiesFromResponse = async (
@@ -64,4 +65,3 @@ export const setCookiesFromResponse = async (
     }
   }
 };
-// getting error when calling this from client side

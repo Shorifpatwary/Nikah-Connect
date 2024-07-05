@@ -831,8 +831,8 @@ class LocationSeeder extends Seeder
 	{
 		foreach ($locations as $name => $location) {
 			$newLocation = Location::create([
-				'name' => Str::trim($name),
-				'location_type' => 	Str::trim($location['type']),
+				'name' => trim($name),
+				'location_type' => 	trim($location['type']),
 				'parent_id' => $parentId,
 			]);
 

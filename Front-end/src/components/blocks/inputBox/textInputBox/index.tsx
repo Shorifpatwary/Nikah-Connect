@@ -9,6 +9,7 @@ interface Props extends InputProps {
   label: string | ReactNode;
   errorMessage?: string | undefined;
   suggestions?: string[];
+  register: {};
   setValue?: Dispatch<SetStateAction<string>>;
 }
 
@@ -18,6 +19,7 @@ const TextInputBox = ({
   fieldName,
   errorMessage,
   suggestions,
+  register,
   ...props
 }: Props) => {
   return (
@@ -32,7 +34,7 @@ const TextInputBox = ({
         <Suggestion suggestions={suggestions} />
       )}
       {/* input */}
-      <Input {...props} id={fieldName} />
+      <Input {...props} id={fieldName} autoComplete={fieldName}  {...register} />
 
       {errorMessage && <Error>{errorMessage}</Error>}
     </div>

@@ -24,9 +24,16 @@ type Props = {
   label: string;
   values: LocationTypeWithoutChildren[];
   setValues: Dispatch<SetStateAction<LocationTypeWithoutChildren[]>>;
+  isOnlyChildren?: boolean;
 };
 
-const SelectLocations = ({ className, values, setValues, label }: Props) => {
+const SelectLocations = ({
+  className,
+  values,
+  setValues,
+  label,
+  isOnlyChildren = false,
+}: Props) => {
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationType[]>([]);
   const [currentLocation, setCurrentLocation] = useState<LocationType>();
@@ -35,40 +42,46 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
   );
   const handleLocations = (locationString: string) => {
     const locationObject: LocationType = JSON.parse(locationString);
+    const locationIsInValues = values.some(
+      location => location.id === locationObject.id
+    );
+    // avoid when value are present to the values array.
+    if (!locationIsInValues) {
+      const updateSelectedLocations = (
+        locations: LocationType[],
+        locationObj: LocationType
+      ) => {
+        const newItemIndex = selectedLocations.findIndex(
+          location => location.id === locationObj?.id
+        );
+        // when condition false
+        const sameTypeLocationIndex = selectedLocations.findIndex(
+          location => location.type === locationObj?.type
+        );
+        // remove previous one along with her children.
+        if (sameTypeLocationIndex !== -1) {
+          const newLocations = locations.slice(0, sameTypeLocationIndex);
+          return [...newLocations, locationObj];
+        } else if (newItemIndex !== -1) {
+          return locations;
+        }
+        return [...locations, locationObj];
+      };
 
-    const updateSelectedLocations = (
-      locations: LocationType[],
-      locationObj: LocationType
-    ) => {
-      const newItemIndex = selectedLocations.findIndex(
-        location => location.id === locationObj?.id
-      );
-      // when condition false
-      const sameTypeLocationIndex = selectedLocations.findIndex(
-        location => location.type === locationObj?.type
-      );
-      // remove previous one along with her children.
-      if (sameTypeLocationIndex !== -1) {
-        const newLocations = locations.slice(0, sameTypeLocationIndex);
-        return [...newLocations, locationObj];
-      } else if (newItemIndex !== -1) {
-        return locations;
+      if (Boolean(locationObject.children.length)) {
+        setSelectedLocations(prevSelectedLocations => {
+          // Insert new element and remove siblings and next elements
+          return updateSelectedLocations(prevSelectedLocations, locationObject);
+        });
+        setCurrentLocation(locationObject);
+      } else {
+        setSelectedLocations(prevSelectedLocations => {
+          // Insert new element and remove siblings and next elements
+          return updateSelectedLocations(prevSelectedLocations, locationObject);
+        });
+        //  don't set selectedLocations when, this is the last child
+        handleSetValues(locationObject);
       }
-      return [...locations, locationObj];
-    };
-
-    if (locationObject.children.length) {
-      setSelectedLocations(prevSelectedLocations => {
-        // Insert new element and remove siblings and next elements
-        return updateSelectedLocations(prevSelectedLocations, locationObject);
-      });
-      setCurrentLocation(locationObject);
-    } else {
-      setSelectedLocations(prevSelectedLocations => {
-        // Set selected location with the value locationObject
-        return updateSelectedLocations(prevSelectedLocations, locationObject);
-      });
-      handleSetValues(locationObject);
     }
   };
   const getCurrentIndex = () => {
@@ -84,7 +97,7 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
       if (
         currentIndex >= 0 &&
         currentIndex !== -1 &&
-        selectedLocations.length
+        Boolean(selectedLocations.length)
       ) {
         const newCurrentLocation = selectedLocations[currentIndex - 1];
         setCurrentLocation(newCurrentLocation);
@@ -95,11 +108,14 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
   };
 
   const selectNextHandler = () => {
-    if (selectedLocations.length) {
+    if (Boolean(selectedLocations.length)) {
       const currentIndex = getCurrentIndex();
       // Move one step back
       if (currentIndex !== -1) {
-        if (!(currentIndex >= selectedLocations.length - 1)) {
+        if (
+          !(currentIndex >= selectedLocations.length - 1) &&
+          Boolean(selectedLocations[currentIndex + 1]?.children.length)
+        ) {
           const newCurrentLocation = selectedLocations[currentIndex + 1];
           setCurrentLocation(newCurrentLocation);
         }
@@ -122,19 +138,30 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
 
   const handleFocusOut = () => {
     setSelectOpen(false);
-    // set value
-    handleSetValues();
+    // set current value when isOnlyChildren are false.
+    if (!isOnlyChildren) {
+      handleSetValues();
+    }
   };
 
   const getDisplayLocations = () => {
+    let displayLocations = [];
     if (!currentLocation) {
-      const parentElements = locations.filter(
+      displayLocations = locations.filter(
         location => location.parent_id === null
       );
-      return parentElements;
+    } else {
+      displayLocations = currentLocation.children;
     }
-    return currentLocation.children;
+
+    displayLocations = displayLocations.filter(
+      location =>
+        !values.some(selectedLocation => selectedLocation.id === location.id)
+    );
+
+    return displayLocations;
   };
+
   const resetState = () => {
     setCurrentLocation(undefined);
     setSelectedLocations([]);
@@ -147,7 +174,7 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
   };
   const isPrevDisabled = () => {
     const currentIndex = getCurrentIndex();
-    if (selectedLocations.length) {
+    if (Boolean(selectedLocations.length)) {
       if (currentIndex >= 0 || currentIndex !== -1) {
         return false;
       }
@@ -157,23 +184,32 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
 
   const isNextDisabled = () => {
     const currentIndex = getCurrentIndex();
-    if (selectedLocations.length) {
-      if (!(currentIndex >= selectedLocations.length - 1)) {
+    if (Boolean(selectedLocations.length)) {
+      if (
+        !(currentIndex >= selectedLocations.length - 1) &&
+        Boolean(selectedLocations[currentIndex + 1]?.children.length)
+      ) {
         return false;
       } else {
+        console.log("isNextDisabled else part ");
         return true;
       }
+    } else {
+      return true;
     }
-    return true;
   };
-
   // auto remove after change the value state
   useEffect(() => {
-    resetState();
+    if (
+      isOnlyChildren &&
+      Boolean(!selectedLocations[selectedLocations.length - 1]?.children.length)
+    ) {
+    } else {
+      resetState();
+    }
   }, [values]);
 
   useEffect(() => {
-    // todo || wait and get all locations from api
     const fetchLocations = async () => {
       try {
         const response = await fetch("/api/locations");
@@ -183,13 +219,12 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
         const data = await response.json();
         setLocations(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
-    fetchLocations();
+    setTimeout(() => fetchLocations(), 3000);
   }, []);
-
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {/* show dynamic select box */}
@@ -203,12 +238,12 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
             aria-label={BioSearchData.bioTypes.hintText}
           >
             {currentLocation
-              ? currentLocation.name
+              ? currentLocation.name + " " + currentLocation.type
               : BioSearchData.bioTypes.hintText}
           </SelectValue>
         </SelectTrigger>
 
-        {locations.length && (
+        {locations.length > 0 && (
           <SelectContent onPointerDownOutside={handleFocusOut}>
             <SelectGroup>
               <SelectLabel className="flex items-center justify-between gap-4 font-thin">
@@ -232,15 +267,17 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
                   <MoveRight />
                 </Button>
               </SelectLabel>
-              {getDisplayLocations().map(location => (
-                <SelectItem
-                  key={location.id}
-                  className="capitalize"
-                  value={JSON.stringify(location)}
-                >
-                  {`${location.name} ${location.type}`}
-                </SelectItem>
-              ))}
+              {getDisplayLocations().map(location => {
+                return (
+                  <SelectItem
+                    key={location.id}
+                    className="capitalize"
+                    value={JSON.stringify(location)}
+                  >
+                    {`${location.name} ${location.type}`}
+                  </SelectItem>
+                );
+              })}
             </SelectGroup>
           </SelectContent>
         )}
@@ -258,11 +295,11 @@ const SelectLocations = ({ className, values, setValues, label }: Props) => {
             <button
               type="button"
               className={
-                "ml-2 rounded-full  border border-primary text-primary outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                "ml-2 rounded-full  text-primary outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
               }
               onClick={() => handleUnselect(location.id)}
             >
-              <X className="h-3 w-4 text-muted-foreground hover:text-foreground" />
+              <X className="text-muted-foreground hover:text-foreground" />
             </button>
           </Badge>
         ))}

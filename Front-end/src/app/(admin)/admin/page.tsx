@@ -9,7 +9,7 @@ const UsersTable = dynamic(
 const Dashboard = () => {
   return (
     <>
-      <UsersTable />
+    <h2> This is a Dashboard Home Page</h2>
     </>
   );
 };

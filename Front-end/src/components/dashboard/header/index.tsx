@@ -1,3 +1,4 @@
+import LogoutButton from "@/app/(front-end)/(auth)/log-out/log-out-button";
 import ChangeThemeButton from "@/components/blocks/changeTheme";
 import DefaultLoading from "@/components/blocks/loading/default";
 import DashboardBreadcrumb from "@/components/dashboard/header/breadcrumb";
@@ -47,7 +48,9 @@ const DashboardHeader = () => {
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem>
+            <LogoutButton />
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <ChangeThemeButton />

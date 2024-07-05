@@ -19,8 +19,9 @@ import Routes from "@/assets/data/route";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ResetPassword from "./reset-password";
 
 // Valibot
@@ -60,6 +61,8 @@ const ResetPasswordForm = () => {
 
   const { toast } = useToast();
   const router = useRouter();
+  // form status
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -72,43 +75,23 @@ const ResetPasswordForm = () => {
   });
 
   const onSubmit: SubmitHandler<ResetSchemaType> = async FormData => {
-    const response = await ResetPassword<ResetSchemaType>(FormData);
-    // If there are errors in the response, set each error using setError
-    if (response.errors) {
-      (Object.keys(response?.errors) as (keyof ResetSchemaType)[]).forEach(
-        fieldName => {
-          setError(fieldName, {
-            type: "server",
-            message: response.errors?.[fieldName]?.[0],
-          });
-        }
-      );
-      toast({
-        title: response?.message,
-        variant: "destructive",
-        description:
-          "পসওয়ার্ড পরিবর্তন সফল হয়নি। আপনি Forget Password পেজ এ গিয়ে আবার চেষ্টা করুন।",
-      });
-    } else {
-      reset();
-      toast({
-        title: "পাসওয়ার্ড পরিবর্তন করা হয়েছে।",
-        variant: "primary",
-        description:
-          "আপনার পাসওয়ার্ড পরিবর্তন করা হয়েছে। অনুগ্রহ করে Login পেজ হতে লগিন করার চেষ্টা করুন। ",
-      });
-      router.push(Routes.Login);
-    }
+    await ResetPassword<ResetSchemaType>({
+      data: FormData,
+      setError,
+      reset,
+      toast,
+      router,
+      setIsFormLoading,
+    });
   };
 
   // return user when entering wrong URL:
   useEffect(() => {
     if (!email && params.id) {
       toast({
-        title: "ভূল URL প্রদান করা হয়েছে।",
+        title: formData.resetPassword.wrongUrl.title,
         variant: "destructive",
-        description:
-          "আপনার দেওয়া URL টিতে ভূল রয়েছে। দয়া করে ই-মেইল এ দেওয়া লিংক এ ক্লিক করুন।",
+        description: formData.resetPassword.wrongUrl.description,
       });
       //  redirect
       router.push(Routes.ForgetPassword);
@@ -124,8 +107,8 @@ const ResetPasswordForm = () => {
           errorMessage={errors.password?.message}
           fieldName="password"
           placeholder={formData.inputs.password.placeholder}
-          type="text"
-          {...register("password")}
+          type="password"
+          register={register("password")}
         />
 
         {/* confirm password */}
@@ -134,27 +117,31 @@ const ResetPasswordForm = () => {
           errorMessage={errors.password_confirmation?.message}
           fieldName="password_confirmation"
           placeholder={formData.inputs.password_confirmation.placeholder}
-          type="text"
-          {...register("password_confirmation")}
+          type="password"
+          register={register("password_confirmation")}
         />
 
         {/* token as hidden inputs [token & email] */}
+        <Input type="hidden" {...register("token")} value={params.id || ""} />
         <Input
-          id="token"
           type="hidden"
-          {...register("token")}
-          value={params.id || ""}
-        />
-        <Input
-          id="email"
-          type="email"
           className="read-only  hidden"
           {...register("email")}
           value={email as string}
         />
         {/* submit */}
-        <Button className="mt-3 w-full text-base" type="submit">
-          {formData.resetPassword.submit}
+        <Button
+          className={`mt-3 w-full text-base`}
+          type="submit"
+          disabled={isFormLoading}
+        >
+          {isFormLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
+            </>
+          ) : (
+            formData.resetPassword.submit
+          )}
         </Button>
         <Toaster />
       </div>

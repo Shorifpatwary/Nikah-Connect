@@ -1,4 +1,11 @@
-import { BookHeart, HelpCircle, Home, Settings, Users } from "lucide-react";
+import {
+  BookHeart,
+  CandlestickChart,
+  HelpCircle,
+  Home,
+  Settings,
+  Users,
+} from "lucide-react";
 
 export type SideNavItem = {
   title: string;
@@ -25,17 +32,27 @@ export const SideNavItems: SideNavItem[] = [
   },
   {
     title: "Settings",
-    path: "/settings",
+    path: "/admin/setting",
     icon: <Settings />,
     submenu: true,
     subMenuItems: [
-      { title: "Account", path: "/settings/account" },
-      { title: "Privacy", path: "/settings/privacy" },
+      { title: "Account", path: "/admin/settings/account" },
+      { title: "Privacy", path: "/admin/settings/privacy" },
+    ],
+  },
+  {
+    title: "marketing",
+    path: "/marketing",
+    icon: <CandlestickChart />,
+    submenu: true,
+    subMenuItems: [
+      { title: "users info", path: "/admin/marketing/user-info" },
+      { title: "analytics", path: "/admin/marketing/analytics" },
     ],
   },
   {
     title: "Help",
-    path: "/help",
+    path: "/admin/help",
     icon: <HelpCircle />,
   },
 ];

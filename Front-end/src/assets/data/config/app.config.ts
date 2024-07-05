@@ -3,6 +3,9 @@ import { Option } from "@/components/blocks/inputBox/selectBox";
 export const backendUrl = "http://localhost:8000";
 export const frontEndUrl = "http://localhost:3000";
 
+export const appNameEn = "connect nikah";
+export const appNameBn = "কানেক্ট নিকাহ";
+
 export const userCookieName = "authUser";
 
 export const x_xsrf_token = "XSRF-TOKEN";
@@ -14,9 +17,13 @@ export const userAuthCookies = [
   connect_nikah_session,
 ];
 
+// contact
+
+export const supportEmail = "support@connectnikah.com";
+
 // ! user  roles from "RolesEnum.php"
 
-export const roles : Option[] = [
+export const roles: Option[] = [
   { value: "user", title: "user" },
   { value: "admin", title: "admin" },
   { value: "super-admin", title: "super admin" },
@@ -26,4 +33,5 @@ export const roles : Option[] = [
 
 // cache
 export const allUsersTag = "users";
+export const allUsersInfoTag = "users_info";
 export const allLocations = "locations";

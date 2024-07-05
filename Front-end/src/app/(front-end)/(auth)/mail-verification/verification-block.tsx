@@ -1,49 +1,45 @@
 "use client";
+import { MailVerificationData } from "@/app/(front-end)/(auth)/mail-verification/mail-verification-data";
+import { sendUserInfo } from "@/app/(front-end)/(auth)/mail-verification/sendUserInfo";
 import Routes from "@/assets/data/route";
 import Logo from "@/assets/images/website-logo.png";
-import {
-  ParagraphMd,
-  ParagraphSm,
-  TitleSm,
-} from "@/components/blocks/typography";
+import { ParagraphMd, TitleSm } from "@/components/blocks/typography";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import resendVerification from "./resend-verification";
 
 const VerificationBlock = () => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const { toast } = useToast();
-  // do not redirect when verification are present
-  // const router = useRouter();
-  // useEffect(() => {
-  //   const cookie = cookies();
-  //   const userCookieValue = cookie.get(userCookieName)?.value;
-  //   if (userCookieValue) {
-  //     console.log(userCookieValue, "userCookieValue");
-  //     // router.push(Routes.Profile);
-  //   }
-  // }, []);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setResendDisabled(false);
+    }, 30000);
+
+    setResendDisabled(true);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Gather user info and send it to the server
+    const gatherAndSendUserInfo = async () => {
+      const request = new Request(window.location.href);
+      await sendUserInfo(request);
+    };
+
+    gatherAndSendUserInfo();
+  }, []);
 
   const handleResendVerification = async () => {
-    try {
-      setResendDisabled(true); // Disable the button
-
-      const response = await resendVerification();
-      toast({
-        title: "সফলভাবে ই-মেইল পাঠানো হয়েছে।",
-        variant: "primary",
-        description: "আপনার ই-মেইল যাচাই করুন।",
-      });
-      setTimeout(() => {
-        setResendDisabled(false); // Enable the button after 30 seconds
-      }, 30000);
-    } catch (error) {
-      setResendDisabled(false);
-    }
+    await resendVerification({ setResendDisabled, toast });
   };
 
   return (
@@ -53,7 +49,6 @@ const VerificationBlock = () => {
           alt="Logo"
           height="50"
           src={Logo}
-          // src=""
           style={{
             objectFit: "cover",
           }}
@@ -62,42 +57,36 @@ const VerificationBlock = () => {
         />
       </div>
       <TitleSm className="mb-4 text-center text-3xl font-bold ">
-        Verify your email address
+        {MailVerificationData.title}
       </TitleSm>
       <ParagraphMd className="mb-6 text-center ">
-        Thanks for signing up! We're excited to have you onboard. We just need
-        you to verify your email address to complete your setup. Click the
-        button below to verify.
+        {MailVerificationData.description}
+      </ParagraphMd>
+      <ParagraphMd className="mb-6 text-center ">
+        {MailVerificationData.resendDescription}
       </ParagraphMd>
       <div className="mb-6 flex flex-col items-center">
-        {resendDisabled && (
-          <ParagraphSm className="mb-3 capitalize text-red-500 ">
-            ই-মেইল না পেয়ে থাকলে ৩০ সেকেন্ড পর আবার চেষ্টা করুন।
-          </ParagraphSm>
-        )}
         <Button
-          className="mb-2 rounded-md bg-blue-500 px-4 py-2 text-white"
+          className="mb-4 rounded-md bg-blue-500 px-4 py-2 text-xl text-white"
           variant="default"
           onClick={handleResendVerification}
-          disabled={resendDisabled}
+          disabled={resendDisabled || false}
         >
-          Resend Email
+          {MailVerificationData.resendButtonText}
         </Button>
         <Link
-          className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
+          className="text-lg text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
           href={Routes.contactUs}
           prefetch={false}
         >
-          Need help?
+          {MailVerificationData.helpLink}
         </Link>
       </div>
-      <footer className="text-center text-gray-600 dark:text-gray-300">
-        If you have any issues, please contact our support team at
-        support@example.com or call us at (123) 456-7890.
+      <footer className="text-center text-lg text-gray-600 dark:text-gray-300">
+        {MailVerificationData.helpText}
       </footer>
       <Toaster />
     </div>
   );
 };
-
 export default VerificationBlock;

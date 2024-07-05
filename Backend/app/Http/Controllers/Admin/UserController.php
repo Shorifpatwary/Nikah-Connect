@@ -31,18 +31,26 @@ class UserController extends Controller
             $sortDirection = $request->input('sort_direction', 'asc');
 
             $sortDirection = $request->input('sort_direction', 'asc');
-            // If the sort direction is not 'asc', default to 'desc'
+            // sor direction asc | desc.
             $sortDirection = $sortDirection === 'asc' ? 'asc' : 'desc';
             $query->orderBy($sortField, $sortDirection);
         }
         // Apply search
+        // if ($request->has('search')) {
+        //     $search = $request->input('search');
+        //     $query->where(function ($q) use ($search) {
+        //         $q->where('name', 'like', "%{$search}%")
+        //             ->orWhere('email', 'like', "%{$search}%");
+        //     });
+        // }
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                $q->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$search])
+                    ->orWhereRaw('SOUNDEX(email) = SOUNDEX(?)', [$search]);
             });
         }
+
 
 
         // Apply pagination

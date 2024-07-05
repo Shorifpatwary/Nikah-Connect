@@ -67,7 +67,7 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
             {item.subMenuItems?.map((subItem, idx) => {
               return (
                 <Link
-                  key={idx}
+                  key={subItem.title + subItem.path}
                   href={subItem.path}
                   className={`rounded p-2 hover:bg-primary-foreground ${
                     subItem.path === pathname

@@ -1,3 +1,5 @@
+import Routes from "@/assets/data/route";
+
 export const formData = {
   inputs: {
     name: {
@@ -16,7 +18,7 @@ export const formData = {
       title: "পাসওয়ার্ড",
       placeholder: "********",
       forget: "পাসওয়ার্ড মনে নেই?",
-      forgetLink: "/forget-password",
+      forgetLink: Routes.ForgetPassword,
     },
     newPassword: {
       title: "নতুন পাসওয়ার্ড",
@@ -29,12 +31,13 @@ export const formData = {
   register: {
     title: "রেজিস্ট্রেশন",
     submit: "রেজিস্ট্রেশন সম্পন্ন করুন",
+    wait: "অপেক্ষা করুন",
 
     success: {
       title: "একাউন্ট সফলভাবে খোলা হয়েছে।",
       description:
-        "আপনার একাউন্ট সফলভাবে খোলা হয়েছে। অনুগ্রহ করে Dashboard এ যান। ",
-      redirectUrl: "/mail-verification",
+        "আপনার একাউন্ট সফলভাবে খোলা হয়েছে। অনুগ্রহ করে, আপনার দেওয়া ই-মেইল টি ভেরিফিকেশন করুন। ",
+      redirectUrl: Routes.MailVerification,
     },
     error: {
       title: "একাউন্ট খোলা সম্ভব হয়নি।",
@@ -44,26 +47,60 @@ export const formData = {
   },
   login: {
     title: "লগিন",
+    submit: "লগিন সম্পন্ন করুন",
+    wait: "অপেক্ষা করুন",
     success: {
       title: "একাউন্ট লগিন সফল হয়েছে।",
-      description: "অনুগ্রহ করে Dashboard এ যান।",
-      redirectUrl: "/dashboard",
+      description: "একাউন্ট লগিন সফল হয়েছে। অনুগ্রহ করে, Dashboard এ যান।",
+      redirectUrl: Routes.Profile,
     },
     error: {
       title: "একাউন্ট লগিন সফল হয়নি।",
       description: "অনুগ্রহ করে আবার চেষ্টা করুন।",
     },
-    submit: "লগিন সম্পন্ন করুন",
+  },
+  unKnownError: {
+    title: "কিছুটা সমস্যা হয়েছে!",
+    description:
+      "কর্তৃপক্ষের সাথে সাপোর্ট এর মাধ্যমে যোগাযোগ করুন। এবং আপনার সমস্যার বিষয়টি তাদেরকে জানান। ",
   },
   forgetPassword: {
-    title: "পাসওয়ার্ড ভূল ",
+    title: "পাসওয়ার্ড ভূলে গেছেন?",
     submit: "পাসওয়ার্ড রিসেট লিংক পাঠান",
+    wait: "অপেক্ষা করুন",
+    success: {
+      title: "পাসওয়ার্ড রিসেট লিংক সফলভাবে পাঠানো হয়েছে।",
+      description:
+        "আপনার ই-মেইল এ পাসওয়ার্ড রিসেট লিংক  পাঠানো হয়েছে। দয়া করে উক্ত লিংক এ ক্লিক করে আপনার পাসওয়ার্ড পরিবর্তন করুন।",
+    },
+    error: {
+      title: "পাসওয়ার্ড রিসেট লিংক পাঠানো সম্ভব হয়নি।",
+      description:
+        "পাসওয়ার্ড রিসেট লিংক পাঠানো সম্ভব হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    },
   },
   resetPassword: {
     title: "পাসওয়ার্ড পরিবর্তন করুন",
-    successRedirectUrl: "",
     submit: "পাসওয়ার্ড পরিবর্তন করুন",
+    success: {
+      title: "সফলভাবে আপনার পাসওয়ার্ড পরিবর্তন করা হয়েছে।",
+      description:
+        "আপনার পাসওয়ার্ড পরিবর্তন করা হয়েছে। অনুগ্রহ করে Login পেজ হতে লগিন করার চেষ্টা করুন।",
+      redirectUrl: Routes.Login,
+    },
+    error: {
+      title: "পসওয়ার্ড পরিবর্তন করা সম্ভব হয়নি।",
+      description:
+        "পসওয়ার্ড পরিবর্তন করা সফল হয়নি। অনুগ্রহ করে,  Forget Password পেজ এ গিয়ে আবার চেষ্টা করুন।",
+    },
+    wrongUrl: {
+      title: "ভূল URL প্রদান করা হয়েছে।",
+      description:
+        "আপনার দেওয়া URL টিতে ভূল রয়েছে। অনুগ্রহ করে, ই-মেইল এ দেওয়া লিংক এ ক্লিক করে আবার চেষ্টা করুন। আর যদি আপনার ই-মেইল এ লিংক না পেয়ে থাকেন, তাহলে পুনরায় রিসেট লিংক পাঠান। ",
+      redirectUrl: Routes.ForgetPassword,
+    },
   },
+  wait: "অপেক্ষা করুন",
 };
 // ValidationMassage
 export const ValidationMassage = {

@@ -15,6 +15,7 @@ export const getHeaders = async (): Promise<Record<string, string>> => {
     "Content-Type": "application/json",
     Accept: "application/json",
     "x-xsrf-token": xsrfToken?.value || "",
+    "x-requested-with": "XMLHttpRequest",
     connect_nikah_session: connectNikahSession?.value || "",
     origin: frontEndUrl,
     Cookie: cookieHeader, // Include cookies in headers

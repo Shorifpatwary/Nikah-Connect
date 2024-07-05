@@ -1,16 +1,28 @@
+// ! must be server side
+"use server";
 import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
-// Define a generic type for the JSON response
 
-export const fetchRequest = async <T>(
-  url: string,
-  options: RequestInit = {},
-  authCheck: boolean = true
-): Promise<T> => {
+interface FetchResponse<T> {
+  data: T;
+  status: number;
+}
+type Props = {
+  url: string;
+  options: RequestInit;
+  tagRevalidate?: string;
+  pathRevalidate?: string;
+};
+export const fetchRequest = async <T>({
+  url,
+  options = {},
+  tagRevalidate,
+  pathRevalidate,
+}: Props): Promise<FetchResponse<T>> => {
   const headers = await getHeaders();
-  console.log("fetch request: server | front end");
 
   const response = await fetch(url, {
     ...options,
@@ -22,28 +34,32 @@ export const fetchRequest = async <T>(
   });
   // update the credentials
   await setCookiesFromResponse(response);
+
   // Check if the response is OK
   if (!response.ok) {
-    // Parse the error response if available
-    let errorData;
-    try {
-      errorData = await response.json();
-    } catch {
-      errorData = { message: `HTTP error! Status: ${response.status}` };
-    }
-
     // Handle authentication errors
-    if (
-      (response.status === 409 || response.status === 401) &&
-      authCheck === true
-    ) {
+    if (response.status === 401) {
       // remove auth cookie
       deleteAuthCookies();
       redirect("/login");
+    } else {
+      // Parse the error response if available
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: `HTTP error! Status: ${response.status}` };
+      }
+      return { data: errorData, status: response.status };
     }
-
-    throw errorData;
+  }
+  // caching
+  if (tagRevalidate) {
+    revalidateTag(tagRevalidate);
+  }
+  if (pathRevalidate) {
+    revalidatePath(pathRevalidate);
   }
   const data: T = await response.json();
-  return data;
+  return { data, status: response.status };
 };

@@ -19,5 +19,6 @@ const Routes = {
   bookmark: "/bookmark",
   aboutUs: "/about-us",
   Admin: "/admin",
+  MailVerification: "/mail-verification",
 };
 export default Routes;

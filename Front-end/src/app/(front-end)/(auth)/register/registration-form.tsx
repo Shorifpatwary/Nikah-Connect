@@ -1,11 +1,14 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
+import { createUser } from "@/app/(front-end)/(auth)/register/createUser";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   custom,
@@ -17,7 +20,6 @@ import {
   Output,
   string,
 } from "valibot";
-import { createUser } from "./createUser";
 
 // Valibot
 const RegistrationSchema = object(
@@ -55,8 +57,10 @@ const RegistrationSchema = object(
 );
 export type RegistrationSchemaType = Output<typeof RegistrationSchema>;
 const RegistrationForm = () => {
-  const router = useRouter();
   const { toast } = useToast();
+  const router = useRouter();
+  // form status
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -67,33 +71,14 @@ const RegistrationForm = () => {
     resolver: valibotResolver(RegistrationSchema),
   });
   const onSubmit: SubmitHandler<RegistrationSchemaType> = async FormData => {
-    // await getCsrfCookie();
-    const response = await createUser<RegistrationSchemaType>(FormData);
-    // If there are errors in the response, set each error using setError
-    if (response?.errors) {
-      (
-        Object.keys(response?.errors) as (keyof RegistrationSchemaType)[]
-      ).forEach(fieldName => {
-        setError(fieldName, {
-          type: "server",
-          message: response.errors?.[fieldName]?.[0],
-        });
-      });
-      toast({
-        title: formData.register.error.title,
-        variant: "destructive",
-        description: formData.register.error.description,
-      });
-    } else {
-      reset();
-      toast({
-        title: formData.register.success.title,
-        variant: "primary",
-        description: formData.register.success.description,
-      });
-      // redirect
-      router.push(formData.register.success.redirectUrl);
-    }
+    await createUser<RegistrationSchemaType>({
+      data: FormData,
+      setError,
+      reset,
+      toast,
+      router,
+      setIsFormLoading,
+    });
   };
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -104,17 +89,16 @@ const RegistrationForm = () => {
           errorMessage={errors.name?.message}
           fieldName="name"
           placeholder={formData.inputs.name.placeholder}
-          type="text"
-          {...register("name")}
+          register={register("name")}
         />
         {/* email */}
         <TextInputBox
           label={formData.inputs.email.title}
           errorMessage={errors.email?.message}
           fieldName="email"
+          type="email"
           placeholder={formData.inputs.email.placeholder}
-          type="text"
-          {...register("email")}
+          register={register("email")}
         />
         {/* phone */}
         <TextInputBox
@@ -122,8 +106,7 @@ const RegistrationForm = () => {
           errorMessage={errors.phone?.message}
           fieldName="phone"
           placeholder={formData.inputs.phone.placeholder}
-          type="text"
-          {...register("phone")}
+          register={register("phone")}
         />
         {/* password */}
         <TextInputBox
@@ -131,8 +114,8 @@ const RegistrationForm = () => {
           errorMessage={errors.password?.message}
           fieldName="password"
           placeholder={formData.inputs.password.placeholder}
-          type="text"
-          {...register("password")}
+          type="password"
+          register={register("password")}
         />
         {/* confirm password */}
         <TextInputBox
@@ -140,12 +123,22 @@ const RegistrationForm = () => {
           errorMessage={errors.password_confirmation?.message}
           fieldName="password_confirmation"
           placeholder={formData.inputs.password_confirmation.placeholder}
-          type="text"
-          {...register("password_confirmation")}
+          type="password"
+          register={register("password_confirmation")}
         />
         {/* submit */}
-        <Button className="mt-3 w-full text-base" type="submit">
-          {formData.register.submit}
+        <Button
+          className={`mt-3 w-full text-base`}
+          type="submit"
+          disabled={isFormLoading}
+        >
+          {isFormLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
+            </>
+          ) : (
+            formData.register.submit
+          )}
         </Button>
       </div>
       <Toaster />
@@ -153,4 +146,5 @@ const RegistrationForm = () => {
   );
 };
 
+// !warning: don't use react memo.
 export default RegistrationForm;

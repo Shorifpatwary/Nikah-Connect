@@ -20,6 +20,9 @@ class VerifyCsrfToken extends Middleware
     // '/reset-password',
     // '',
     protected $except = [
-        '/sanctum/csrf-cookie'
+        '/sanctum/csrf-cookie',
+        '/logout',
+        'email/verification-notification',
+        'api/user-info',
     ];
 }

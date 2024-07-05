@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserInfoController;
 use App\Http\Controllers\App\LocationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,13 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-
+// , 'role:super-admin|admin'
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // user
-    Route::apiResource('user', UserController::class);
+    Route::apiResource('user', UserController::class)->only(['index', 'show']);
     Route::post('/update-user-role', [UserController::class, 'updateUserRole'])->name('user.update-role');
+    Route::apiResource('user-info', UserInfoController::class)->only(['index', 'store', 'show']);
 });
 
-
 // non protected route 
-Route::apiResource('location', LocationController::class);
+Route::apiResource('location', LocationController::class)->only(['index']);

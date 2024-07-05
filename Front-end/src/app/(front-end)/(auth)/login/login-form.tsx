@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { memo } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
 
@@ -29,8 +30,10 @@ const LoginSchema = object({
 });
 export type LoginSchemaType = Output<typeof LoginSchema>;
 const LoginForm = () => {
-  const router = useRouter();
   const { toast } = useToast();
+  const router = useRouter();
+  // form status
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -41,32 +44,14 @@ const LoginForm = () => {
     resolver: valibotResolver(LoginSchema),
   });
   const onSubmit: SubmitHandler<LoginSchemaType> = async FormData => {
-    const response = await Login<LoginSchemaType>(FormData);
-    // If there are errors in the response, set each error using setError
-    if (response.errors) {
-      (Object.keys(response?.errors) as (keyof LoginSchemaType)[]).forEach(
-        fieldName => {
-          setError(fieldName, {
-            type: "server",
-            message: response.errors?.[fieldName]?.[0],
-          });
-        }
-      );
-      toast({
-        title: formData.login.error.title,
-        variant: "destructive",
-        description: formData.register.error.description,
-      });
-    } else {
-      reset();
-      toast({
-        title: formData.login.success.title,
-        variant: "primary",
-        description: formData.login.success.description,
-      });
-      // redirect
-      router.push(formData.login.success.redirectUrl);
-    }
+    await Login<LoginSchemaType>({
+      data: FormData,
+      setError,
+      reset,
+      toast,
+      router,
+      setIsFormLoading,
+    });
   };
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -77,12 +62,12 @@ const LoginForm = () => {
           errorMessage={errors.email?.message}
           fieldName="email"
           placeholder={formData.inputs.email.placeholder}
-          type="text"
-          {...register("email")}
+          type="email"
+          register={register("email")}
         />
+        {errors.email && "something went wrong!"}
         {/* password */}
         <TextInputBox
-          // label={formData.inputs.password.title}
           label={
             <div className="flex items-center justify-between">
               <Label htmlFor="password">{formData.inputs.password.title}</Label>
@@ -98,12 +83,22 @@ const LoginForm = () => {
           errorMessage={errors.password?.message}
           fieldName="password"
           placeholder={formData.inputs.password.placeholder}
-          type="text"
-          {...register("password")}
+          type="password"
+          register={register("password")}
         />
         {/* submit */}
-        <Button className="mt-3 w-full text-base" type="submit">
-          {formData.login.submit}
+        <Button
+          className="mt-3 w-full text-base"
+          type="submit"
+          disabled={isFormLoading}
+        >
+          {isFormLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
+            </>
+          ) : (
+            formData.login.submit
+          )}
         </Button>
       </div>
       <Toaster />
@@ -111,4 +106,5 @@ const LoginForm = () => {
   );
 };
 
-export default memo(LoginForm);
+// !warning: don't use react memo.
+export default LoginForm;

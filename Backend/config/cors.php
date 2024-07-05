@@ -14,8 +14,14 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
-    // 'paths' => ['sanctum/csrf-cookie', 'login', 'logout', 'register', "password/email", "password/reset", "email/verify/*"],
-    'paths' => ['*'],
+    //  allowed paths 
+    // ! specify path for only non protected routes. 
+    'paths' => [
+        'register',
+        'login',
+        'forgot-password',
+        'reset-password',
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -29,7 +35,7 @@ return [
 
     'exposed_headers' => [],
 
-    'max_age' => 3600,
+    'max_age' => 24 * 3600,
 
     'supports_credentials' => true,
 

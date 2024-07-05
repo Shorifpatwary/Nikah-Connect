@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
 
@@ -22,6 +24,8 @@ export type ForgetSchemaType = Output<typeof Schema>;
 const ForgetPasswordForm = () => {
   // hooks
   const { toast } = useToast();
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -32,31 +36,15 @@ const ForgetPasswordForm = () => {
     resolver: valibotResolver(Schema),
   });
   const onSubmit: SubmitHandler<ForgetSchemaType> = async FormData => {
-    const response = await ForgetPassword<ForgetSchemaType>(FormData);
+    await ForgetPassword<ForgetSchemaType>({
+      data: FormData,
+      setError,
+      reset,
+      toast,
+      setIsFormLoading,
+    });
+
     // If there are errors in the response, set each error using setError
-    if (response.errors) {
-      (Object.keys(response?.errors) as (keyof ForgetSchemaType)[]).forEach(
-        fieldName => {
-          setError(fieldName, {
-            type: "server",
-            message: response.errors?.[fieldName]?.[0],
-          });
-        }
-      );
-      toast({
-        title: "ই-মেইল পাঠানো সম্ভব হয়নি।",
-        variant: "destructive",
-        description: "অনুগ্রহ করে আবার চেষ্টা করুন।",
-      });
-    } else {
-      reset();
-      toast({
-        title: "সফলভাবে ই-মেইল পাঠানো হয়েছে।",
-        variant: "primary",
-        description:
-          "পাসওয়ার্ড পরিবর্তন করতে আপনার ই-মেইল এ দেওয়া লিংক এ ক্লিক করুন।",
-      });
-    }
   };
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -67,13 +55,22 @@ const ForgetPasswordForm = () => {
           errorMessage={errors.email?.message}
           fieldName="email"
           placeholder={formData.inputs.email.placeholder}
-          type="text"
-          {...register("email")}
+          type="email"
+          register={register("email")}
         />
-
         {/* submit */}
-        <Button className="mt-3 w-full text-base" type="submit">
-          {formData.forgetPassword.submit}
+        <Button
+          className={`mt-3 w-full text-base`}
+          type="submit"
+          disabled={isFormLoading}
+        >
+          {isFormLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
+            </>
+          ) : (
+            formData.forgetPassword.submit
+          )}
         </Button>
         <Toaster />
       </div>

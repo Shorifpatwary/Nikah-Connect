@@ -94,8 +94,7 @@ const UserEditForm = () => {
           errorMessage={errors.name?.message}
           fieldName="name"
           placeholder={formData.inputs.name.placeholder}
-          type="text"
-          {...register("name")}
+          register={register("name")}
         />
         {/* email */}
         <TextInputBox
@@ -103,8 +102,8 @@ const UserEditForm = () => {
           errorMessage={errors.email?.message}
           fieldName="email"
           placeholder={formData.inputs.email.placeholder}
-          type="text"
-          {...register("email")}
+          type="email"
+          register={register("email")}
         />
         {/* user role */}
         <SelectBox
@@ -121,8 +120,7 @@ const UserEditForm = () => {
           errorMessage={errors.phone?.message}
           fieldName="phone"
           placeholder={formData.inputs.phone.placeholder}
-          type="text"
-          {...register("phone")}
+          register={register("phone")}
         />
         {/* submit */}
         <Button className="mt-3 w-full text-base" type="submit">
