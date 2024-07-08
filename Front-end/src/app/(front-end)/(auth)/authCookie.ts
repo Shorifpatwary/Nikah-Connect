@@ -24,7 +24,7 @@ export async function createCookie(
   });
 }
 
-//  user cookie create function
+//  user cookie delete function
 export async function deleteAuthCookies() {
   userAuthCookies.map(authCookie => {
     cookies().delete(authCookie);

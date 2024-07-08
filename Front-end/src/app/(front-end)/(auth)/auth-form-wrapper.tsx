@@ -15,7 +15,7 @@ const AuthFormWrapper: FC<AuthFormWrapperProps> = ({
   formTitle,
 }) => {
   return (
-    <main className="flex w-96 items-center	justify-center	 ">
+    <main className="flex w-96 items-center	justify-center ">
       <Card className="mx-auto w-full space-y-4 p-2 py-10 ">
         <CardHeader>
           <TitleSm className="text-center text-3xl font-bold capitalize">

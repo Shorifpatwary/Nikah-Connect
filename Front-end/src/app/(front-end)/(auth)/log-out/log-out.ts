@@ -17,9 +17,6 @@ export const Logout = async ({ toast, router, setIsLoading }: Props) => {
   try {
     setIsLoading(true);
 
-    // Make fetch request to log out user
-    // const response = await LogOutAction();
-
     const url = `${backendUrl}/logout`;
     const response = await fetchRequest<ResponseType>({
       url,

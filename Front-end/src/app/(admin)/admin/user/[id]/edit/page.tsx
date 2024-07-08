@@ -1,15 +1,15 @@
 import UserEditForm from "@/app/(admin)/admin/user/[id]/edit/form";
 import Section from "@/components/blocks/section";
-import AdminFormContainer from "@/components/dashboard/form-container";
+import FormContainer from "@/components/dashboard/form-container";
 
 type Props = {};
 
 const UserEditPage = (props: Props) => {
   return (
     <Section rowClassName="justify-center">
-      <AdminFormContainer formTitle="Form Title" className="w-8/12	">
+      <FormContainer formTitle="Form Title" className="	">
         <UserEditForm />
-      </AdminFormContainer>
+      </FormContainer>
     </Section>
   );
 };

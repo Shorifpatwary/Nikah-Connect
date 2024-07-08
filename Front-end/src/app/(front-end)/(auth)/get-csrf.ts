@@ -1,6 +1,5 @@
 "use client";
 import { frontEndUrl } from "@/assets/data/config/app.config";
-import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
 
 const getCsrfCookie = async (): Promise<void> => {
   try {
@@ -11,7 +10,6 @@ const getCsrfCookie = async (): Promise<void> => {
       method: "GET",
       credentials: "include",
     });
-    await setCookiesFromResponse(response);
   } catch (error) {
     console.error({
       error: `SERVER ERROR: ${error instanceof Error ? error.message : String(error)}`,

@@ -35,7 +35,7 @@ return [
 
     'exposed_headers' => [],
 
-    'max_age' => 24 * 3600,
+    'max_age' => 24 * 60 * 60,
 
     'supports_credentials' => true,
 

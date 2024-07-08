@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type AdminFormProps = {
+type FormProps = {
   formType?: "registration" | "login" | "forget-password" | "reset-password";
   children?: React.ReactNode;
   FormFooter?: React.ReactNode;
@@ -15,21 +15,26 @@ type AdminFormProps = {
   className?: string;
 };
 
-const AdminFormContainer: React.FC<AdminFormProps> = ({
+const FormContainer: React.FC<FormProps> = ({
   children,
   formTitle,
   FormFooter,
   className,
 }) => {
   return (
-    <main className={cn("flex w-96 items-center justify-center", className)}>
-      <Card className="mx-auto w-full  p-2 py-10 ">
+    <main
+      className={cn(
+        "flex w-11/12 items-center justify-center max-[400px]:w-full sm:w-10/12 md:w-9/12 lg:w-8/12",
+        className
+      )}
+    >
+      <Card className="mx-auto w-full  p-2 py-10">
         <CardHeader>
           <TitleSm className="text-center text-3xl font-bold capitalize">
             {formTitle}
           </TitleSm>
         </CardHeader>
-        <CardContent>
+        <CardContent className=" max-sm:p-2">
           <div className="space-y-4">{children}</div>
         </CardContent>
         {FormFooter && <CardFooter>{FormFooter}</CardFooter>}
@@ -38,4 +43,4 @@ const AdminFormContainer: React.FC<AdminFormProps> = ({
   );
 };
 
-export default AdminFormContainer;
+export default FormContainer;

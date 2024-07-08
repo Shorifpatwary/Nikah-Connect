@@ -1,4 +1,4 @@
-// ! server | client with auto detect
+"use server";
 import { cookies } from "next/headers";
 
 export const setCookiesFromResponse = async (
