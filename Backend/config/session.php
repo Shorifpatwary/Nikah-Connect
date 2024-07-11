@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'encrypt' => false,
+    'encrypt' => false, // ! make this true after fixing bug.
 
     /*
     |--------------------------------------------------------------------------

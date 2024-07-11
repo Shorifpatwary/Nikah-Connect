@@ -18,9 +18,7 @@ export const getHeaders = async (): Promise<Record<string, string>> => {
     "x-requested-with": "XMLHttpRequest",
     connect_nikah_session: connectNikahSession?.value || "",
     origin: frontEndUrl,
-    Cookie: cookieHeader, // Include cookies in headers
-    // "Access-Control-Max-Age": "600",
-
+    Cookie: cookieHeader,
     // Cookies are automatically included in the fetch request, so no need to manually set the cookie header
   };
 };

@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
-import { UsersInfoWithPagination } from "@/assets/data/response-types/user-infos";
+import { TagsWithPagination } from "@/assets/data/response-types/tag";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,43 +31,23 @@ const tableColumns: columnType[] = [
     sortable: true,
   },
   {
-    title: "email",
-    label: "E-Mail",
+    title: "name",
+    label: "Name",
     sortable: true,
   },
   {
-    title: "ip_address",
-    label: "IP",
+    title: "search_text",
+    label: "Search Text",
     sortable: true,
   },
   {
-    title: "device_type",
-    label: "Device",
+    title: "status",
+    label: "status",
     sortable: true,
   },
   {
-    title: "device_model",
-    label: "DM",
-    sortable: true,
-  },
-  {
-    title: "browser_name",
-    label: "Browser",
-    sortable: true,
-  },
-  {
-    title: "browser_version",
-    label: "BV",
-    sortable: true,
-  },
-  {
-    title: "internet",
-    label: "Internet",
-    sortable: true,
-  },
-  {
-    title: "city",
-    label: "City",
+    title: "updated_at",
+    label: "updated at",
     sortable: true,
   },
   {
@@ -77,16 +57,18 @@ const tableColumns: columnType[] = [
   },
 ];
 
-const UsersInfoTable = () => {
+const path = "/admin/tag";
+
+const TagTable = () => {
   const params = useSearchParams();
-  const [usersInfo, setUsersInfo] = useState<UsersInfoWithPagination>();
+  const [data, setData] = useState<TagsWithPagination>();
   const fetchData = async () => {
     try {
       const queryString = params.toString();
-      const response = await fetch(`/api/marketing/user-info?${queryString}`);
+      const response = await fetch(`/api/attribute/tag?${queryString}`);
       // handle data
       const data = await response.json();
-      setUsersInfo(data);
+      setData(data);
     } catch (error) {
       console.error(error);
     }
@@ -98,7 +80,7 @@ const UsersInfoTable = () => {
   const handleDelete = async (id: number) => {
     console.log(id, "delete handler ");
   };
-  if (!usersInfo) {
+  if (!data) {
     return (
       <Section rowClassName="flex-col gap-4 w-full">
         <TableSkeleton rowCount={10} rowClassName="h-10" />
@@ -115,7 +97,7 @@ const UsersInfoTable = () => {
         {/* pagination */}
         <RecordsPerPage />
 
-        <CustomPagination meta={usersInfo?.meta} />
+        <CustomPagination meta={data?.meta} />
       </div>
       {/* table  */}
 
@@ -124,19 +106,13 @@ const UsersInfoTable = () => {
         <T_Head columns={tableColumns} />
         {/* table body */}
         <TableBody>
-          {usersInfo?.data.map(userInfo => (
-            <TableRow key={userInfo.id}>
-              <TableCell className="font-medium">{userInfo.id}</TableCell>
-              <TableCell className="font-medium">
-                {userInfo.user.email}
-              </TableCell>
-              <TableCell>{userInfo.ip_address}</TableCell>
-              <TableCell>{userInfo.device_type}</TableCell>
-              <TableCell>{userInfo.device_model}</TableCell>
-              <TableCell>{userInfo.browser_name}</TableCell>
-              <TableCell>{userInfo.browser_version}</TableCell>
-              <TableCell>{userInfo.internet}</TableCell>
-              <TableCell>{userInfo.city}</TableCell>
+          {data?.data.map(item => (
+            <TableRow key={item.id}>
+              <TableCell className="font-medium">{item.id}</TableCell>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.search_text}</TableCell>
+              <TableCell>{item.status}</TableCell>
+              <TableCell>{item.updated_at}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -154,18 +130,12 @@ const UsersInfoTable = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link
-                        className="w-full"
-                        href={`/admin/user-info/${userInfo.id}/view`}
-                      >
+                      <Link className="w-full" href={`${path}/${item.id}/view`}>
                         view
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link
-                        className="w-full"
-                        href={`/admin/user-info/${userInfo.id}/edit`}
-                      >
+                      <Link className="w-full" href={`${path}/${item.id}/edit`}>
                         edit
                       </Link>
                     </DropdownMenuItem>
@@ -173,7 +143,7 @@ const UsersInfoTable = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="bold cursor-pointer text-destructive"
-                      onClick={() => handleDelete(userInfo.id)}
+                      onClick={() => handleDelete(item.id)}
                     >
                       delete
                     </DropdownMenuItem>
@@ -187,4 +157,4 @@ const UsersInfoTable = () => {
     </Section>
   );
 };
-export default UsersInfoTable;
+export default TagTable;

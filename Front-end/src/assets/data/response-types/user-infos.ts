@@ -25,12 +25,6 @@ export interface UserInfoInterface extends Timestamps {
 export interface UserFormInterface<Error> extends UserInfoInterface {
   message?: string;
   errors?: Partial<Error>;
-  // errors?: Partial<Record<keyof Error, string[]>>;
 }
 
-// export interface UsersWithPagination {
-//   data: UserInterface[];
-//   links: Links;
-//   meta: Meta;
-// }
 export type UsersInfoWithPagination = DataWithPagination<UserInfoInterface>;

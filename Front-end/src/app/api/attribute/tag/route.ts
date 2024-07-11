@@ -1,4 +1,4 @@
-import { allUsersInfoTag, backendUrl } from "@/assets/data/config/app.config";
+import { allTag, backendUrl } from "@/assets/data/config/app.config";
 import { UsersInfoWithPagination } from "@/assets/data/response-types/user-infos";
 
 import { getHeaders } from "@/lib/request/header/getHeaders";
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const queryString = searchParams.toString();
 
   // Construct the request URL with query string
-  const apiUrl = `${backendUrl}/api/user-info${queryString ? "?" + queryString : ""}`;
+  const apiUrl = `${backendUrl}/api/tag${queryString ? "?" + queryString : ""}`;
 
   const headers = await getHeaders();
   try {
@@ -20,10 +20,11 @@ export async function GET(request: NextRequest) {
         ...headers,
       },
       next: {
-        tags: [allUsersInfoTag],
-        revalidate: 60 * 60, // Cache for 1 hour (in seconds)
+        tags: [allTag],
+        revalidate: 60 * 60 * 24, // Cache for 1 day (in seconds)
       },
     });
+
     // update the credentials
     await setCookiesFromResponse(response);
 

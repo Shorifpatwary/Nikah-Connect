@@ -58,7 +58,7 @@ const T_Head = ({ className, columns }: Props) => {
             return (
               <TableHead
                 key={column.label}
-                className={cn(" capitalize", column.className)}
+                className={cn("capitalize", column.className)}
               >
                 <Button
                   variant="ghost"

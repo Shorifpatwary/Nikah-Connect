@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserInfoController;
 use App\Http\Controllers\App\LocationController;
@@ -27,7 +28,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('user', UserController::class)->only(['index', 'show']);
     Route::post('/update-user-role', [UserController::class, 'updateUserRole'])->name('user.update-role');
     Route::apiResource('user-info', UserInfoController::class)->only(['index', 'store', 'show']);
+    // Bio Tags
+    Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);
 });
+
+
 
 // non protected route 
 Route::apiResource('location', LocationController::class)->only(['index']);

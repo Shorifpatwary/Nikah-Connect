@@ -14,9 +14,4 @@ export interface UserFormInterface<Error> extends UserInterface {
   // errors?: Partial<Record<keyof Error, string[]>>;
 }
 
-// export interface UsersWithPagination {
-//   data: UserInterface[];
-//   links: Links;
-//   meta: Meta;
-// }
 export type UsersWithPagination = DataWithPagination<UserInterface>;

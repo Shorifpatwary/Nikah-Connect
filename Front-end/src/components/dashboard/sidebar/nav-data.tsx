@@ -31,6 +31,13 @@ export const SideNavItems: SideNavItem[] = [
     icon: <BookHeart />,
   },
   {
+    title: "Attributes",
+    path: "",
+    icon: <Settings />,
+    submenu: true,
+    subMenuItems: [{ title: "tag", path: "/admin/tag" }],
+  },
+  {
     title: "Settings",
     path: "/admin/setting",
     icon: <Settings />,
