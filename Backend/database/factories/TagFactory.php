@@ -27,6 +27,7 @@ class TagFactory extends Factory
         return [
             'name' => $name,
             'search_text' => $relatedWords,
+            'group_name' => $this->faker->word(),
             'status' => $this->faker->randomElement(['approved', 'pending_approve', 'reject']),
         ];
     }

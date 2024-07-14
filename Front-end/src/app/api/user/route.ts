@@ -1,7 +1,6 @@
 import { allUsersTag, backendUrl } from "@/assets/data/config/app.config";
 import { UsersWithPagination } from "@/assets/data/response-types/users";
 import { getHeaders } from "@/lib/request/header/getHeaders";
-import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -23,8 +22,8 @@ export async function GET(request: NextRequest) {
         revalidate: 60 * 60, // Cache for 1 hour (in seconds)
       },
     });
-    // update the credentials
-    await setCookiesFromResponse(response);
+    // ! avoid updating the credentials for next js caching.
+    // await setCookiesFromResponse(response);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

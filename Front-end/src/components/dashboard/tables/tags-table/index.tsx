@@ -41,6 +41,11 @@ const tableColumns: columnType[] = [
     sortable: true,
   },
   {
+    title: "group_name",
+    label: "Group Name",
+    sortable: true,
+  },
+  {
     title: "status",
     label: "status",
     sortable: true,
@@ -111,6 +116,7 @@ const TagTable = () => {
               <TableCell className="font-medium">{item.id}</TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.search_text}</TableCell>
+              <TableCell>{item.group_name}</TableCell>
               <TableCell>{item.status}</TableCell>
               <TableCell>{item.updated_at}</TableCell>
               <TableCell>

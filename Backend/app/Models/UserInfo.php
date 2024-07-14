@@ -28,6 +28,7 @@ class UserInfo extends Model
         'user_id',
     ];
 
+    // Define inverse one-to-one relationship with User
     public function user()
     {
         return $this->belongsTo(User::class);

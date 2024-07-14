@@ -4,7 +4,8 @@ export interface TagInterface extends Timestamps {
   id: number;
   name: string;
   search_text: string;
-  status: "active" | "inactive";
+  group_name: string;
+  status: "approved" | "pending_approve" | "reject";
 }
 // user info with form
 export interface UserFormInterface<Error> extends TagInterface {

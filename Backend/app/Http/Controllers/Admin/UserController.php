@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->select(['id', 'name', 'email', 'phone', 'updated_at']);
 
         // Apply filters
         if ($request->has('filter')) {
@@ -35,36 +35,27 @@ class UserController extends Controller
             $sortDirection = $sortDirection === 'asc' ? 'asc' : 'desc';
             $query->orderBy($sortField, $sortDirection);
         }
+
         // Apply search
-        // if ($request->has('search')) {
-        //     $search = $request->input('search');
-        //     $query->where(function ($q) use ($search) {
-        //         $q->where('name', 'like', "%{$search}%")
-        //             ->orWhere('email', 'like', "%{$search}%");
-        //     });
-        // }
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$search])
-                    ->orWhereRaw('SOUNDEX(email) = SOUNDEX(?)', [$search]);
+                    ->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhereRaw('SOUNDEX(email) = SOUNDEX(?)', [$search])
+                    ->orWhere('email', 'LIKE', '%' . $search . '%');
             });
         }
-
-
 
         // Apply pagination
         $perPage = $request->input('per_page', 20);
         $currentPage = $request->input('page', 1);
 
-
         $users = $query->paginate($perPage, ['*'], 'page', $currentPage);
-
 
         // return response()->json($users);
         return UserResource::collection($users);
     }
-
 
     /**
      * Display the specified resource.

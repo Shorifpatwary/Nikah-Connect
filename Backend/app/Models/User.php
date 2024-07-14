@@ -57,6 +57,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->roles->pluck('name')->toArray();
     }
 
+
+    // Define one-to-one relationship with UserInfo
+    // public function userInfo()
+    // {
+    //     return $this->hasOne(UserInfo::class);
+    // }
+
+
     /**
      * Perform pre-authorization checks on the model.
      */

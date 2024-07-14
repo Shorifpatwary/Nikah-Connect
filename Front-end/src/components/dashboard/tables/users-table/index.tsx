@@ -46,8 +46,8 @@ const tableColumns: columnType[] = [
     sortable: true,
   },
   {
-    title: "created_at",
-    label: "Created At",
+    title: "updated_at",
+    label: "Updated At",
     sortable: true,
     className: "w-[100px]",
   },
@@ -119,7 +119,7 @@ const UsersTable = () => {
               <TableCell className="font-medium">{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
-              <TableCell>{user.created_at}</TableCell>
+              <TableCell>{user.updated_at}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

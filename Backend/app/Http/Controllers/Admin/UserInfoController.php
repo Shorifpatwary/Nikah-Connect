@@ -13,7 +13,18 @@ class UserInfoController extends Controller
 {
   public function index(Request $request)
   {
-    $query = UserInfo::query()->with('user');
+    $query = UserInfo::query()
+      ->select([
+        'id',
+        'ip_address',
+        'device_type',
+        'device_model',
+        'browser_name',
+        'browser_version',
+        'internet',
+        'city',
+      ]);
+
 
     // Apply filters
     if ($request->has('filter')) {
@@ -55,13 +66,15 @@ class UserInfoController extends Controller
       $query->where(function ($q) use ($search) {
         $q->whereHas('user', function ($q) use ($search) {
           $q->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$search])
-            ->orWhereRaw("SOUNDEX(email) = SOUNDEX(?)", [$search]);
+            ->orWhere('name', 'LIKE', '%' . $search . '%')
+            ->orWhereRaw("SOUNDEX(email) = SOUNDEX(?)", [$search])
+            ->orWhere('email', 'LIKE', '%' . $search . '%');
         })
           ->orWhereRaw("SOUNDEX(device_type) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(device_os) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(browser_name) = SOUNDEX(?)", [$search])
-          ->orWhereRaw("SOUNDEX(browser_version) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(ip_address) = SOUNDEX(?)", [$search])
+          ->orWhere('internet', 'LIKE', '%' . $search . '%')
           ->orWhereRaw("SOUNDEX(country) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(city) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(user_agent) = SOUNDEX(?)", [$search])
@@ -69,10 +82,9 @@ class UserInfoController extends Controller
           ->orWhereRaw("SOUNDEX(device_model) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(screen_resolution) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(internet) = SOUNDEX(?)", [$search])
+          ->orWhere('internet', 'LIKE', '%' . $search . '%')
           ->orWhereRaw("SOUNDEX(region) = SOUNDEX(?)", [$search])
-          ->orWhereRaw("SOUNDEX(postal) = SOUNDEX(?)", [$search])
-          ->orWhereRaw("SOUNDEX(loc) = SOUNDEX(?)", [$search])
-          ->orWhereRaw("SOUNDEX(timezone) = SOUNDEX(?)", [$search]);
+          ->orWhere('region', 'LIKE', '%' . $search . '%');
       });
     }
 

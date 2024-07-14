@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('search_text')->nullable();
+            $table->string('group_name', 55)->nullable();
             $table->enum('status', ['approved', 'pending_approve', 'reject']);
             $table->timestamps();
         });

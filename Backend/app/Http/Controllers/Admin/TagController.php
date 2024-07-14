@@ -16,7 +16,7 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Tag::query();
+        $query = Tag::query()->select(['id', 'name', 'search_text', 'status', 'group_name', 'updated_at']);
 
         // Apply filters
         if ($request->has('filter')) {
@@ -42,7 +42,8 @@ class TagController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$search])
-                    ->orWhereRaw('SOUNDEX(search_text) = SOUNDEX(?)', [$search]);
+                    ->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('search_text', 'LIKE', '%' . $search . '%');
             });
         }
 

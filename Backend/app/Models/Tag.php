@@ -13,6 +13,7 @@ class Tag extends Model
     protected $fillable = [
         'name',
         'search_text',
+        'group_name',
         'status',
     ];
 
