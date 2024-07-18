@@ -43,7 +43,8 @@ class UserController extends Controller
                 $q->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$search])
                     ->orWhere('name', 'LIKE', '%' . $search . '%')
                     ->orWhereRaw('SOUNDEX(email) = SOUNDEX(?)', [$search])
-                    ->orWhere('email', 'LIKE', '%' . $search . '%');
+                    ->orWhere('email', 'LIKE', '%' . $search . '%')
+                    ->orWhere('phone', 'LIKE', '%' . $search . '%');
             });
         }
 

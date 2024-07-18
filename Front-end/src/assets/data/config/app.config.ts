@@ -32,3 +32,4 @@ export const allUsersTag = "users";
 export const allUsersInfoTag = "users_info";
 export const allLocations = "locations";
 export const allTag = "tags";
+export const allBio = "bios";

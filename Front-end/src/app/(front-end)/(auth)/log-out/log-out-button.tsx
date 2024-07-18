@@ -21,7 +21,7 @@ const LogoutButton = ({ className }: Props) => {
     <button
       onClick={handleLogout}
       disabled={isLoading}
-      className={cn(" cursor-pointer", className)}
+      className={cn("cursor-pointer", className)}
     >
       {isLoading ? "Logging out..." : "Logout"}
     </button>

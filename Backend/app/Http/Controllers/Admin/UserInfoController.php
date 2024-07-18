@@ -14,17 +14,18 @@ class UserInfoController extends Controller
   public function index(Request $request)
   {
     $query = UserInfo::query()
+      ->with(['user:id,email'])
       ->select([
-        'id',
-        'ip_address',
-        'device_type',
-        'device_model',
-        'browser_name',
-        'browser_version',
-        'internet',
-        'city',
+        'user_infos.id',
+        'user_infos.user_id',
+        'user_infos.ip_address',
+        'user_infos.device_type',
+        'user_infos.device_model',
+        'user_infos.browser_name',
+        'user_infos.browser_version',
+        'user_infos.internet',
+        'user_infos.city',
       ]);
-
 
     // Apply filters
     if ($request->has('filter')) {
@@ -60,21 +61,23 @@ class UserInfoController extends Controller
     }
 
     // Apply search
+    // Apply search
     if ($request->has('search')) {
       $search = $request->input('search');
 
       $query->where(function ($q) use ($search) {
         $q->whereHas('user', function ($q) use ($search) {
-          $q->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$search])
-            ->orWhere('name', 'LIKE', '%' . $search . '%')
-            ->orWhereRaw("SOUNDEX(email) = SOUNDEX(?)", [$search])
-            ->orWhere('email', 'LIKE', '%' . $search . '%');
+          $q->where(function ($q) use ($search) {
+            $q->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$search])
+              ->orWhere('name', 'LIKE', '%' . $search . '%')
+              ->orWhereRaw("SOUNDEX(email) = SOUNDEX(?)", [$search])
+              ->orWhere('email', 'LIKE', '%' . $search . '%');
+          });
         })
           ->orWhereRaw("SOUNDEX(device_type) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(device_os) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(browser_name) = SOUNDEX(?)", [$search])
-          ->orWhereRaw("SOUNDEX(ip_address) = SOUNDEX(?)", [$search])
-          ->orWhere('internet', 'LIKE', '%' . $search . '%')
+          ->orWhere('ip_address', 'LIKE', '%' . $search . '%')
           ->orWhereRaw("SOUNDEX(country) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(city) = SOUNDEX(?)", [$search])
           ->orWhereRaw("SOUNDEX(user_agent) = SOUNDEX(?)", [$search])

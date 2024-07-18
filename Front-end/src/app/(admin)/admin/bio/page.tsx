@@ -1,17 +1,14 @@
 import DefaultLoading from "@/components/blocks/loading/default";
 import dynamic from "next/dynamic";
-const UsersTable = dynamic(
-  () => import("@/components/dashboard/tables/users-table"),
+
+const BioTable = dynamic(
+  () => import("@/components/dashboard/tables/bios-table"),
   {
     loading: () => <DefaultLoading />,
   }
 );
 const Dashboard = () => {
-  return (
-    <>
-      <UsersTable />
-    </>
-  );
+  return <BioTable />;
 };
 
 export default Dashboard;

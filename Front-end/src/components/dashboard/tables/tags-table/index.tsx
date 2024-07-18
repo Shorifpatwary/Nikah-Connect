@@ -26,51 +26,51 @@ import Link from "next/link";
 
 const tableColumns: columnType[] = [
   {
-    title: "id",
+    name: "id",
     label: "ID",
     sortable: true,
   },
   {
-    title: "name",
+    name: "name",
     label: "Name",
     sortable: true,
   },
   {
-    title: "search_text",
+    name: "search_text",
     label: "Search Text",
     sortable: true,
   },
   {
-    title: "group_name",
+    name: "group_name",
     label: "Group Name",
     sortable: true,
   },
   {
-    title: "status",
-    label: "status",
+    name: "status",
+    label: "Status",
     sortable: true,
   },
   {
-    title: "updated_at",
+    name: "updated_at",
     label: "updated at",
     sortable: true,
   },
   {
-    title: "action",
+    name: "action",
     label: "Action",
     sortable: false,
   },
 ];
 
 const path = "/admin/tag";
-
+const apiBaseUrl = "/api/tag";
 const TagTable = () => {
   const params = useSearchParams();
   const [data, setData] = useState<TagsWithPagination>();
   const fetchData = async () => {
     try {
       const queryString = params.toString();
-      const response = await fetch(`/api/attribute/tag?${queryString}`);
+      const response = await fetch(`${apiBaseUrl}?${queryString}`);
       // handle data
       const data = await response.json();
       setData(data);

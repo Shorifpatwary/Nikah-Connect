@@ -26,52 +26,52 @@ import Link from "next/link";
 
 const tableColumns: columnType[] = [
   {
-    title: "id",
+    name: "id",
     label: "ID",
     sortable: true,
   },
   {
-    title: "email",
+    name: "email",
     label: "E-Mail",
     sortable: true,
   },
   {
-    title: "ip_address",
+    name: "ip_address",
     label: "IP",
     sortable: true,
   },
   {
-    title: "device_type",
+    name: "device_type",
     label: "Device",
     sortable: true,
   },
   {
-    title: "device_model",
+    name: "device_model",
     label: "DM",
     sortable: true,
   },
   {
-    title: "browser_name",
+    name: "browser_name",
     label: "Browser",
     sortable: true,
   },
   {
-    title: "browser_version",
+    name: "browser_version",
     label: "BV",
     sortable: true,
   },
   {
-    title: "internet",
+    name: "internet",
     label: "Internet",
     sortable: true,
   },
   {
-    title: "city",
+    name: "city",
     label: "City",
     sortable: true,
   },
   {
-    title: "action",
+    name: "action",
     label: "Action",
     sortable: false,
   },

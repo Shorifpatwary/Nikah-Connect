@@ -17,6 +17,11 @@ class Tag extends Model
         'status',
     ];
 
+    public function bios()
+    {
+        return $this->belongsToMany(Bio::class);
+    }
+
     // Define the attributes that should be cast to native types
     protected $casts = [
         'status' => 'string',

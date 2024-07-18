@@ -32,3 +32,5 @@ class TagFactory extends Factory
         ];
     }
 }
+
+// todo : change 'pending_approve' option to this " pending_approval " 

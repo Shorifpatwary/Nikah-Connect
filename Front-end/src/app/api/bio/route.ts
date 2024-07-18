@@ -1,6 +1,5 @@
-import { allTag, backendUrl } from "@/assets/data/config/app.config";
-import { TagsWithPagination } from "@/assets/data/response-types/tag";
-
+import { allBio, backendUrl } from "@/assets/data/config/app.config";
+import { BiosWithPagination } from "@/assets/data/response-types/bio";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -9,7 +8,7 @@ export async function GET(request: NextRequest) {
   const queryString = searchParams.toString();
 
   // Construct the request URL with query string
-  const apiUrl = `${backendUrl}/api/tag${queryString ? "?" + queryString : ""}`;
+  const apiUrl = `${backendUrl}/api/bio${queryString ? "?" + queryString : ""}`;
 
   const headers = await getHeaders();
   try {
@@ -19,8 +18,8 @@ export async function GET(request: NextRequest) {
         ...headers,
       },
       next: {
-        tags: [allTag],
-        revalidate: 60 * 60 * 24, // Cache for 1 day (in seconds)
+        tags: [allBio],
+        revalidate: 60 * 60, // Cache for 1 hour (in seconds)
       },
     });
 
@@ -28,7 +27,7 @@ export async function GET(request: NextRequest) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data: TagsWithPagination = await response.json();
+    const data: BiosWithPagination = await response.json();
     return NextResponse.json(data);
   } catch (error) {
     throw new Error(`Error: ${error}`);

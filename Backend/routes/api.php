@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BioController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
@@ -29,9 +30,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/update-user-role', [UserController::class, 'updateUserRole'])->name('user.update-role');
     Route::apiResource('user-info', UserInfoController::class)->only(['index', 'store', 'show']);
     // Bio Tags
+    Route::apiResource('bio', BioController::class);
+    // Bio Tags
     Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);
 });
-
 
 
 // non protected route 

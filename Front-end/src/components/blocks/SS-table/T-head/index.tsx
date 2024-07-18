@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { ArrowDownUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 export interface columnType {
-  title: string;
+  name: string;
   label: string;
   sortable?: boolean;
   className?: string;
@@ -51,7 +51,7 @@ const T_Head = ({ className, columns }: Props) => {
                 key={column.label}
                 className={cn("", column.className)}
               >
-                {column.title}{" "}
+                {column.name}{" "}
               </TableHead>
             );
           } else {
@@ -64,7 +64,7 @@ const T_Head = ({ className, columns }: Props) => {
                   variant="ghost"
                   size="sm"
                   className="-ml-3 h-8 data-[state=open]:bg-accent"
-                  onClick={() => handleSort(column.title)}
+                  onClick={() => handleSort(column.name)}
                 >
                   <span>{column.label}</span>
                   <ArrowDownUp className="ml-2 size-4" aria-hidden="true" />
