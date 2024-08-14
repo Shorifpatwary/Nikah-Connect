@@ -12,7 +12,7 @@ import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
 import { BiosWithPagination } from "@/assets/data/response-types/bio";
-import { Badge } from "@/components/ui/badge";
+import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,6 +29,11 @@ const tableColumns: columnType[] = [
   {
     label: "ID",
     name: "id",
+    sortable: true,
+  },
+  {
+    label: "Gender",
+    name: "gender",
     sortable: true,
   },
   {
@@ -58,7 +63,7 @@ const tableColumns: columnType[] = [
   },
 ];
 
-const path = "/admin/bio";
+const path = `${Routes.Admin}/bio`;
 const apiBaseUrl = "/api/bio";
 
 const BioTable = () => {
@@ -78,6 +83,8 @@ const BioTable = () => {
   useEffect(() => {
     fetchData();
   }, [params]);
+
+  console.log(data, "data from bio table");
 
   const handleDelete = async (id: number) => {
     console.log(id, "delete handler ");
@@ -111,14 +118,17 @@ const BioTable = () => {
           {data?.data.map(item => (
             <TableRow key={item.id}>
               <TableCell className="font-medium">{item.id}</TableCell>
+              <TableCell>{item.general_section?.gender}</TableCell>
               <TableCell>{item.title}</TableCell>
               <TableCell>{item.status}</TableCell>
               <TableCell className="flex flex-wrap gap-1">
-                {item.tags.map(tag => (
-                  <Badge key={tag.id}>{tag.name}</Badge>
-                ))}
+                {/* {item.tags.map(tag => (
+                  <Badge key={`${item.id} + ${tag.id} + ${tag.name}`}>
+                    {tag.name}
+                  </Badge>
+                ))} */}
+                something
               </TableCell>
-
               <TableCell>{item.updated_at}</TableCell>
               <TableCell>
                 <DropdownMenu>

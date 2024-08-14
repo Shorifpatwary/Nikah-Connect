@@ -15,7 +15,7 @@ import {
 } from "valibot";
 
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";

@@ -61,7 +61,6 @@ class UserInfoController extends Controller
     }
 
     // Apply search
-    // Apply search
     if ($request->has('search')) {
       $search = $request->input('search');
 

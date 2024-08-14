@@ -1,4 +1,4 @@
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import { TitleSm } from "@/components/blocks/typography";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";

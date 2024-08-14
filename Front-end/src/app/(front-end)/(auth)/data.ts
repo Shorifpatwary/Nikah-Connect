@@ -1,4 +1,4 @@
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 
 export const formData = {
   inputs: {
@@ -8,11 +8,11 @@ export const formData = {
     },
     email: {
       title: "আপনার ইমেইল",
-      placeholder: "you@gmail.com",
+      placeholder: "example@gmail.com",
     },
     phone: {
       title: "মোবাইল নম্বর",
-      placeholder: "01......... ,  01.........",
+      placeholder: "01.........",
     },
     password: {
       title: "পাসওয়ার্ড",
@@ -71,7 +71,7 @@ export const formData = {
     success: {
       title: "পাসওয়ার্ড রিসেট লিংক সফলভাবে পাঠানো হয়েছে।",
       description:
-        "আপনার ই-মেইল এ পাসওয়ার্ড রিসেট লিংক  পাঠানো হয়েছে। দয়া করে উক্ত লিংক এ ক্লিক করে আপনার পাসওয়ার্ড পরিবর্তন করুন।",
+        "আপনার ই-মেইল এ পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে। দয়া করে উক্ত লিংক এ ক্লিক করে আপনার পাসওয়ার্ড পরিবর্তন করুন।",
     },
     error: {
       title: "পাসওয়ার্ড রিসেট লিংক পাঠানো সম্ভব হয়নি।",
@@ -91,7 +91,7 @@ export const formData = {
     error: {
       title: "পসওয়ার্ড পরিবর্তন করা সম্ভব হয়নি।",
       description:
-        "পসওয়ার্ড পরিবর্তন করা সফল হয়নি। অনুগ্রহ করে,  Forget Password পেজ এ গিয়ে আবার চেষ্টা করুন।",
+        "পসওয়ার্ড পরিবর্তন করা সফল হয়নি। অনুগ্রহ করে, Forget Password পেজ এ গিয়ে আবার চেষ্টা করুন।",
     },
     wrongUrl: {
       title: "ভূল URL প্রদান করা হয়েছে।",

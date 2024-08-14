@@ -14,6 +14,7 @@
   "editor.mouseWheelZoom": true,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
+  "editor.indentSize": 2,
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.organizeImports": "always"
@@ -110,6 +111,9 @@
     "shadi",
     "patro",
     "patri",
-    "nikah"
+    "nikah",
+    "haram",
+    "mazhab",
+    "mahram"
   ]
 }

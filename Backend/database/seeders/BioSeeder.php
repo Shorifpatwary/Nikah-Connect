@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Bio;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BioSeeder extends Seeder

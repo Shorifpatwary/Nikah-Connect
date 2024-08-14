@@ -1,7 +1,7 @@
 "use client";
 import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { backendUrl } from "@/assets/data/config/app.config";
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -16,7 +16,6 @@ type Props = {
 export const Logout = async ({ toast, router, setIsLoading }: Props) => {
   try {
     setIsLoading(true);
-
     const url = `${backendUrl}/logout`;
     const response = await fetchRequest<ResponseType>({
       url,

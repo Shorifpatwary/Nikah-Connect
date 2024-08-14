@@ -1,5 +1,5 @@
 import { userCookieName } from "@/assets/data/config/app.config";
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import Section from "@/components/blocks/section";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

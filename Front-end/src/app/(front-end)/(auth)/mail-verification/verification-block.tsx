@@ -1,7 +1,7 @@
 "use client";
 import { MailVerificationData } from "@/app/(front-end)/(auth)/mail-verification/mail-verification-data";
 import { sendUserInfo } from "@/app/(front-end)/(auth)/mail-verification/sendUserInfo";
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import Logo from "@/assets/images/website-logo.png";
 import { ParagraphMd, TitleSm } from "@/components/blocks/typography";
 import { Button } from "@/components/ui/button";

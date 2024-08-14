@@ -1,5 +1,5 @@
 import { allBio, backendUrl } from "@/assets/data/config/app.config";
-import { BiosWithPagination } from "@/assets/data/response-types/bio";
+import { BiosWithPagination } from "@/assets/data/response-types/bio/bio";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { NextResponse, type NextRequest } from "next/server";
 

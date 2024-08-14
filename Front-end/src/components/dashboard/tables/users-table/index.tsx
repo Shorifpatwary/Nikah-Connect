@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
+import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -57,6 +58,8 @@ const tableColumns: columnType[] = [
     sortable: false,
   },
 ];
+const path = `${Routes.Admin}/user`;
+const apiBaseUrl = "/api/user";
 
 const UsersTable = () => {
   const params = useSearchParams();
@@ -64,7 +67,7 @@ const UsersTable = () => {
   const fetchUsers = async () => {
     try {
       const queryString = params.toString();
-      const response = await fetch(`/api/user?${queryString}`);
+      const response = await fetch(`${apiBaseUrl}?${queryString}`);
       // handle data
       const data = await response.json();
       setUsers(data);
@@ -137,18 +140,12 @@ const UsersTable = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link
-                        className="w-full"
-                        href={`/admin/user/${user.id}/view`}
-                      >
+                      <Link className="w-full" href={`${path}/${user.id}/view`}>
                         view
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link
-                        className="w-full"
-                        href={`/admin/user/${user.id}/edit`}
-                      >
+                      <Link className="w-full" href={`${path}/${user.id}/edit`}>
                         edit
                       </Link>
                     </DropdownMenuItem>

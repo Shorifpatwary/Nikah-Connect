@@ -1,4 +1,4 @@
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import website_logo_image from "@/assets/images/website-logo.png";
 import { Bookmark, BookOpenText, Group, HelpCircle, User } from "lucide-react";
 export const header = {

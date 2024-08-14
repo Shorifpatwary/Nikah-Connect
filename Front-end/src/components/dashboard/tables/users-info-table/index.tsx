@@ -12,6 +12,7 @@ import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
 import { UsersInfoWithPagination } from "@/assets/data/response-types/user-infos";
+import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -76,6 +77,8 @@ const tableColumns: columnType[] = [
     sortable: false,
   },
 ];
+const path = `${Routes.Admin}/user-info`;
+const apiBaseUrl = `/api/marketing/user-info`;
 
 const UsersInfoTable = () => {
   const params = useSearchParams();
@@ -83,7 +86,7 @@ const UsersInfoTable = () => {
   const fetchData = async () => {
     try {
       const queryString = params.toString();
-      const response = await fetch(`/api/marketing/user-info?${queryString}`);
+      const response = await fetch(`${apiBaseUrl}?${queryString}`);
       // handle data
       const data = await response.json();
       setUsersInfo(data);
@@ -156,7 +159,7 @@ const UsersInfoTable = () => {
                     <DropdownMenuItem>
                       <Link
                         className="w-full"
-                        href={`/admin/user-info/${userInfo.id}/view`}
+                        href={`${path}/${userInfo.id}/view`}
                       >
                         view
                       </Link>
@@ -164,7 +167,7 @@ const UsersInfoTable = () => {
                     <DropdownMenuItem>
                       <Link
                         className="w-full"
-                        href={`/admin/user-info/${userInfo.id}/edit`}
+                        href={`${path}/${userInfo.id}/edit`}
                       >
                         edit
                       </Link>

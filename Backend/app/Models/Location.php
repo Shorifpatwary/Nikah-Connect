@@ -22,6 +22,10 @@ class Location extends Model
         return $this->belongsTo(Location::class, 'parent_id');
     }
 
+    public function generalSections()
+    {
+        return $this->hasMany(GeneralSection::class);
+    }
 
     protected static function boot()
     {

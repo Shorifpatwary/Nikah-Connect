@@ -12,6 +12,7 @@ import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
 import { TagsWithPagination } from "@/assets/data/response-types/tag";
+import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -62,8 +63,8 @@ const tableColumns: columnType[] = [
   },
 ];
 
-const path = "/admin/tag";
-const apiBaseUrl = "/api/tag";
+const path = `${Routes.Admin}/tag`;
+const apiBaseUrl = "/api/attribute/tag";
 const TagTable = () => {
   const params = useSearchParams();
   const [data, setData] = useState<TagsWithPagination>();

@@ -1,4 +1,4 @@
-import Routes from "@/assets/data/route";
+import Routes from "@/assets/data/routes";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
