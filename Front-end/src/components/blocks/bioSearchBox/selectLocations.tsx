@@ -222,8 +222,8 @@ const SelectLocations = ({
         console.error(error);
       }
     };
-
-    setTimeout(() => fetchLocations(), 3000);
+    fetchLocations();
+    // setTimeout(() => fetchLocations(), 3000);
   }, []);
   return (
     <div className={cn("flex flex-col gap-2", className)}>

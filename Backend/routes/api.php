@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserInfoController;
 use App\Http\Controllers\App\LocationController;
+use App\Http\Controllers\FilledMarksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +34,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('bio', BioController::class);
     // Bio Tags
     Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);
+    // filled marks 
+    Route::apiResource('filled-marks', FilledMarksController::class)->only(['index', 'store', 'show']);
+    // Route to get the filled marks data for the logged-in user
+    Route::get('/user-bio/filled-marks', [FilledMarksController::class, 'userFilledMarks'])->name('user.filled-marks');
 });
-
 
 // non protected route 
 Route::apiResource('location', LocationController::class)->only(['index']);

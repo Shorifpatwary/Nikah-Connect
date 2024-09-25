@@ -6,7 +6,7 @@ enum PermissionsEnum: string
 {
     // case NAME_IN_APP = 'name-in-app';
 
-  case ALL = '*';
+  case ALL = '*.create,update,view,delete';
   case ALL_FOR_USER = '*.user';
   case CREATE_USER = 'create-user';
   case DELETE_USER = 'delete-user';

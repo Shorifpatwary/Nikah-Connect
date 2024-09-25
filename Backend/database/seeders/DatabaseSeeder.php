@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
       // UserInfoSeeder::class,
       // TagSeeder::class,
 
-      // BioSeeder::class,
+      BioSeeder::class,
       // BioTagSeeder::class,
       // GeneralSectionSeeder::class,
       // LocationSectionSeeder::class,
@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
       // ExpectedPartnerSeeder::class,
       // HiddenInfoSeeder::class,
       // ReligiousActivitySeeder::class,
-      MarriageInfoSeeder::class,
+      // MarriageInfoSeeder::class,
+      // FilledMarksSeeder::class,
     ]);
   }
 }

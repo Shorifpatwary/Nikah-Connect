@@ -10,7 +10,7 @@ class Bio extends Model
   use HasFactory;
 
 
-  protected $fillable = ['title', 'status'];
+  protected $fillable = ['title', 'status', 'user_id'];
 
   /**
    * The tags that belong to the bio.
@@ -66,5 +66,9 @@ class Bio extends Model
   public function  marriageInfo()
   {
     return $this->hasOne(MarriageInfo::class);
+  }
+  public function  filledMarks()
+  {
+    return $this->hasOne(FilledMarks::class);
   }
 }

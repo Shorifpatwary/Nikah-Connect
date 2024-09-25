@@ -1,14 +1,15 @@
-import { allBio, backendUrl } from "@/assets/data/config/app.config";
-import { BiosWithPagination } from "@/assets/data/response-types/bio";
+import { backendUrl, filledMarks } from "@/assets/data/config/app.config";
+import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-marks";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const queryString = searchParams.toString();
-
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
   // Construct the request URL with query string
-  const apiUrl = `${backendUrl}/api/bio${queryString ? "?" + queryString : ""}`;
+  const apiUrl = `${backendUrl}/api/bio/filled-mark`;
 
   const headers = await getHeaders();
   try {
@@ -18,8 +19,7 @@ export async function GET(request: NextRequest) {
         ...headers,
       },
       next: {
-        tags: [allBio],
-        revalidate: 60 * 60, // Cache for 1 hour (in seconds)
+        tags: [`${filledMarks}_${id}`],
       },
     });
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data: BiosWithPagination = await response.json();
+    const data: FilledMarksInterface = await response.json();
     return NextResponse.json(data);
   } catch (error) {
     throw new Error(`Error: ${error}`);

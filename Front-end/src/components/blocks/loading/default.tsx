@@ -1,13 +1,21 @@
 import { Skeleton } from "@/components/ui/skeleton";
-
-const DefaultLoading = () => {
+import { cn } from "@/lib/utils";
+interface SkeletonProps {
+  className?: string;
+  skeletonCN?: string;
+  children?: React.ReactNode;
+}
+const DefaultLoading = ({ className, skeletonCN }: SkeletonProps) => {
   return (
-    <div className="flex items-center space-x-4">
-      <Skeleton className="h-12 w-12 rounded-full" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
-      </div>
+    <div
+      className={cn(
+        "flex h-full w-full items-center justify-center gap-2 space-x-4",
+        className
+      )}
+    >
+      <Skeleton className={cn("h-14 w-14 rounded-full", skeletonCN)} />
+      <Skeleton className={cn("h-14 w-14 rounded-full", skeletonCN)} />
+      <Skeleton className={cn("h-14 w-14 rounded-full", skeletonCN)} />
     </div>
   );
 };

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id()->startingValue(1000);
             $table->string('title')->nullable();
             $table->enum('status', StatusEnum::BIO_STATUS)->default('incomplete');
+
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

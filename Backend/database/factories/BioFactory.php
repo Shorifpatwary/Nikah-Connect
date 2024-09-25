@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\StatusEnum;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,34 +11,32 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BioFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
-        return [
-            'title' => $this->faker->sentence,
-            'status' => $this->faker->randomElement(StatusEnum::BIO_STATUS),
-        ];
-    }
-}
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  public function definition(): array
+  {
+    static $userIdsWithoutBio;
 
-// not working. try to do something from the general factory. 
-// create general section by checking the condition. 
-// other wise create this from the bio factory. 
-// this is bio factory code "  public function definition(): array
-//     {
-//         return [
-//             'title' => $this->faker->sentence,
-//             'status' => $this->faker->randomElement([
-//                 'incomplete',
-//                 'approved',
-//                 'pending_approval',
-//                 'reject',
-//                 'married',
-//                 'inactive',
-//             ]),
-//         ];
-//     } "
+    // Initialize the $userIdsWithoutBio only once
+    if (is_null($userIdsWithoutBio)) {
+      $userIdsWithoutBio = User::doesntHave('bio')->pluck('id')->all();
+    }
+
+    // Get the next available bio_id from the list
+    $userId = array_shift($userIdsWithoutBio);
+
+    // If no available Bio IDs, create a new Bio and get its ID
+    if (is_null($userId)) {
+      $userId = User::factory()->create()->id;
+    }
+
+    return [
+      'title' => $this->faker->sentence,
+      'status' => $this->faker->randomElement(StatusEnum::BIO_STATUS),
+      'user_id' =>  $userId,
+    ];
+  }
+}

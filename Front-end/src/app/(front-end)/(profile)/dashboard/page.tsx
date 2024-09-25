@@ -1,17 +1,10 @@
-import DefaultLoading from "@/components/blocks/loading/default";
-import dynamic from "next/dynamic";
+import BioEdit from "@/components/dashboard/bio-edit";
 
-const UsersTable = dynamic(
-  () => import("@/components/dashboard/tables/users-table"),
-  {
-    loading: () => <DefaultLoading />,
-  }
-);
 const Profile = () => {
   return (
-    <div>
-      <UsersTable />
-    </div>
+    <>
+      <BioEdit />
+    </>
   );
 };
 

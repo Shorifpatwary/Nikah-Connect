@@ -56,7 +56,10 @@ class User extends Authenticatable implements MustVerifyEmail
         // Assuming you are using Spatie's Laravel Permission package
         return $this->roles->pluck('name')->toArray();
     }
-
+    public function  bio()
+    {
+        return $this->hasOne(Bio::class);
+    }
 
     // Define one-to-one relationship with UserInfo
     // public function userInfo()

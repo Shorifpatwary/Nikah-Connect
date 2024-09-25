@@ -9,7 +9,6 @@ export default function DashboardLayout({
     <main className="min-h-screen bg-background antialiased">
       {/* Include shared UI here e.g. a header or sidebar */}
       <div>
-        {" "}
         <ProfileSideBar />
       </div>
       {children}

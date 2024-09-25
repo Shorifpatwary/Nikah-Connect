@@ -1,8 +1,8 @@
+import Routes from "@/assets/data/routes";
 import {
   BookHeart,
   CandlestickChart,
   HelpCircle,
-  Home,
   Settings,
   Users,
 } from "lucide-react";
@@ -16,9 +16,9 @@ export type SideNavItem = {
 };
 export const SideNavItems: SideNavItem[] = [
   {
-    title: "Home",
-    path: "/admin",
-    icon: <Home />,
+    title: "Bio Data",
+    path: `${Routes.Profile}/bio`,
+    icon: <BookHeart />,
   },
   {
     title: "Users",
