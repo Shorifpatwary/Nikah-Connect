@@ -13,9 +13,14 @@ const Suggestion: React.FC<Props> = ({
   labelClassName,
 }) => {
   return (
-    <div className={cn("flex flex-wrap gap-1 text-primary", className)}>
+    <div
+      className={cn("flex flex-col flex-wrap gap-1 text-primary", className)}
+    >
       {suggestions.map(suggestion => (
-        <Label className={cn("", labelClassName)} key={suggestion}>
+        <Label
+          className={cn("max-md:text-lg", labelClassName)}
+          key={suggestion}
+        >
           {suggestion}
         </Label>
       ))}

@@ -12,6 +12,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
 type ResponseType = UserFormInterface<RegistrationSchemaType>;
+
 type Props<T> = {
   data: T;
   setError: UseFormSetError<RegistrationSchemaType>;
@@ -42,7 +43,7 @@ export const createUser = async <T>({
         method: "POST",
         body: JSON.stringify(data),
       },
-      tagRevalidate: allUsersTag,
+      tagRevalidate: [allUsersTag],
     });
     // If there are errors in the response, set each error using setError
     if (response.status === 200) {
@@ -52,22 +53,22 @@ export const createUser = async <T>({
         description: formData.register.success.description,
       });
       reset();
-      createCookie(response.data);
-      // ! redirect after 2 second when working with toast along with router/redirect
-      setTimeout(() => {
-        router.push(formData.register.success.redirectUrl);
-      }, 2000);
+
+      await createCookie(response.data);
+      // redirect
+      router.push(formData.register.success.redirectUrl);
     } else if (response.status === 422) {
-      (
-        Object.keys(
-          response?.data.errors as {}
-        ) as (keyof RegistrationSchemaType)[]
-      ).forEach(fieldName => {
-        setError(fieldName, {
-          type: "server",
-          message: response.data.errors?.[fieldName]?.[0],
-        });
-      });
+      const errors = response?.data?.errors as Partial<
+        Record<keyof RegistrationSchemaType, string[]>
+      >;
+      (Object.keys(errors) as (keyof RegistrationSchemaType)[]).forEach(
+        fieldName => {
+          setError(fieldName, {
+            type: "server",
+            message: errors[fieldName]?.[0],
+          });
+        }
+      );
       toast({
         title: formData.register.error.title,
         variant: "destructive",

@@ -111,7 +111,6 @@ const UserEditForm = () => {
           triggerText={formData.inputs.phone.title}
           options={roles}
           errorMessage={errors.role?.message}
-          // @ts-ignore
           setValue={(value: string) => setValue("role", value)}
         />
         {/* phone */}

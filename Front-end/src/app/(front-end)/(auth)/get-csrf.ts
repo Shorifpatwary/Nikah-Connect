@@ -1,12 +1,11 @@
 "use client";
-import { frontEndUrl } from "@/assets/data/config/app.config";
+import Routes from "@/assets/data/routes";
 
 const getCsrfCookie = async (): Promise<void> => {
   try {
     // const url = `${backendUrl}/sanctum/csrf-cookie`;
-    const url = `${frontEndUrl}/api/csrf-cookie`;
 
-    const response = await fetch(url, {
+    const response = await fetch(Routes.api.csrf, {
       method: "GET",
       credentials: "include",
     });

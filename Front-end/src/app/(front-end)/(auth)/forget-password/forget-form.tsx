@@ -1,12 +1,12 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import ForgetPassword from "@/app/(front-end)/(auth)/forget-password/forget-password";
+import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email, maxLength, minLength, object, Output, string } from "valibot";
@@ -65,9 +65,7 @@ const ForgetPasswordForm = () => {
           disabled={isFormLoading}
         >
           {isFormLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
-            </>
+            <SubmitLoader text={formData.wait} />
           ) : (
             formData.forgetPassword.submit
           )}

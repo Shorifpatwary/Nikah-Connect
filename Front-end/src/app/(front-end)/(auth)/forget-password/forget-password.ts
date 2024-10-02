@@ -51,17 +51,16 @@ const ForgetPassword = async <T>({
         description: formData.forgetPassword.success.description,
       });
       reset();
-      // ! redirect after 2 second when working with toast along with router/redirect
-      // setTimeout(() => {
+      // redirect
       //   router.push(formData.register.success.redirectUrl);
-      // }, 2000);
     } else if (response.status === 422) {
-      (
-        Object.keys(response?.data.errors as {}) as (keyof ForgetSchemaType)[]
-      ).forEach(fieldName => {
+      const errors = response?.data?.errors as Partial<
+        Record<keyof ForgetSchemaType, string[]>
+      >;
+      (Object.keys(errors) as (keyof ForgetSchemaType)[]).forEach(fieldName => {
         setError(fieldName, {
           type: "server",
-          message: response.data.errors?.[fieldName]?.[0],
+          message: errors[fieldName]?.[0],
         });
       });
       toast({

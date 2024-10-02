@@ -2,6 +2,7 @@ import { allTag, backendUrl } from "@/assets/data/config/app.config";
 import { TagsWithPagination } from "@/assets/data/response-types/tag";
 
 import { getHeaders } from "@/lib/request/header/getHeaders";
+import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -23,7 +24,8 @@ export async function GET(request: NextRequest) {
         revalidate: 60 * 60 * 24, // Cache for 1 day (in seconds)
       },
     });
-
+    // update the credentials
+    await setCookiesFromResponse(response);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

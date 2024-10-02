@@ -15,12 +15,12 @@ type FormProps = {
   className?: string;
 };
 
-const FormContainer: React.FC<FormProps> = ({
+const FormContainer = ({
   children,
   formTitle,
   FormFooter,
   className,
-}) => {
+}: FormProps) => {
   return (
     <main
       className={cn(

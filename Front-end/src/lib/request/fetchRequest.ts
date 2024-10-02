@@ -13,8 +13,8 @@ interface FetchResponse<T> {
 type Props = {
   url: string;
   options: RequestInit;
-  tagRevalidate?: string;
-  pathRevalidate?: string;
+  tagRevalidate?: string[];
+  pathRevalidate?: string[];
 };
 export const fetchRequest = async <T>({
   url,
@@ -53,12 +53,14 @@ export const fetchRequest = async <T>({
       return { data: errorData, status: response.status };
     }
   }
-  // caching
-  if (tagRevalidate) {
-    revalidateTag(tagRevalidate);
+  // Revalidate caching for tags
+  if (tagRevalidate && tagRevalidate.length > 0) {
+    await Promise.all(tagRevalidate.map(tag => revalidateTag(tag)));
   }
-  if (pathRevalidate) {
-    revalidatePath(pathRevalidate);
+
+  // Revalidate caching for paths
+  if (pathRevalidate && pathRevalidate.length > 0) {
+    await Promise.all(pathRevalidate.map(path => revalidatePath(path)));
   }
   const data: T = await response.json();
   return { data, status: response.status };

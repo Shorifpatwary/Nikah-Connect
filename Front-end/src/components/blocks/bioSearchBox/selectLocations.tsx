@@ -191,7 +191,6 @@ const SelectLocations = ({
       ) {
         return false;
       } else {
-        console.log("isNextDisabled else part ");
         return true;
       }
     } else {

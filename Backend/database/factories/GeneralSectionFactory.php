@@ -39,7 +39,7 @@ class GeneralSectionFactory extends Factory
       'marital_status' => $this->faker->randomElement(StatusEnum::MARITAL_STATUS),
       'birth_date' => $this->faker->dateTimeBetween('-50 years', '-18 years'),
       'height' => $this->faker->randomFloat(2, 150, 200), // Height in cm
-      'weight' => $this->faker->randomFloat(2, 50, 100), // Weight in kg
+      'weight' => $this->faker->numberBetween(20, 150), // Weight in kg
       'complexion' => $this->faker->randomElement(StatusEnum::COMPLEXIONS),
       'blood_group' => $this->faker->randomElement(StatusEnum::BLOOD_GROUPS),
       'language_skills' => $this->faker->sentence,

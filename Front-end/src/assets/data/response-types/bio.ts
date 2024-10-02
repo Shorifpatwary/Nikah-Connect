@@ -1,4 +1,3 @@
-import { LocationType } from "@/assets/data/response-types/locations";
 import {
   BioStatusType,
   BloodType,
@@ -40,12 +39,16 @@ export interface generalSectionInterface extends Timestamps {
   gender: GenderType;
   marital_status: MaritalStatusType;
   birth_date: string;
-  height: string;
-  weight: string;
+  height: number;
+  weight: number;
   complexion: ComplexionType;
   blood_group: BloodType;
   language_skills: string;
-  location: LocationType;
+  location_id: number;
+}
+export interface GeneralFormInterface<Error> extends generalSectionInterface {
+  message?: string;
+  errors?: Partial<Error>;
 }
 
 export interface locationSectionInterface extends Timestamps {
@@ -55,6 +58,10 @@ export interface locationSectionInterface extends Timestamps {
   relocate_plan?: string;
   childhood_address?: string;
 }
+export interface LocationFormInterface<Error> extends locationSectionInterface {
+  message?: string;
+  errors?: Partial<Error>;
+}
 
 export interface EducationSectionInterface extends Timestamps {
   id: number;
@@ -63,6 +70,11 @@ export interface EducationSectionInterface extends Timestamps {
   current_study?: string;
   previous_exams: string;
   other_qualifications?: string;
+}
+export interface EducationFormInterface<Error>
+  extends EducationSectionInterface {
+  message?: string;
+  errors?: Partial<Error>;
 }
 
 export interface PersonalDetailsSectionInterface extends Timestamps {
@@ -75,6 +87,11 @@ export interface PersonalDetailsSectionInterface extends Timestamps {
   device_usage_time?: string;
   affiliations?: string;
 }
+export interface PersonalDetailsFormInterface<Error>
+  extends PersonalDetailsSectionInterface {
+  message?: string;
+  errors?: Partial<Error>;
+}
 
 export interface FamilyInfoSectionInterface extends Timestamps {
   id: number;
@@ -83,12 +100,21 @@ export interface FamilyInfoSectionInterface extends Timestamps {
   economic_status: EconomicStatusType;
   economic_status_details?: string;
 }
+export interface FamilyInfoFormInterface<Error>
+  extends FamilyInfoSectionInterface {
+  message?: string;
+  errors?: Partial<Error>;
+}
 
 export interface ProfessionInterface extends Timestamps {
   id: number;
   profession: string;
   profession_description: string;
   monthly_income: string;
+}
+export interface ProfessionFormInterface<Error> extends ProfessionInterface {
+  message?: string;
+  errors?: Partial<Error>;
 }
 
 export interface ExpectedPartnerInterface extends Timestamps {
@@ -103,6 +129,11 @@ export interface ExpectedPartnerInterface extends Timestamps {
   family?: string;
   about_partner?: string;
 }
+export interface ExpectedPartnerFormInterface<Error>
+  extends ExpectedPartnerInterface {
+  message?: string;
+  errors?: Partial<Error>;
+}
 
 export interface HiddenInfoInterface extends Timestamps {
   id: number;
@@ -115,6 +146,11 @@ export interface HiddenInfoInterface extends Timestamps {
   email: string;
   social_links?: string;
 }
+export interface HiddenInfoFormInterface<Error> extends HiddenInfoInterface {
+  message?: string;
+  errors?: Partial<Error>;
+}
+
 export interface ReligiousActivityInterface extends Timestamps {
   id: number;
   prayer_habits?: string;
@@ -128,6 +164,12 @@ export interface ReligiousActivityInterface extends Timestamps {
   religious_knowledge?: string;
   family_religious_environment?: string;
 }
+export interface ReligiousActivityFormInterface<Error>
+  extends ReligiousActivityInterface {
+  message?: string;
+  errors?: Partial<Error>;
+}
+
 export interface MarriageInfoInterface extends Timestamps {
   id: number;
   prev_marriage?: string;
@@ -141,4 +183,9 @@ export interface MarriageInfoInterface extends Timestamps {
   dowry_opinion?: string;
   compromise_factors?: string;
   cash_gift_opinion?: string;
+}
+export interface MarriageInfoFormInterface<Error>
+  extends MarriageInfoInterface {
+  message?: string;
+  errors?: Partial<Error>;
 }

@@ -10,23 +10,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Dispatch, memo, SetStateAction } from "react";
+import { memo } from "react";
 export interface Option {
   title: string;
   value: string;
 }
 interface Props {
   label: string;
+  labelRequired?: boolean;
   triggerText: string;
   hintText?: string;
   errorMessage?: string | undefined;
   suggestions?: string[];
   options: Option[];
-  setValue?: Dispatch<SetStateAction<string>>;
+  setValue?: (value: string) => void;
 }
 
 const SelectBox = ({
   label,
+  labelRequired = false,
   setValue,
   hintText,
   triggerText,
@@ -37,7 +39,8 @@ const SelectBox = ({
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="name" className="text-lg capitalize max-md:text-xl">
-        {label}
+        {label}{" "}
+        {labelRequired && <span className="ml-1 text-red-600">(*)</span>}
       </Label>
       {suggestions && suggestions.length > 0 && (
         <Suggestion suggestions={suggestions} />

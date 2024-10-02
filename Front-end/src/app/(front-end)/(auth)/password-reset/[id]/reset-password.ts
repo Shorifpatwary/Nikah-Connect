@@ -48,17 +48,16 @@ const ResetPassword = async <T>({
         description: formData.resetPassword.success.description,
       });
       reset();
-      // ! redirect after 2 second when working with toast along with router/redirect
-      setTimeout(() => {
-        router.push(formData.resetPassword.success.redirectUrl);
-      }, 2000);
+      // redirect
+      router.push(formData.resetPassword.success.redirectUrl);
     } else if (response.status === 422) {
-      (
-        Object.keys(response?.data.errors as {}) as (keyof ResetSchemaType)[]
-      ).forEach(fieldName => {
+      const errors = response?.data?.errors as Partial<
+        Record<keyof ResetSchemaType, string[]>
+      >;
+      (Object.keys(errors) as (keyof ResetSchemaType)[]).forEach(fieldName => {
         setError(fieldName, {
           type: "server",
-          message: response.data.errors?.[fieldName]?.[0],
+          message: errors[fieldName]?.[0],
         });
       });
       toast({

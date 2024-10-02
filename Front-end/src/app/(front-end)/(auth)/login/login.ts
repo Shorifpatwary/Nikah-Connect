@@ -52,19 +52,18 @@ export const Login = async <T>({
         description: formData.login.success.description,
       });
       reset();
-      createCookie(response.data);
+      await createCookie(response.data);
 
-      // ! redirect after 2 second when working with toast along with router/redirect
-      setTimeout(() => {
-        router.push(formData.login.success.redirectUrl);
-      }, 2000);
+      // redirect
+      router.push(formData.login.success.redirectUrl);
     } else if (response.status === 422) {
-      (
-        Object.keys(response?.data.errors as {}) as (keyof LoginSchemaType)[]
-      ).forEach(fieldName => {
+      const errors = response?.data?.errors as Partial<
+        Record<keyof LoginSchemaType, string[]>
+      >;
+      (Object.keys(errors) as (keyof LoginSchemaType)[]).forEach(fieldName => {
         setError(fieldName, {
           type: "server",
-          message: response.data.errors?.[fieldName]?.[0],
+          message: errors[fieldName]?.[0],
         });
       });
 

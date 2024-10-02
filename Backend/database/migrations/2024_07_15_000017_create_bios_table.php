@@ -7,27 +7,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('bios', function (Blueprint $table) {
-            $table->id()->startingValue(1000);
-            $table->string('title')->nullable();
-            $table->enum('status', StatusEnum::BIO_STATUS)->default('incomplete');
+  /**
+   * Run the migrations.
+   */
+  public function up(): void
+  {
+    Schema::create('bios', function (Blueprint $table) {
+      $table->id()->startingValue(1000);
+      $table->string('title')->nullable();
+      $table->enum('status', StatusEnum::BIO_STATUS)->default('incomplete');
 
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->timestamps();
-            $table->softDeletes();
-        });
-    }
+      $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+      $table->timestamps();
+      $table->softDeletes();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('bios');
-    }
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::dropIfExists('bios');
+  }
 };

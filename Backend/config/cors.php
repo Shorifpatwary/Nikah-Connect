@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
@@ -14,29 +14,23 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
-    //  allowed paths 
-    // ! specify path for only non protected routes. 
-    'paths' => [
-        'register',
-        'login',
-        'forgot-password',
-        'reset-password',
-    ],
+  //  allowed paths 
+  'paths' => ['*'],
 
-    'allowed_methods' => ['*'],
+  'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'), env('APP_URL', 'http://localhost:8000')],
+  'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'), env('APP_URL', 'http://localhost:8000')],
 
-    'allowed_origins_patterns' => [],
+  'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+  'allowed_headers' => ['*'],
 
-    // 'allowed_headers' => ['Accept', 'Accept-Language', 'Content-Language', 'Content-Type', 'X-Requested-With', 'X-XSRF-TOKEN'],
+  // 'allowed_headers' => ['Accept', 'Accept-Language', 'Content-Language', 'Content-Type', 'X-Requested-With', 'X-XSRF-TOKEN'],
 
-    'exposed_headers' => [],
+  'exposed_headers' => [],
 
-    'max_age' => 24 * 60 * 60,
+  'max_age' => 24 * 60 * 60,
 
-    'supports_credentials' => true,
+  'supports_credentials' => true,
 
 ];

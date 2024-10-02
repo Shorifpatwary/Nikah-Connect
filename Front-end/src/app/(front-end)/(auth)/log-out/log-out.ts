@@ -30,7 +30,7 @@ export const Logout = async ({ toast, router, setIsLoading }: Props) => {
         variant: "primary",
         description: "You have been logged out successfully.",
       });
-      deleteAuthCookies();
+      await deleteAuthCookies();
       // Redirect to home page or login page
       router.push(Routes.Login);
     } else {

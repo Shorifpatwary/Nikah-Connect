@@ -7,6 +7,7 @@ import { Dispatch, memo, ReactNode, SetStateAction } from "react";
 interface Props extends InputProps {
   fieldName: string;
   label: string | ReactNode;
+  labelRequired?: boolean;
   errorMessage?: string | undefined;
   suggestions?: string[];
   register: {};
@@ -15,6 +16,7 @@ interface Props extends InputProps {
 
 const TextInputBox = ({
   label,
+  labelRequired = false,
   setValue,
   fieldName,
   errorMessage,
@@ -28,13 +30,14 @@ const TextInputBox = ({
         htmlFor={fieldName}
         className={"text-lg capitalize max-md:text-xl"}
       >
-        {label}
+        {label}{" "}
+        {labelRequired && <span className="ml-1 text-red-600">(*)</span>}
       </Label>
       {suggestions && suggestions.length > 0 && (
         <Suggestion suggestions={suggestions} />
       )}
       {/* input */}
-      <Input {...props} id={fieldName} autoComplete={fieldName}  {...register} />
+      <Input {...props} id={fieldName} autoComplete={fieldName} {...register} />
 
       {errorMessage && <Error>{errorMessage}</Error>}
     </div>

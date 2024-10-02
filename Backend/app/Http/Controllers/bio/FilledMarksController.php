@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Bio;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Bio\FilledMarksResource;
 use App\Models\FilledMarks;
 use Illuminate\Http\Request;

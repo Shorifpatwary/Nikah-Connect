@@ -16,10 +16,10 @@ import {
 
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import Routes from "@/assets/data/routes";
+import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ResetPassword from "./reset-password";
@@ -136,9 +136,7 @@ const ResetPasswordForm = () => {
           disabled={isFormLoading}
         >
           {isFormLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
-            </>
+            <SubmitLoader text={formData.wait} />
           ) : (
             formData.resetPassword.submit
           )}

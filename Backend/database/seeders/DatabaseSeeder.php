@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
       // UserInfoSeeder::class,
       // TagSeeder::class,
 
-      BioSeeder::class,
+      // BioSeeder::class,
       // BioTagSeeder::class,
       // GeneralSectionSeeder::class,
       // LocationSectionSeeder::class,

@@ -12,6 +12,7 @@ class StatusEnum
   const ECONOMIC_STATUS = ["নিম্নবিত্ত", "নিম্ন মধ্যবিত্ত", "মধ্যবিত্ত", "উচ্চ মধ্যবিত্ত", "উচ্চবিত্ত"];
   const BIO_STATUS = ['incomplete', 'approved', 'pending_approval', 'reject', 'married', 'inactive',];
 
+  const LOCATION_TYPE = ["বিভাগ", "জেলা", "উপজেলা"];
   const ALL_MAZHAB = [
     'হানাফী (সুন্নি)',
     'মালিকি(সুন্নি)',

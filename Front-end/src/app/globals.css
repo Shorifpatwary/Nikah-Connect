@@ -123,3 +123,16 @@
   font-size: 16px;
   line-height: 1.35;
 }
+
+/* html date design */
+input[type="date"] {
+  width: fit-content;
+  border-radius: 5px;
+}
+::-webkit-calendar-picker-indicator {
+  background-color: #777676;
+  padding: 0.4rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 3px;
+}

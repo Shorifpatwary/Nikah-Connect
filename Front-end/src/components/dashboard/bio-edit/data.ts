@@ -1,111 +1,113 @@
+import Routes from "@/assets/data/routes";
+const profileBio = Routes.profile_bio;
 export const BioEditData = {
   general: {
     label: "সাধারন তথ্য",
     create: {
-      link: `/bio/general/create`,
+      link: profileBio.general.create,
       label: "বায়োডাটা তৈরী করুন। (সাধারন তথ্য - ১/১০)",
     },
     edit: {
-      link: `/bio/general/edit`,
+      link: profileBio.general.edit,
       label: "সাধারন তথ্য সংশোধন করুন।",
     },
   },
   location: {
     label: "লোকেশন",
     create: {
-      link: `/bio/location/create`,
+      link: profileBio.location.create,
       label: "বায়োডাটা তৈরী করুন। (লোকেশন - ২/১০)",
     },
     edit: {
-      link: `/bio/location/edit`,
+      link: profileBio.location.edit,
       label: "লোকেশন সংশোধন করুন।",
     },
   },
   education: {
     label: "শিক্ষা",
     create: {
-      link: `/bio/education/create`,
+      link: profileBio.education.create,
       label: "বায়োডাটা তৈরী করুন। (শিক্ষা - ৩/১০)",
     },
     edit: {
-      link: `/bio/education/edit`,
+      link: profileBio.education.edit,
       label: "শিক্ষা সংশোধন করুন।",
     },
   },
   personal_info: {
     label: "ব্যাক্তিগত তথ্য",
     create: {
-      link: `/bio/personal-info/create`,
+      link: profileBio.personal_info.create,
       label: "বায়োডাটা তৈরী করুন। (ব্যাক্তিগত তথ্য - ৪/১০)",
     },
     edit: {
-      link: `/bio/personal-info/edit`,
+      link: profileBio.personal_info.edit,
       label: "ব্যাক্তিগত তথ্য সংশোধন করুন।",
     },
   },
   family: {
     label: "পারিবারিক তথ্য",
     create: {
-      link: `/bio/family/create`,
+      link: profileBio.family.create,
       label: "বায়োডাটা তৈরী করুন। (পারিবারিক তথ্য - ৫/১০)",
     },
     edit: {
-      link: `/bio/family/edit`,
+      link: profileBio.family.edit,
       label: "পারিবারিক তথ্য সংশোধন করুন।",
     },
   },
   profession: {
     label: "পেশা",
     create: {
-      link: `/bio/profession/create`,
+      link: profileBio.profession.create,
       label: "বায়োডাটা তৈরী করুন। (পেশা - ৬/১০)",
     },
     edit: {
-      link: `/bio/profession/edit`,
+      link: profileBio.profession.edit,
       label: "পেশা সংশোধন করুন।",
     },
   },
   religious: {
     label: "ধর্ম",
     create: {
-      link: `/bio/religious/create`,
+      link: profileBio.religious.create,
       label: "বায়োডাটা তৈরী করুন। (ধর্ম - ৭/১০)",
     },
     edit: {
-      link: `/bio/religious/edit`,
+      link: profileBio.religious.edit,
       label: "ধর্ম সংশোধন করুন।",
     },
   },
   marital: {
     label: "বৈবাহিক তথ্য",
     create: {
-      link: `/bio/marital/create`,
+      link: profileBio.marital_info.create,
       label: "বায়োডাটা তৈরী করুন। (বৈবাহিক তথ্য - ৮/১০)",
     },
     edit: {
-      link: `/bio/marital/edit`,
+      link: profileBio.marital_info.edit,
       label: "বৈবাহিক তথ্য সংশোধন করুন।",
     },
   },
   expected_partner: {
     label: "প্রত্যাশিত জীবনসঙ্গী",
     create: {
-      link: `/bio/expected-partner/create`,
+      link: profileBio.expected_partner.create,
       label: "বায়োডাটা তৈরী করুন। (প্রত্যাশিত জীবনসঙ্গী - ৯/১০)",
     },
     edit: {
-      link: `/bio/expected-partner/edit`,
+      link: profileBio.expected_partner.edit,
       label: "প্রত্যাশিত জীবনসঙ্গী সংশোধন করুন।",
     },
   },
   hidden: {
     label: "গোপনীয় তথ্য",
     create: {
-      link: `/bio/hidden/create`,
+      link: profileBio.hidden_info.create,
       label: "বায়োডাটা তৈরী করুন। (গোপনীয় তথ্য - ১০/১০)",
     },
     edit: {
-      link: `/bio/hidden/edit`,
+      link: profileBio.hidden_info.edit,
       label: "গোপনীয় তথ্য সংশোধন করুন।",
     },
   },

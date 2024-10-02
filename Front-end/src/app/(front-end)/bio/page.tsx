@@ -1,3 +1,4 @@
+import Section from "@/components/blocks/section";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const BioPage = () => {
-  return <div>BioPage Page </div>;
+  return <Section>public bio page</Section>;
 };
 
 export default BioPage;

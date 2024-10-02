@@ -1,13 +1,13 @@
 "use client";
 import { formData, ValidationMassage } from "@/app/(front-end)/(auth)/data";
 import { Login } from "@/app/(front-end)/(auth)/login/login";
+import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -93,9 +93,7 @@ const LoginForm = () => {
           disabled={isFormLoading}
         >
           {isFormLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {formData.wait}
-            </>
+            <SubmitLoader text={formData.wait} />
           ) : (
             formData.login.submit
           )}
@@ -106,5 +104,4 @@ const LoginForm = () => {
   );
 };
 
-// !warning: don't use react memo.
 export default LoginForm;

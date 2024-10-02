@@ -2,10 +2,11 @@ import { backendUrl, filledMarks } from "@/assets/data/config/app.config";
 import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-marks";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { getUserIdFromCookies } from "@/lib/request/header/getUserIdFromCookies";
+import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const userId = getUserIdFromCookies();
+  const userId = await getUserIdFromCookies();
 
   // Construct the request URL with query string
   const apiUrl = `${backendUrl}/api/user-bio/filled-marks`;
@@ -22,7 +23,8 @@ export async function GET(request: NextRequest) {
         tags: [`${filledMarks}_${userId}`],
       },
     });
-
+    // update the credentials
+    await setCookiesFromResponse(response);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

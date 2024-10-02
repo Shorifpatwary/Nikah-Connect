@@ -1,8 +1,9 @@
+"use server";
 import { userCookieName } from "@/assets/data/config/app.config";
 import { cookies } from "next/headers";
 
 // Utility function to extract user ID from 'authUser' cookie
-export function getUserIdFromCookies(): string | null {
+export async function getUserIdFromCookies(): Promise<string | null> {
   // Retrieve the cookies from the request
   const cookieStore = cookies();
 
