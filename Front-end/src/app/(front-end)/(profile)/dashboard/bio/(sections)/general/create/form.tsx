@@ -65,7 +65,7 @@ const Schema = object({
     VM.blood_group.required
   ),
   language_skills: string([maxLength(100, VM.language_skills.maxLength)]),
-  location_id: number(VM.location.require),
+  location_id: number(VM.location.required),
 });
 export type GeneralCreateSchemaType = Output<typeof Schema>;
 const BioGeneralCreateForm = () => {
@@ -117,7 +117,7 @@ const BioGeneralCreateForm = () => {
           errorMessage={errors.gender?.message}
           setValue={value => setValue("gender", value)}
         />
-        {/* gender */}
+        {/* marital status */}
         <SelectBox
           label={Data.inputs.marital_status.title}
           labelRequired={true}
@@ -196,11 +196,7 @@ const BioGeneralCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? (
-            <SubmitLoader text={Data.wait} />
-          ) : (
-            Data.submit
-          )}
+          {isFormLoading ? <SubmitLoader text={Data.wait} /> : Data.submit}
         </Button>
       </div>
       <Toaster />

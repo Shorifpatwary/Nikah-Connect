@@ -50,7 +50,7 @@ export const createBioLocation = async <T>({
         `${filledMarks}_${userId}`,
       ],
     });
-    console.log(response, "res");
+
     // If there are errors in the response, set each error using setError
     if (response.status === 200 || response.status === 201) {
       toast({
@@ -96,7 +96,7 @@ export const createBioLocation = async <T>({
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",
-      description: "Data.unKnownError.description",
+      description: Data.unKnownError.description,
     });
   } finally {
     setIsFormLoading(false);

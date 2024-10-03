@@ -25,6 +25,7 @@ export const allTag = "tags";
 export const allBio = "bios";
 export const generals = "generals";
 export const locations = "locations";
+export const educations = "educations";
 export const filledMarks = "filled_marks";
 
 // ! user  roles from "RolesEnum.php"
@@ -242,4 +243,12 @@ export const blood_groups: Option[] = [
   { value: "O+", title: "O+" },
   { value: "O-", title: "O-" },
   { value: "জানা নেই", title: "জানা নেই" },
+];
+
+export const education_mediums: Option[] = [
+  { value: "জেনারেল", title: "জেনারেল" },
+  { value: "কাউমি", title: "কাউমি" },
+  { value: "আলিয়া", title: "আলিয়া" },
+  { value: "দেশের বাইরে", title: "দেশের বাইরে" },
+  { value: "অন্যান্য", title: "অন্যান্য" },
 ];
