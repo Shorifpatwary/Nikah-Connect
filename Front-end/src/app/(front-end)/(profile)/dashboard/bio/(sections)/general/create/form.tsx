@@ -41,7 +41,7 @@ const Schema = object({
     VM.gender.required
   ),
   marital_status: picklist(
-    marital_status.map(item => item.value),
+    marital_status.map(option => option.value),
     VM.marital_status.required
   ),
   birth_date: string([
@@ -49,19 +49,19 @@ const Schema = object({
     maxLength(20, VM.birth_date.maxLength),
   ]),
   height: picklist(
-    heights.map(item => item.value),
+    heights.map(option => option.value),
     VM.height.required
   ),
   weight: picklist(
-    weights.map(item => item.value),
+    weights.map(option => option.value),
     VM.weight.required
   ),
   complexion: picklist(
-    complexions.map(item => item.value),
+    complexions.map(option => option.value),
     VM.complexion.required
   ),
   blood_group: picklist(
-    blood_groups.map(item => item.value),
+    blood_groups.map(option => option.value),
     VM.blood_group.required
   ),
   language_skills: string([maxLength(100, VM.language_skills.maxLength)]),

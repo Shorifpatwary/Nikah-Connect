@@ -3,7 +3,7 @@ import BioPersonalDetailsCreateForm from "@/app/(front-end)/(profile)/dashboard/
 import Section from "@/components/blocks/section";
 import FormContainer from "@/components/dashboard/form-container";
 
-const CreateLocation = () => {
+const CreatePersonalDetails = () => {
   return (
     <Section rowClassName="justify-center">
       <FormContainer formTitle={Data.title}>
@@ -13,4 +13,4 @@ const CreateLocation = () => {
   );
 };
 
-export default CreateLocation;
+export default CreatePersonalDetails;

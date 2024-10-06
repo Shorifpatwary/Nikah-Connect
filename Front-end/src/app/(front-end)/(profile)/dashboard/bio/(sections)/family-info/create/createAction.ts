@@ -1,13 +1,13 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/data"; // Update path to the education data
-import { EducationCreateSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/form"; // Update path to the education schema
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/create/data"; // Update path to the family info data
+import { FamilyInfoCreateSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/create/form"; // Update path to the family info schema
 import {
   allBio,
   backendUrl,
-  educations,
+  familyInfos,
   filledMarks,
-} from "@/assets/data/config/app.config"; // Add `educations` to config
-import { EducationFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for education
+} from "@/assets/data/config/app.config"; // Add `familyInfos` to config
+import { FamilyInfoFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for family info
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
 import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
@@ -15,18 +15,18 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
 
-type ResponseType = EducationFormInterface<EducationCreateSchemaType>; // Use education interface
+type ResponseType = FamilyInfoFormInterface<FamilyInfoCreateSchemaType>; // Use family info interface
 
 type Props<T> = {
   data: T;
-  setError: UseFormSetError<EducationCreateSchemaType>;
-  reset: UseFormReset<EducationCreateSchemaType>;
+  setError: UseFormSetError<FamilyInfoCreateSchemaType>;
+  reset: UseFormReset<FamilyInfoCreateSchemaType>;
   toast: (props: Toast) => void;
   router: AppRouterInstance;
   setIsFormLoading: Dispatch<SetStateAction<boolean>>;
 };
 
-export const createBioEducation = async <T>({
+export const createBioFamilyInfo = async <T>({
   data,
   setError,
   reset,
@@ -36,8 +36,8 @@ export const createBioEducation = async <T>({
 }: Props<T>) => {
   try {
     setIsFormLoading(true);
-    // Make fetch request to bio education
-    const url = `${backendUrl}/api/bio/education`; // Update endpoint for education
+    // Make fetch request to bio family info
+    const url = `${backendUrl}/api/bio/family-info`; // Update endpoint for family info
     const userId = getAuthUserIdFromClientCookies();
     const response = await fetchRequest<ResponseType>({
       url,
@@ -47,7 +47,7 @@ export const createBioEducation = async <T>({
       },
       tagRevalidate: [
         `${allBio}_${userId}`,
-        `${educations}_${userId}`, // Use `educations` for cache validation
+        `${familyInfos}_${userId}`, // Use `familyInfos` for cache validation
         `${filledMarks}_${userId}`,
       ],
     });
@@ -58,14 +58,15 @@ export const createBioEducation = async <T>({
         variant: "primary",
         description: Data.success.description,
       });
+
       reset();
 
       router.push(Data.success.redirectUrl); // Redirect to the success URL defined in `data`
     } else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
-        Record<keyof EducationCreateSchemaType, string[]>
+        Record<keyof FamilyInfoCreateSchemaType, string[]>
       >;
-      (Object.keys(errors) as (keyof EducationCreateSchemaType)[]).forEach(
+      (Object.keys(errors) as (keyof FamilyInfoCreateSchemaType)[]).forEach(
         fieldName => {
           setError(fieldName, {
             type: "server",

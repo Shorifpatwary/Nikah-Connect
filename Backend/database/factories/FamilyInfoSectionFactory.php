@@ -36,6 +36,7 @@ class FamilyInfoSectionFactory extends Factory
       'family_members_info' =>
       $this->faker->paragraph,
       'uncles_info' => $this->faker->paragraph,
+      'descent' => $this->faker->sentence,
       'economic_status' => $this->faker->randomElement(StatusEnum::ECONOMIC_STATUS),
       'economic_status_details' => $this->faker->paragraph,
       'bio_id' => $bioId,

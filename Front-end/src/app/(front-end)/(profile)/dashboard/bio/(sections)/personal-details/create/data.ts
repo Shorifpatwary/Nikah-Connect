@@ -9,7 +9,7 @@ export const Data = {
     title: "ব্যক্তিগত তথ্য সফলভাবে সংরক্ষিত হয়েছে!",
     description:
       "আপনার ব্যক্তিগত তথ্য সফলভাবে সংরক্ষিত হয়েছে। পরবর্তী ধাপের জন্য দয়া করে প্রয়োজনীয় তথ্যগুলো পূরণ করুন।",
-    redirectUrl: Routes.profile_bio.personal_info.create,
+    redirectUrl: Routes.profile_bio.family.create,
   },
   error: {
     title: "ব্যক্তিগত তথ্য সংরক্ষণে সমস্যা!",

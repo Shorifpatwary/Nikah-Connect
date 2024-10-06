@@ -27,6 +27,7 @@ export const generals = "generals";
 export const locations = "locations";
 export const educations = "educations";
 export const personalDetails = "personalDetails";
+export const familyInfos = "familyInfos";
 export const filledMarks = "filled_marks";
 
 // ! user  roles from "RolesEnum.php"
@@ -252,4 +253,12 @@ export const education_mediums: Option[] = [
   { value: "আলিয়া", title: "আলিয়া" },
   { value: "দেশের বাইরে", title: "দেশের বাইরে" },
   { value: "অন্যান্য", title: "অন্যান্য" },
+];
+
+export const economic_status: Option[] = [
+  { value: "নিম্নবিত্ত", title: "নিম্নবিত্ত" },
+  { value: "নিম্ন মধ্যবিত্ত", title: "নিম্ন মধ্যবিত্ত" },
+  { value: "মধ্যবিত্ত", title: "মধ্যবিত্ত" },
+  { value: "উচ্চ মধ্যবিত্ত", title: "উচ্চ মধ্যবিত্ত" },
+  { value: "উচ্চবিত্ত", title: "উচ্চবিত্ত" },
 ];

@@ -7,30 +7,30 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('family_info_sections', function (Blueprint $table) {
-            $table->id();
-            $table->text('family_members_info');
-            $table->text('uncles_info')->nullable();
-            // $table->text('bongsho morjada'); //todo  Add this
-            $table->enum('economic_status', StatusEnum::ECONOMIC_STATUS);
-            $table->text('economic_status_details');
+	/**
+	 * Run the migrations.
+	 */
+	public function up(): void
+	{
+		Schema::create('family_info_sections', function (Blueprint $table) {
+			$table->id();
+			$table->text('family_members_info');
+			$table->text('uncles_info')->nullable();
+			$table->text('descent')->nullable();
+			$table->enum('economic_status', StatusEnum::ECONOMIC_STATUS);
+			$table->text('economic_status_details');
 
-            $table->foreignId('bio_id')->constrained('bios')->cascadeOnDelete();
+			$table->foreignId('bio_id')->constrained('bios')->cascadeOnDelete();
 
-            $table->timestamps();
-        });
-    }
+			$table->timestamps();
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('family_info_sections');
-    }
+	/**
+	 * Reverse the migrations.
+	 */
+	public function down(): void
+	{
+		Schema::dropIfExists('family_info_sections');
+	}
 };

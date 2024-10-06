@@ -37,15 +37,15 @@ const Routes = {
       edit: "/dashboard/bio/education/edit",
     },
     personal_info: {
-      create: "/dashboard/bio/personal-info/create",
-      edit: "/dashboard/bio/personal-info/edit",
+      create: "/dashboard/bio/personal-details/create",
+      edit: "/dashboard/bio/personal-details/edit",
     },
     religious: {
       create: "/dashboard/bio/religious/create",
       edit: "/dashboard/bio/religious/edit",
     },
     family: {
-      create: "/dashboard/bio/family/create",
+      create: "/dashboard/bio/family-info/create",
       edit: "/dashboard/bio/family/edit",
     },
     profession: {

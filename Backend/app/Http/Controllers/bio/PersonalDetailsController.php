@@ -70,7 +70,7 @@ class PersonalDetailsController extends Controller
       FilledMarks::updateOrCreate(
         ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
         [
-          'personal_filled_marks' => $personalFilledMarks,
+          'personal_info_filled_marks' => $personalFilledMarks,
           // Add other filled marks columns if needed
         ]
       );

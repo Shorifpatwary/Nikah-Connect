@@ -27,5 +27,6 @@ class VerifyCsrfToken extends Middleware
     'api/bio/location',
     'api/bio/education',
     'api/bio/personal-details',
+    'api/bio/family-info',
   ];
 }
