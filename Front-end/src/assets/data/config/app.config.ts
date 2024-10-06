@@ -26,6 +26,7 @@ export const allBio = "bios";
 export const generals = "generals";
 export const locations = "locations";
 export const educations = "educations";
+export const personalDetails = "personalDetails";
 export const filledMarks = "filled_marks";
 
 // ! user  roles from "RolesEnum.php"

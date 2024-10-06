@@ -29,10 +29,10 @@ class StoreBioEducationRequest extends FormRequest
         'required',
         Rule::in(array_values(StatusEnum::EDUCATION_MEDIUM)),
       ],
-      'highest_qualification' => 'required|string|max:1000',
-      'current_study' => 'nullable|string|max:1000',
-      'previous_exams' => 'required|string|max:2500',
-      'other_qualifications' => 'nullable|string|max:2500',
+      'highest_qualification' => 'required|string|min:5|max:1000',
+      'current_study' => 'nullable|string|min:5|max:1000',
+      'previous_exams' => 'required|string|min:50|max:2500',
+      'other_qualifications' => 'nullable|string|min:5|max:2500',
     ];
   }
 
@@ -43,13 +43,17 @@ class StoreBioEducationRequest extends FormRequest
       'education_medium.in' => ':attribute এর মান সঠিক নয়।',
       'highest_qualification.required' => ':attribute আবশ্যক।',
       'highest_qualification.string' => ':attribute একটি টেক্সট হতে হবে।',
+      'highest_qualification.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'highest_qualification.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
       'current_study.string' => ':attribute একটি টেক্সট হতে হবে।',
+      'current_study.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'current_study.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
       'previous_exams.required' => ':attribute আবশ্যক।',
       'previous_exams.string' => ':attribute একটি টেক্সট হতে হবে।',
+      'previous_exams.min' => ':attribute সর্বনিম্ন ৫০ অক্ষর হতে হবে।',
       'previous_exams.max' => ':attribute সর্বাধিক ২৫০০ অক্ষর হতে পারবে।',
       'other_qualifications.string' => ':attribute একটি টেক্সট হতে হবে।',
+      'other_qualifications.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'other_qualifications.max' => ':attribute সর্বাধিক ২৫০০ অক্ষর হতে পারবে।',
     ];
   }

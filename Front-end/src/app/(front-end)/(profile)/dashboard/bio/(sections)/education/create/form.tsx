@@ -45,6 +45,7 @@ const Schema = object({
     maxLength(2500, VM.other_qualifications.maxLength),
   ]),
 });
+
 export type EducationCreateSchemaType = Output<typeof Schema>;
 
 const BioEducationCreateForm = () => {

@@ -9,7 +9,7 @@ export const Data = {
     title: "শিক্ষা সংবলিত তথ্য সফলভাবে সংরক্ষিত হয়েছে!",
     description:
       "আপনার শিক্ষা সংবলিত তথ্য সফলভাবে সংরক্ষিত হয়েছে। পরবর্তী ধাপের জন্য দয়া করে প্রয়োজনীয় তথ্যগুলো পূরণ করুন।",
-    redirectUrl: Routes.profile_bio.education.create, // Adjust the route as needed
+    redirectUrl: Routes.profile_bio.personal_info.create,
   },
   error: {
     title: "শিক্ষা সংবলিত তথ্য সংরক্ষণে সমস্যা!",
@@ -74,7 +74,6 @@ export const Data = {
       "দয়া করে কর্তৃপক্ষের সাথে যোগাযোগ করুন এবং আপনার সমস্যার বিস্তারিত জানাবেন।",
   },
 };
-
 // Validation Message
 export const VM = {
   highest_qualification: {

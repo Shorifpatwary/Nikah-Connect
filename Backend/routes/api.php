@@ -10,6 +10,7 @@ use App\Http\Controllers\Bio\EducationSectionController;
 use App\Http\Controllers\Bio\FilledMarksController;
 use App\Http\Controllers\Bio\GeneralSectionController;
 use App\Http\Controllers\Bio\LocationSectionController;
+use App\Http\Controllers\Bio\PersonalDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::apiResource('bio/location', LocationSectionController::class)->only(['store', 'show', 'update']);
   // Bio education
   Route::apiResource('bio/education', EducationSectionController::class)->only(['store', 'show', 'update']);
+  // Bio education
+  Route::apiResource('bio/personal-details', PersonalDetailsController::class)->only(['store', 'show', 'update']);
   // Bio Tags
   Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);
   // filled marks 
