@@ -102,7 +102,7 @@ class GeneralSectionController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records.'], 500);
+      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
     }
   }
 
@@ -111,7 +111,7 @@ class GeneralSectionController extends Controller
    */
   public function show(GeneralSection $generalSection)
   {
-    //
+    return new GeneralSectionResource($generalSection);
   }
 
   /**
@@ -128,5 +128,22 @@ class GeneralSectionController extends Controller
   public function destroy(GeneralSection $generalSection)
   {
     //
+  }
+
+  public function getUserRecord()
+  {
+    // Get the logged-in user's bio
+    $bio = Bio::where('user_id', auth()->id())->first();
+    // dd($bio);
+    // Check if the authenticated user's bio has a GeneralSection entry
+    $generalSection = GeneralSection::where('bio_id', $bio->id)->first();
+    // dd($generalSection);
+    // If no GeneralSection exists, you can return a custom error response or handle it as needed
+    if (!$generalSection) {
+      return response()->json(['message' => 'No general section found.'], 404);
+    }
+
+    // Return the GeneralSectionResource with the fetched data
+    return new GeneralSectionResource($generalSection);
   }
 }

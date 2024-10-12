@@ -12,6 +12,8 @@ use App\Http\Controllers\Bio\FilledMarksController;
 use App\Http\Controllers\Bio\GeneralSectionController;
 use App\Http\Controllers\Bio\LocationSectionController;
 use App\Http\Controllers\Bio\PersonalDetailsController;
+use App\Http\Controllers\Bio\ProfessionSectionController;
+use App\Http\Controllers\Bio\ReligiousActivityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,16 +42,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   // Bio 
   Route::apiResource('bio', BioController::class);
   // Bio general
-  Route::apiResource('bio/general', GeneralSectionController::class)->only(['store', 'show', 'update']);
-  // Bio location
-  Route::apiResource('bio/location', LocationSectionController::class)->only(['store', 'show', 'update']);
-  // Bio education
-  Route::apiResource('bio/education', EducationSectionController::class)->only(['store', 'show', 'update']);
-  // Bio personal-details
-  Route::apiResource('bio/personal-details', PersonalDetailsController::class)->only(['store', 'show', 'update']);
-  // Bio family-info
-  Route::apiResource('bio/family-info', FamilyInfoSectionController::class)->only(['store', 'show', 'update']);
+  Route::apiResource('bio/general', GeneralSectionController::class)->only(['store',  'update']);
+  //  new route for the get user specific record
+  Route::get('bio/general/user-record', [GeneralSectionController::class, 'getUserRecord']);
 
+  // Bio location
+  Route::apiResource('bio/location', LocationSectionController::class)->only(['store',  'update']);
+  // Bio education
+  Route::apiResource('bio/education', EducationSectionController::class)->only(['store',  'update']);
+  // Bio personal-details
+  Route::apiResource('bio/personal-details', PersonalDetailsController::class)->only(['store',  'update']);
+  // Bio family-info
+  Route::apiResource('bio/family-info', FamilyInfoSectionController::class)->only(['store',  'update']);
+  // Bio profession
+  Route::apiResource('bio/profession', ProfessionSectionController::class)->only(['store',  'update']);
+
+  // Bio religious activity
+  Route::apiResource('bio/religious-activities', ReligiousActivityController::class)->only(['store',  'update']);
 
   // Bio Tags
   Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);

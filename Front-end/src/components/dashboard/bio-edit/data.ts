@@ -70,11 +70,11 @@ export const BioEditData = {
   religious: {
     label: "ধর্ম",
     create: {
-      link: profileBio.religious.create,
+      link: profileBio.religious_activities.create,
       label: "বায়োডাটা তৈরী করুন। (ধর্ম - ৭/১০)",
     },
     edit: {
-      link: profileBio.religious.edit,
+      link: profileBio.religious_activities.edit,
       label: "ধর্ম সংশোধন করুন।",
     },
   },

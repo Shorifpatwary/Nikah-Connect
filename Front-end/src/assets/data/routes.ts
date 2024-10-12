@@ -40,10 +40,6 @@ const Routes = {
       create: "/dashboard/bio/personal-details/create",
       edit: "/dashboard/bio/personal-details/edit",
     },
-    religious: {
-      create: "/dashboard/bio/religious/create",
-      edit: "/dashboard/bio/religious/edit",
-    },
     family: {
       create: "/dashboard/bio/family-info/create",
       edit: "/dashboard/bio/family/edit",
@@ -51,6 +47,10 @@ const Routes = {
     profession: {
       create: "/dashboard/bio/profession/create",
       edit: "/dashboard/bio/profession/edit",
+    },
+    religious_activities: {
+      create: "/dashboard/bio/religious-activities/create",
+      edit: "/dashboard/bio/religious-activities/edit",
     },
     marital_info: {
       create: "/dashboard/bio/marital-info/create",
@@ -67,6 +67,11 @@ const Routes = {
   },
   api: {
     csrf: `${frontEndUrl}/api/csrf-cookie`,
+    bio: {
+      general: {
+        user_record: `${frontEndUrl}/api/bio/general/user-record`,
+      },
+    },
   },
 };
 export default Routes;

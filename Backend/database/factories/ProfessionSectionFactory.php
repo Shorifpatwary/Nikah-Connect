@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\StatusEnum;
 use App\Models\Bio;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -33,7 +34,8 @@ class ProfessionSectionFactory extends Factory
     }
 
     return [
-      'profession' => $this->faker->sentence,
+      'profession' =>
+      $this->faker->randomElement(StatusEnum::PROFESSION_STATUS),
       'profession_description' => $this->faker->paragraph,
       'monthly_income' => $this->faker->randomFloat(2, 150, 200),
 

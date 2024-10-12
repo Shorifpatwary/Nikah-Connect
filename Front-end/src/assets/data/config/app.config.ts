@@ -29,6 +29,8 @@ export const educations = "educations";
 export const personalDetails = "personalDetails";
 export const familyInfos = "familyInfos";
 export const filledMarks = "filled_marks";
+export const professionInfo = "professionInfo";
+export const religiousActivities = "religiousActivities";
 
 // ! user  roles from "RolesEnum.php"
 export const roles: Option[] = [
@@ -261,4 +263,29 @@ export const economic_status: Option[] = [
   { value: "মধ্যবিত্ত", title: "মধ্যবিত্ত" },
   { value: "উচ্চ মধ্যবিত্ত", title: "উচ্চ মধ্যবিত্ত" },
   { value: "উচ্চবিত্ত", title: "উচ্চবিত্ত" },
+];
+
+export const professions: Option[] = [
+  { value: "ব্যবসায়ী", title: "ব্যবসায়ী" },
+  { value: "সরকারী চাকুরী", title: "সরকারী চাকুরী" },
+  { value: "বেসরকারী চাকুরী", title: "বেসরকারী চাকুরী" },
+  { value: "প্রবাসী", title: "প্রবাসী" },
+  { value: "শিক্ষক", title: "শিক্ষক" },
+  { value: "শিক্ষার্থী", title: "শিক্ষার্থী" },
+  { value: "ফ্রিল্যান্সার", title: "ফ্রিল্যান্সার" },
+  { value: "ডাক্তার", title: "ডাক্তার" },
+  { value: "কৃষক", title: "কৃষক" },
+  { value: "অন্যান্য", title: "অন্যান্য" },
+  { value: "পেশা নেই", title: "পেশা নেই" },
+];
+
+export const mazhabs: Option[] = [
+  { value: "হানাফী (সুন্নি)", title: "হানাফী (সুন্নি)" },
+  { value: "মালিকি(সুন্নি)", title: "মালিকি(সুন্নি)" },
+  { value: "শাফিয়ি (সুন্নি)", title: "শাফিয়ি (সুন্নি)" },
+  { value: "হানবালী (সুন্নি)", title: "হানবালী (সুন্নি)" },
+  { value: "আহলে হাদিস", title: "আহলে হাদিস" },
+  { value: "জাহিরি (শিয়া)", title: "জাহিরি (শিয়া)" },
+  { value: "জাফরি (শিয়া)", title: "জাফরি (শিয়া)" },
+  { value: "যায়দী (শিয়া)", title: "যায়দী (শিয়া)" },
 ];

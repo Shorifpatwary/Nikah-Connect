@@ -84,7 +84,7 @@ class FamilyInfoSectionController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records.' . $e], 500);
+      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
     }
   }
 

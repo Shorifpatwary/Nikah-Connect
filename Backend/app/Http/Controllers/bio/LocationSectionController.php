@@ -83,7 +83,7 @@ class LocationSectionController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to create records.'], 500);
+      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
     }
   }
 

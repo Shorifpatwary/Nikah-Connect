@@ -9,7 +9,7 @@ export const Data = {
     title: "পারিবারিক তথ্য সফলভাবে সংরক্ষিত হয়েছে!",
     description:
       "আপনার পারিবারিক তথ্য সফলভাবে সংরক্ষিত হয়েছে। পরবর্তী ধাপের জন্য দয়া করে প্রয়োজনীয় তথ্যগুলো পূরণ করুন।",
-    redirectUrl: Routes.profile_bio.religious.create,
+    redirectUrl: Routes.profile_bio.profession.create,
   },
   error: {
     title: "পারিবারিক তথ্য সংরক্ষণে সমস্যা!",
