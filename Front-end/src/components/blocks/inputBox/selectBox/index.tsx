@@ -11,10 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { memo } from "react";
-export interface Option {
-  title: string;
-  value: string;
-}
+// export interface Option {
+//   label: string;
+//   value: string;
+// }
+export type Option = Record<"value" | "label", string>;
 interface Props {
   label: string;
   labelRequired?: boolean;
@@ -55,11 +56,11 @@ const SelectBox = ({
             {hintText && <SelectLabel>{hintText}</SelectLabel>}
             {options.map(option => (
               <SelectItem
-                key={option.title + option.value}
+                key={option.label + option.value}
                 className="capitalize"
                 value={option.value}
               >
-                {option.title}
+                {option.label}
               </SelectItem>
             ))}
           </SelectGroup>

@@ -33,15 +33,15 @@ class ExpectedPartnerFactory extends Factory
       $bioId = Bio::factory()->create()->id;
     }
     return [
-      'age' =>  $this->faker->randomNumber(2),
-      'complexion' =>  $this->faker->randomElement(StatusEnum::COMPLEXIONS),
-      'height' =>  $this->faker->randomFloat(2, 150, 200),
-      'marital_status' =>  $this->faker->randomElement(StatusEnum::MARITAL_STATUS),
-      'educational_qualification' => $this->faker->sentence,
-      'profession' => $this->faker->sentence,
+      'age' => (string) $this->faker->numberBetween(18, 99),
+      'complexion' => implode(', ', $this->faker->randomElements(StatusEnum::COMPLEXIONS, 2),), // Convert array to string
+      'height' => (string) $this->faker->numberBetween(150, 200),
+      'marital_status' => implode(', ', $this->faker->randomElements(StatusEnum::MARITAL_STATUS, 2)), // Convert array to string
+      'educational_qualification' => $this->faker->text(100),
+      'profession' => $this->faker->text(100),
       'economic_status' => $this->faker->randomElement(StatusEnum::ECONOMIC_STATUS),
-      'family' => $this->faker->sentence,
-      'about_partner' => $this->faker->paragraph,
+      'family' => $this->faker->optional()->text(100),
+      'about_partner' => $this->faker->optional()->text(250),
 
       'bio_id' => $bioId,
     ];

@@ -30,5 +30,7 @@ class VerifyCsrfToken extends Middleware
     'api/bio/family-info',
     'api/bio/profession',
     'api/bio/religious-activities',
+    'api/bio/marriage-info',
+    'api/bio/expected-partner',
   ];
 }

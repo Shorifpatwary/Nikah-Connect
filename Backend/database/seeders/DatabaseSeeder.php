@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
       // PersonalDetailsSeeder::class,
       // FamilyInfoSectionSeeder::class,
       // ProfessionSectionSeeder::class,
-      // ExpectedPartnerSeeder::class,
+      ExpectedPartnerSeeder::class,
       // HiddenInfoSeeder::class,
       // ReligiousActivitySeeder::class,
       // MarriageInfoSeeder::class,

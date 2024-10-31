@@ -25,6 +25,7 @@ class StoreBioGeneralRequest extends FormRequest
   {
     return [
       'gender' => ['required', Rule::in(StatusEnum::GENDERS)],
+      // todo : add validation for female marital status.
       'marital_status' => ['required', Rule::in(StatusEnum::MARITAL_STATUS)],
       'birth_date' => ['required', 'date', 'before_or_equal:2020-01-01', 'after_or_equal:1950-01-01'],
 

@@ -7,13 +7,16 @@ use App\Http\Controllers\Admin\UserInfoController;
 use App\Http\Controllers\App\LocationController;
 use App\Http\Controllers\Bio\BioController;
 use App\Http\Controllers\Bio\EducationSectionController;
+use App\Http\Controllers\Bio\ExpectedPartnerController;
 use App\Http\Controllers\Bio\FamilyInfoSectionController;
 use App\Http\Controllers\Bio\FilledMarksController;
 use App\Http\Controllers\Bio\GeneralSectionController;
 use App\Http\Controllers\Bio\LocationSectionController;
+use App\Http\Controllers\Bio\MarriageInfoController;
 use App\Http\Controllers\Bio\PersonalDetailsController;
 use App\Http\Controllers\Bio\ProfessionSectionController;
 use App\Http\Controllers\Bio\ReligiousActivityController;
+use App\Models\ExpectedPartner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +62,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // Bio religious activity
   Route::apiResource('bio/religious-activities', ReligiousActivityController::class)->only(['store',  'update']);
+
+  // Bio marriage info
+  Route::apiResource('bio/marriage-info', MarriageInfoController::class)->only(['store',  'update']);
+
+  // Bio expected partner
+  Route::apiResource('bio/expected-partner', ExpectedPartnerController::class)->only(['store',  'update']);
 
   // Bio Tags
   Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);

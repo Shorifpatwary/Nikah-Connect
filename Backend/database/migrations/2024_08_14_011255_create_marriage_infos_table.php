@@ -14,8 +14,8 @@ return new class extends Migration
 		Schema::create('marriage_infos', function (Blueprint $table) {
 			$table->id();
 			$table->text('prev_marriage')->nullable();
-			$table->text('work_after');
-			$table->text('study_after');
+			$table->string('work_after');
+			$table->string('study_after');
 			$table->text('ceremony_plans')->nullable();
 			$table->text('partner_view_rules')->nullable();
 			$table->text('marriage_weakness')->nullable();

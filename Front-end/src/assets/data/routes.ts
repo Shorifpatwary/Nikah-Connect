@@ -53,8 +53,8 @@ const Routes = {
       edit: "/dashboard/bio/religious-activities/edit",
     },
     marital_info: {
-      create: "/dashboard/bio/marital-info/create",
-      edit: "/dashboard/bio/marital-info/edit",
+      create: "/dashboard/bio/marriage-info/create",
+      edit: "/dashboard/bio/marriage-info/edit",
     },
     expected_partner: {
       create: "/dashboard/bio/expected-partner/create",

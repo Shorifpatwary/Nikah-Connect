@@ -98,7 +98,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Prayer Habits */}
         <TextareaBox
           label={Data.inputs.prayer_habits.title}
-          labelRequired={false}
           errorMessage={errors.prayer_habits?.message}
           fieldName="prayer_habits"
           placeholder={Data.inputs.prayer_habits.placeholder}
@@ -108,7 +107,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Haram Relationships */}
         <TextareaBox
           label={Data.inputs.haram_relationships.title}
-          labelRequired={false}
           errorMessage={errors.haram_relationships?.message}
           fieldName="haram_relationships"
           placeholder={Data.inputs.haram_relationships.placeholder}
@@ -118,7 +116,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Quran Recitation */}
         <TextareaBox
           label={Data.inputs.quran_recitation.title}
-          labelRequired={false}
           errorMessage={errors.quran_recitation?.message}
           fieldName="quran_recitation"
           placeholder={Data.inputs.quran_recitation.placeholder}
@@ -128,7 +125,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Mahram Adherence */}
         <TextareaBox
           label={Data.inputs.mahram_adherence.title}
-          labelRequired={false}
           errorMessage={errors.mahram_adherence?.message}
           fieldName="mahram_adherence"
           placeholder={Data.inputs.mahram_adherence.placeholder}
@@ -149,7 +145,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Entertainment Habits */}
         <TextareaBox
           label={Data.inputs.entertainment_habits.title}
-          labelRequired={false}
           errorMessage={errors.entertainment_habits?.message}
           fieldName="entertainment_habits"
           placeholder={Data.inputs.entertainment_habits.placeholder}
@@ -168,7 +163,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Religious Beliefs */}
         <TextareaBox
           label={Data.inputs.religious_beliefs.title}
-          labelRequired={false}
           errorMessage={errors.religious_beliefs?.message}
           fieldName="religious_beliefs"
           placeholder={Data.inputs.religious_beliefs.placeholder}
@@ -178,7 +172,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Religious Knowledge */}
         <TextareaBox
           label={Data.inputs.religious_knowledge.title}
-          labelRequired={false}
           errorMessage={errors.religious_knowledge?.message}
           fieldName="religious_knowledge"
           placeholder={Data.inputs.religious_knowledge.placeholder}
@@ -188,7 +181,6 @@ const BioReligiousActivityCreateForm = () => {
         {/* Family Religious Environment */}
         <TextareaBox
           label={Data.inputs.family_religious_environment.title}
-          labelRequired={false}
           errorMessage={errors.family_religious_environment?.message}
           fieldName="family_religious_environment"
           placeholder={Data.inputs.family_religious_environment.placeholder}

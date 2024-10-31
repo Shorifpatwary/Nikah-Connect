@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,13 +13,13 @@ return new class extends Migration
   {
     Schema::create('expected_partners', function (Blueprint $table) {
       $table->id();
-      $table->integer('age');
-      $table->enum('complexion', StatusEnum::COMPLEXIONS);
-      $table->decimal('height');
-      $table->enum('marital_status', StatusEnum::MARITAL_STATUS);
+      $table->string('age',);
+      $table->string('complexion');
+      $table->text('height',);
+      $table->string('marital_status');
       $table->text('educational_qualification');
       $table->text('profession');
-      $table->enum('economic_status', StatusEnum::ECONOMIC_STATUS);
+      $table->string('economic_status',);
       $table->text('family')->nullable();
       $table->text('about_partner')->nullable();
 
