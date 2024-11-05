@@ -34,13 +34,15 @@ class HiddenInfoFactory extends Factory
 
     return [
       'name' => $this->faker->name,
+      'email' => $this->faker->email(),
+      'location' => $this->faker->text(500),
       'family_members_name' => $this->faker->sentence(),
       'current_parent' => $this->faker->sentence(),
       'parent_mobile' => $this->faker->phoneNumber(),
-      'permanent_address_map_location' => $this->faker->sentence(),
-      'present_address_map_location' => $this->faker->sentence(),
-      'email' => $this->faker->email(),
       'social_links' => $this->faker->sentence(),
+      'permanent_address_map_location' => $this->faker->sentence(100),
+      'present_address_map_location' => $this->faker->sentence(100),
+      'documents_link' => $this->faker->url,
 
       'bio_id' => $bioId,
     ];

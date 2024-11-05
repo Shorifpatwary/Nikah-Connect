@@ -11,6 +11,7 @@ use App\Http\Controllers\Bio\ExpectedPartnerController;
 use App\Http\Controllers\Bio\FamilyInfoSectionController;
 use App\Http\Controllers\Bio\FilledMarksController;
 use App\Http\Controllers\Bio\GeneralSectionController;
+use App\Http\Controllers\Bio\HiddenInfoController;
 use App\Http\Controllers\Bio\LocationSectionController;
 use App\Http\Controllers\Bio\MarriageInfoController;
 use App\Http\Controllers\Bio\PersonalDetailsController;
@@ -68,6 +69,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // Bio expected partner
   Route::apiResource('bio/expected-partner', ExpectedPartnerController::class)->only(['store',  'update']);
+
+  // Bio expected partner
+  Route::apiResource('bio/hidden-info', HiddenInfoController::class)->only(['store',  'update']);
 
   // Bio Tags
   Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);

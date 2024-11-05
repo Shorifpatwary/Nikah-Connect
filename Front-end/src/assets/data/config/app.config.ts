@@ -33,6 +33,7 @@ export const professionInfo = "professionInfo";
 export const religiousActivities = "religiousActivities";
 export const marriageInfo = "marriageInfo";
 export const expectedPartner = "expectedPartner";
+export const hiddenInfo = "hiddenInfo";
 
 // ! user  roles from "RolesEnum.php"
 export const roles: Option[] = [
