@@ -25,6 +25,7 @@ class GeneralSectionResource extends JsonResource
       'complexion' => $this->complexion,
       'blood_group' => $this->blood_group,
       'language_skills' => $this->language_skills,
+      // 'location_id' => $this->location_id,
       'location' => new LocationResource($this->whenLoaded('location')),
       'created_at' => (string) $this->created_at,
       'updated_at' => (string)  $this->updated_at,

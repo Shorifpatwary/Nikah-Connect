@@ -27,7 +27,7 @@ export const BioSearchData: BioSearchDataType = {
   bioTypes: {
     label: "আমি খুঁজছি",
     hintText: "বায়োডাটার ধরন সিলেক্ট করুন",
-    triggerText: "বায়োডাটার ধরন সিলেক্ট করুন",
+    triggerText: "ঠিকানা নির্বাচন করুন",
     options: [
       {
         title: "সকল",

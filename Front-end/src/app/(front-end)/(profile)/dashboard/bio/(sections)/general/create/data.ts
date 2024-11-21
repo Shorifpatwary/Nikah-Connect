@@ -27,8 +27,8 @@ export const Data = {
   },
   inputs: {
     gender: {
-      title: "লিঙ্গ",
-      triggerText: "আপনার লিঙ্গ নির্বাচন করুন",
+      title: "বায়োডাটার ধরন",
+      triggerText: "আপনার বায়োডাটার ধরন নির্বাচন করুন",
     },
     marital_status: {
       title: "বৈবাহিক অবস্থা",

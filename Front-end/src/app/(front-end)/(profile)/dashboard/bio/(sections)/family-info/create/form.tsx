@@ -1,5 +1,5 @@
 "use client";
-import { createBioFamilyInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/create/createAction";
+import { createBioFamilyInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/create/action";
 import {
   Data,
   VM,

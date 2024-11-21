@@ -19,7 +19,7 @@ class LocationFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'status' => fake()->randomElement(["বিভাগ", "জেলা", "উপজেলা"]),
+            'type' => fake()->randomElement(["বিভাগ", "জেলা", "উপজেলা"]),
             'parent_id' => Location::pluck('id')->random(),
         ];
     }

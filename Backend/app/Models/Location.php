@@ -8,35 +8,35 @@ use Illuminate\Support\Facades\Cache;
 
 class Location extends Model
 {
-    use HasFactory;
-    public $timestamps = false; // Disable timestamps
-    protected $fillable = ['name', 'location_type', 'parent_id'];
+  use HasFactory;
+  public $timestamps = false; // Disable timestamps
+  protected $fillable = ['name', 'type', 'parent_id'];
 
-    public function children()
-    {
-        return $this->hasMany(Location::class, 'parent_id');
-    }
+  public function children()
+  {
+    return $this->hasMany(Location::class, 'parent_id');
+  }
 
-    public function parent()
-    {
-        return $this->belongsTo(Location::class, 'parent_id');
-    }
+  public function parent()
+  {
+    return $this->belongsTo(Location::class, 'parent_id');
+  }
 
-    public function generalSections()
-    {
-        return $this->hasMany(GeneralSection::class);
-    }
+  public function generalSection()
+  {
+    return $this->hasOne(GeneralSection::class);
+  }
 
-    protected static function boot()
-    {
-        parent::boot();
+  protected static function boot()
+  {
+    parent::boot();
 
-        static::saved(function () {
-            Cache::forget('nested_locations');
-        });
+    static::saved(function () {
+      Cache::forget('nested_locations');
+    });
 
-        static::deleted(function () {
-            Cache::forget('nested_locations');
-        });
-    }
+    static::deleted(function () {
+      Cache::forget('nested_locations');
+    });
+  }
 }

@@ -78,7 +78,7 @@ class LocationController extends Controller
       $nestedLocation = [
         'id' => $location->id,
         'name' => $location->name,
-        'type' => $location->location_type,
+        'type' => $location->type,
         'parent_id' => $location->parent_id,
         'children' => $this->getNestedLocations($location->id) // Recursive call
       ];

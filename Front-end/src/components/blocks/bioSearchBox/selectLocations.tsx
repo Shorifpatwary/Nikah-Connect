@@ -25,6 +25,7 @@ type Props = {
   values: LocationTypeWithoutChildren[];
   setValues: Dispatch<SetStateAction<LocationTypeWithoutChildren[]>>;
   isOnlyChildren?: boolean;
+  triggerText: string;
 };
 
 const SelectLocations = ({
@@ -33,6 +34,7 @@ const SelectLocations = ({
   setValues,
   label,
   isOnlyChildren = false,
+  triggerText,
 }: Props) => {
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationType[]>([]);
@@ -232,13 +234,10 @@ const SelectLocations = ({
       </Label>
       <Select onValueChange={value => handleLocations(value)} open={selectOpen}>
         <SelectTrigger onClick={() => setSelectOpen(true)}>
-          <SelectValue
-            placeholder={BioSearchData.bioTypes.hintText}
-            aria-label={BioSearchData.bioTypes.hintText}
-          >
+          <SelectValue placeholder={triggerText} aria-label={triggerText}>
             {currentLocation
               ? currentLocation.name + " " + currentLocation.type
-              : BioSearchData.bioTypes.hintText}
+              : triggerText}
           </SelectValue>
         </SelectTrigger>
 

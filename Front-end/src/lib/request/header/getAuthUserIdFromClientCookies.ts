@@ -10,12 +10,11 @@ const getAuthUserIdFromClientCookies = (): string | null => {
 
     // Check if the cookie exists
     if (!authUserCookie) {
-      return null; // Return null if no cookie is found
+      return null;
     }
-
     // Attempt to parse the cookie and handle potential errors
     const authUser = JSON.parse(authUserCookie);
-    return authUser?.id || null; // Return the user ID or null if it doesn't exist
+    return authUser?.id || null;
   } catch (error) {
     console.error("Error accessing authUser cookie:", error);
 

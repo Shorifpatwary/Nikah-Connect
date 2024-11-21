@@ -1,5 +1,5 @@
 "use client";
-import { createBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/createAction";
+import { createBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/action";
 import {
   Data,
   VM,

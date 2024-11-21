@@ -1,6 +1,6 @@
 "use client";
 
-import { createHiddenInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/create/createAction";
+import { createHiddenInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/create/action";
 import {
   Data,
   VM,

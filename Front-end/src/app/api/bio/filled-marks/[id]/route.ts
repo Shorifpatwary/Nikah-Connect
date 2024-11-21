@@ -1,7 +1,9 @@
+import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { backendUrl, filledMarks } from "@/assets/data/config/app.config";
 import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-marks";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
+import { redirect } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
@@ -27,6 +29,11 @@ export async function GET(
     await setCookiesFromResponse(response);
 
     if (!response.ok) {
+      if (response.status === 401) {
+        // remove auth cookie
+        deleteAuthCookies();
+        redirect("/login");
+      }
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 

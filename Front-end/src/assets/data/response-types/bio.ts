@@ -1,3 +1,4 @@
+import { LocationType } from "@/assets/data/response-types/locations";
 import {
   BioStatusType,
   BloodType,
@@ -45,6 +46,7 @@ export interface generalSectionInterface extends Timestamps {
   blood_group: BloodType;
   language_skills: string;
   location_id: number;
+  location: LocationType;
 }
 export interface GeneralFormInterface<Error> extends generalSectionInterface {
   message?: string;

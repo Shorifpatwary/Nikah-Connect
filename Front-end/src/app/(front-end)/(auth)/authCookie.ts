@@ -17,7 +17,7 @@ export async function createCookie(
   cookies().set({
     name: cookieKey,
     value: jsonData,
-    httpOnly: true,
+    httpOnly: false,
     path: "/",
     // Expires 30 days later
     expires: Date.now() + time,

@@ -44,6 +44,7 @@ const BioSearchBox = ({ className }: Props) => {
         {/* ঠিকানা শনাক্ত করন। */}
         <SelectLocations
           values={locations}
+          triggerText={BioSearchData.locations.triggerText}
           setValues={setLocations}
           label={BioSearchData.locations.label}
         />

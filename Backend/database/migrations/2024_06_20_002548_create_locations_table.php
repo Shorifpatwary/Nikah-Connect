@@ -15,7 +15,7 @@ return new class extends Migration
     Schema::create('locations', function (Blueprint $table) {
       $table->id();
       $table->string('name');
-      $table->enum('location_type', StatusEnum::LOCATION_TYPE);
+      $table->enum('type', StatusEnum::LOCATION_TYPE);
 
       $table->foreignId('parent_id')->nullable()->constrained('locations')->cascadeOnDelete();
     });

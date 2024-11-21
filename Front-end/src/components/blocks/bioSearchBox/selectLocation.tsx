@@ -4,7 +4,6 @@ import {
 } from "@/assets/data/response-types/locations";
 import { BioSearchData } from "@/components/blocks/bioSearchBox/data";
 import ErrorMessage from "@/components/blocks/form-helper/error";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -17,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { MoveLeft, MoveRight, X } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 type Props = {
@@ -27,7 +26,9 @@ type Props = {
   value: LocationTypeWithoutChildren | null;
   setValue: Dispatch<SetStateAction<LocationTypeWithoutChildren | null>>;
   isOnlyChildren?: boolean;
+  triggerText: string;
   errorMessage?: string | undefined;
+  defaultValue?: LocationType;
 };
 
 const SelectLocation = ({
@@ -36,8 +37,10 @@ const SelectLocation = ({
   setValue,
   label,
   labelRequired = false,
+  triggerText,
   isOnlyChildren = false,
   errorMessage,
+  defaultValue,
 }: Props) => {
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationType[]>([]);
@@ -217,6 +220,7 @@ const SelectLocation = ({
     };
     fetchLocations();
   }, []);
+
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {/* show dynamic select box */}
@@ -227,14 +231,22 @@ const SelectLocation = ({
       <Select onValueChange={value => handleLocations(value)} open={selectOpen}>
         <SelectTrigger onClick={() => setSelectOpen(true)}>
           <SelectValue
-            placeholder={BioSearchData.bioTypes.hintText}
-            aria-label={BioSearchData.bioTypes.hintText}
+            placeholder={
+              defaultValue
+                ? `${defaultValue.name} ${defaultValue.type}`
+                : triggerText
+            }
+            aria-label={
+              defaultValue
+                ? `${defaultValue.name} ${defaultValue.type}`
+                : triggerText
+            }
           >
             {value
               ? `${value.name} ${value.type}`
               : currentLocation
                 ? `${currentLocation.name} ${currentLocation.type}`
-                : BioSearchData.bioTypes.hintText}
+                : triggerText}
           </SelectValue>
         </SelectTrigger>
 
@@ -279,7 +291,7 @@ const SelectLocation = ({
       </Select>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       {/* show selected values */}
-      <div className="my-4 flex flex-wrap gap-2">
+      {/* <div className="my-4 flex flex-wrap gap-2">
         {value && (
           <Badge
             variant="outline"
@@ -297,7 +309,7 @@ const SelectLocation = ({
             </button>
           </Badge>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

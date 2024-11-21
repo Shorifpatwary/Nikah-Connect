@@ -1,5 +1,5 @@
 "use client";
-import { createExpectedPartner } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/create/createAction";
+import { createExpectedPartner } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/create/action";
 import {
   Data,
   VM,

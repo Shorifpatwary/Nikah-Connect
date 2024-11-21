@@ -24,6 +24,7 @@ class VerifyCsrfToken extends Middleware
     'email/verification-notification',
     'api/user-info',
     'api/bio/general',
+    'api/bio/general/*',
     'api/bio/location',
     'api/bio/education',
     'api/bio/personal-details',

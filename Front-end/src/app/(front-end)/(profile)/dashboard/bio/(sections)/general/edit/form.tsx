@@ -1,9 +1,9 @@
 "use client";
-import { createBioGeneral } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/createAction";
+import { updateBioGeneral } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/data";
 import {
   blood_groups,
   complexions,
@@ -12,11 +12,14 @@ import {
   marital_status,
   weights,
 } from "@/assets/data/config/app.config";
+import { generalSectionInterface } from "@/assets/data/response-types/bio";
 import { LocationTypeWithoutChildren } from "@/assets/data/response-types/locations";
+import Routes from "@/assets/data/routes";
 import SelectLocation from "@/components/blocks/bioSearchBox/selectLocation";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
+import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
@@ -34,7 +37,7 @@ import {
   string,
 } from "valibot";
 
-// Valibot
+// Valibot Schema
 const Schema = object({
   gender: picklist(
     genders.map(gender => gender.value),
@@ -67,15 +70,36 @@ const Schema = object({
   language_skills: string([maxLength(100, VM.language_skills.maxLength)]),
   location_id: number(VM.location.required),
 });
-export type GeneralCreateSchemaType = Output<typeof Schema>;
-const BioGeneralCreateForm = () => {
+export type GeneralEditSchemaType = Output<typeof Schema>;
+
+const BioGeneralEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
-  // form status
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const [location, setLocation] = useState<LocationTypeWithoutChildren | null>(
     null
   );
+  const [general, setGeneral] = useState<generalSectionInterface>();
+
+  useEffect(() => {
+    const fetchGeneral = async () => {
+      try {
+        const response = await fetch(Routes.api.bio.general.user_record);
+        if (!response.ok) {
+          throw new Error("Failed to fetch general");
+        }
+        const data = await response.json();
+        setGeneral(data.data);
+        if (data.data.location) {
+          setLocation(data.data.location);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGeneral();
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -83,19 +107,23 @@ const BioGeneralCreateForm = () => {
     setError,
     setValue,
     reset,
-  } = useForm<GeneralCreateSchemaType>({
+  } = useForm<GeneralEditSchemaType>({
     resolver: valibotResolver(Schema),
   });
-  const onSubmit: SubmitHandler<GeneralCreateSchemaType> = async FormData => {
-    await createBioGeneral<GeneralCreateSchemaType>({
-      data: FormData,
-      setError,
-      reset,
-      toast,
-      router,
-      setIsFormLoading,
-    });
-  };
+  useEffect(() => {
+    if (general) {
+      setValue("gender", general.gender);
+      setValue("marital_status", general.marital_status);
+      setValue("birth_date", general.birth_date);
+      setValue("height", String(general.height));
+      setValue("weight", String(general.weight));
+      setValue("complexion", general.complexion);
+      setValue("blood_group", general.blood_group);
+      setValue("language_skills", general.language_skills);
+      setValue("location_id", general.location_id);
+    }
+  }, [general]);
+
   useEffect(() => {
     if (location) {
       setValue("location_id", location.id);
@@ -103,8 +131,23 @@ const BioGeneralCreateForm = () => {
       // @ts-expect-error
       setValue("location_id", undefined);
     }
-  }, [location]);
+  }, [location, setValue]);
 
+  const onSubmit: SubmitHandler<GeneralEditSchemaType> = async FormData => {
+    await updateBioGeneral<GeneralEditSchemaType>({
+      data: FormData,
+      // @ts-expect-error
+      id: general?.id,
+      setError,
+      reset,
+      toast,
+      router,
+      setIsFormLoading,
+    });
+  };
+  if (!general) {
+    return <TableSkeleton rowCount={10} rowClassName="h-10 gap-6" />;
+  }
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
@@ -116,6 +159,7 @@ const BioGeneralCreateForm = () => {
           options={genders}
           errorMessage={errors.gender?.message}
           setValue={value => setValue("gender", value)}
+          defaultValue={general?.gender}
         />
         {/* marital status */}
         <SelectBox
@@ -125,6 +169,7 @@ const BioGeneralCreateForm = () => {
           options={marital_status}
           errorMessage={errors.marital_status?.message}
           setValue={(value: string) => setValue("marital_status", value)}
+          defaultValue={general?.marital_status}
         />
         {/* date of birth */}
         <TextInputBox
@@ -136,6 +181,7 @@ const BioGeneralCreateForm = () => {
           register={register("birth_date")}
           min="1950-01-01"
           max="2020-01-01"
+          defaultValue={general?.birth_date}
         />
         {/* height */}
         <SelectBox
@@ -145,6 +191,7 @@ const BioGeneralCreateForm = () => {
           options={heights}
           errorMessage={errors.height?.message}
           setValue={value => setValue("height", value)}
+          defaultValue={String(general?.height)}
         />
         {/* weight */}
         <SelectBox
@@ -154,6 +201,7 @@ const BioGeneralCreateForm = () => {
           options={weights}
           errorMessage={errors.weight?.message}
           setValue={value => setValue("weight", value)}
+          defaultValue={String(general?.weight)}
         />
         {/* complexion */}
         <SelectBox
@@ -163,6 +211,7 @@ const BioGeneralCreateForm = () => {
           options={complexions}
           errorMessage={errors.complexion?.message}
           setValue={(value: string) => setValue("complexion", value)}
+          defaultValue={general?.complexion}
         />
         {/* blood groups */}
         <SelectBox
@@ -172,6 +221,7 @@ const BioGeneralCreateForm = () => {
           options={blood_groups}
           errorMessage={errors.blood_group?.message}
           setValue={value => setValue("blood_group", value)}
+          defaultValue={general?.blood_group}
         />
         {/* language_skills */}
         <TextInputBox
@@ -187,8 +237,10 @@ const BioGeneralCreateForm = () => {
           setValue={setLocation}
           label={Data.inputs.location.label}
           labelRequired={true}
+          triggerText={Data.inputs.location.triggerText}
           isOnlyChildren={true}
           errorMessage={errors.location_id?.message}
+          defaultValue={general?.location}
         />
         {/* submit */}
         <Button
@@ -204,4 +256,4 @@ const BioGeneralCreateForm = () => {
   );
 };
 
-export default BioGeneralCreateForm;
+export default BioGeneralEditForm;

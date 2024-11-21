@@ -1,5 +1,5 @@
 "use client";
-import { createBioEducation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/createAction";
+import { createBioEducation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/action";
 import {
   Data,
   VM,

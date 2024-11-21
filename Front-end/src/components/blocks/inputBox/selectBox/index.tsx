@@ -11,10 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { memo } from "react";
-// export interface Option {
-//   label: string;
-//   value: string;
-// }
 export type Option = Record<"value" | "label", string>;
 interface Props {
   label: string;
@@ -25,6 +21,7 @@ interface Props {
   suggestions?: string[];
   options: Option[];
   setValue?: (value: string) => void;
+  defaultValue?: string;
 }
 
 const SelectBox = ({
@@ -36,6 +33,7 @@ const SelectBox = ({
   options,
   errorMessage,
   suggestions,
+  defaultValue,
 }: Props) => {
   return (
     <div className="flex flex-col gap-2">
@@ -46,10 +44,16 @@ const SelectBox = ({
       {suggestions && suggestions.length > 0 && (
         <Suggestion suggestions={suggestions} />
       )}
-
       <Select onValueChange={value => setValue?.(value)}>
         <SelectTrigger>
-          <SelectValue placeholder={triggerText} />
+          <SelectValue
+            placeholder={
+              defaultValue
+                ? options.find(option => option.value === defaultValue)
+                    ?.label || triggerText
+                : triggerText
+            }
+          />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -59,6 +63,7 @@ const SelectBox = ({
                 key={option.label + option.value}
                 className="capitalize"
                 value={option.value}
+                data-state={option.value === "পাত্র" ? "checked" : "unchecked"}
               >
                 {option.label}
               </SelectItem>

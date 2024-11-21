@@ -1,5 +1,5 @@
 "use client";
-import { createBioGeneral } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/createAction";
+import { createBioGeneral } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/action";
 import {
   Data,
   VM,
@@ -187,6 +187,7 @@ const BioGeneralCreateForm = () => {
           setValue={setLocation}
           label={Data.inputs.location.label}
           labelRequired={true}
+          triggerText={Data.inputs.location.triggerText}
           isOnlyChildren={true}
           errorMessage={errors.location_id?.message}
         />

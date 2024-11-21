@@ -14,10 +14,12 @@ import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFr
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
+
 type ResponseType = GeneralFormInterface<GeneralCreateSchemaType>;
 
 type Props<T> = {
   data: T;
+  id: number;
   setError: UseFormSetError<GeneralCreateSchemaType>;
   reset: UseFormReset<GeneralCreateSchemaType>;
   toast: (props: Toast) => void;
@@ -25,8 +27,9 @@ type Props<T> = {
   setIsFormLoading: Dispatch<SetStateAction<boolean>>;
 };
 
-export const createBioGeneral = async <T>({
+export const updateBioGeneral = async <T>({
   data,
+  id,
   setError,
   reset,
   toast,
@@ -35,13 +38,14 @@ export const createBioGeneral = async <T>({
 }: Props<T>) => {
   try {
     setIsFormLoading(true);
-    // Make fetch request to register user
-    const url = `${backendUrl}/api/bio/general`;
+    // Make fetch request to update general section
+
+    const url = `${backendUrl}/api/bio/general/${id}`; // Update endpoint for updating general section
     const userId = getAuthUserIdFromClientCookies();
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(data),
       },
       tagRevalidate: [
@@ -50,7 +54,7 @@ export const createBioGeneral = async <T>({
         `${filledMarks}_${userId}`,
       ],
     });
-    // If there are errors in the response, set each error using setError
+    // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
         title: Data.success.title,
@@ -60,7 +64,9 @@ export const createBioGeneral = async <T>({
       reset();
 
       router.push(Data.success.redirectUrl);
-    } else if (response.status === 422) {
+    }
+    // Handle validation errors
+    else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
         Record<keyof GeneralCreateSchemaType, string[]>
       >;
@@ -68,21 +74,10 @@ export const createBioGeneral = async <T>({
         fieldName => {
           setError(fieldName, {
             type: "server",
-            message: errors[fieldName]?.[0] || "Invalid value",
+            message: errors[fieldName]?.[0] || "Validation error",
           });
         }
       );
-      toast({
-        title: Data.error[422].title,
-        variant: "destructive",
-        description: Data.error[422].description,
-      });
-    } else if (response.status === 403) {
-      toast({
-        title: Data.error[403].title,
-        variant: "destructive",
-        description: Data.error[403].description,
-      });
     } else {
       toast({
         title: Data.unKnownError.title,
@@ -91,7 +86,7 @@ export const createBioGeneral = async <T>({
       });
     }
   } catch (error) {
-    console.log(error, "error");
+    console.log(error, "error on general edit form action");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

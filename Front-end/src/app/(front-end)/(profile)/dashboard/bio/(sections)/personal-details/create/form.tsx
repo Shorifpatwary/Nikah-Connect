@@ -1,5 +1,5 @@
 "use client";
-import { createBioPersonalDetails } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/create/createAction";
+import { createBioPersonalDetails } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/create/action";
 import {
   Data,
   VM,

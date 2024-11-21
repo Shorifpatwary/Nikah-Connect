@@ -41,6 +41,6 @@ class GeneralSection extends Model
   protected $casts = [
     'height' => 'float',  // Always treat 'height' as a float
     'weight' => 'integer',  // Always treat 'weight' as an integer
-    'location' => 'integer',  // Always treat 'weight' as an integer
+    'location_id' => 'integer',  // Always treat 'weight' as an integer
   ];
 }

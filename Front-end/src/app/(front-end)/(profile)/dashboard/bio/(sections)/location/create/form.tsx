@@ -1,5 +1,5 @@
 "use client";
-import { createBioLocation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/create/createAction";
+import { createBioLocation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/create/action";
 import {
   Data,
   VM,

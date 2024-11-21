@@ -1,5 +1,5 @@
 "use client";
-import { createBioProfession } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/create/createAction";
+import { createBioProfession } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/create/action";
 import {
   Data,
   VM,

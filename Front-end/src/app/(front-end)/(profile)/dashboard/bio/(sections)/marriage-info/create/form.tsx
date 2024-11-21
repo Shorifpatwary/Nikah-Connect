@@ -1,6 +1,6 @@
 "use client";
 
-import { createMarriageInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/create/createAction";
+import { createMarriageInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/create/action";
 import {
   Data,
   VM,
@@ -123,7 +123,7 @@ const MarriageInfoCreateForm = () => {
           register={register("work_after")}
         />
 
-        {/* Study After */} 
+        {/* Study After */}
         <TextareaBox
           label={Data.inputs.study_after.title}
           labelRequired={true}
@@ -235,5 +235,5 @@ const MarriageInfoCreateForm = () => {
     </form>
   );
 };
- 
+
 export default MarriageInfoCreateForm;
