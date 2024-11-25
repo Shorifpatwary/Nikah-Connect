@@ -98,6 +98,7 @@ export interface PersonalDetailsFormInterface<Error>
 export interface FamilyInfoSectionInterface extends Timestamps {
   id: number;
   family_members_info: string;
+  descent: string;
   uncles_info?: string;
   economic_status: EconomicStatusType;
   economic_status_details?: string;

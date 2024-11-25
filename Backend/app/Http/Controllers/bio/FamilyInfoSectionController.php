@@ -91,7 +91,7 @@ class FamilyInfoSectionController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(FamilyInfoSection $familyInfoSection)
+  public function show(FamilyInfoSection $family_info)
   {
     //
   }
@@ -99,15 +99,65 @@ class FamilyInfoSectionController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, FamilyInfoSection $familyInfoSection)
+  public function update(StoreBioFamilyInfoRequest $request, FamilyInfoSection $family_info)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Retrieve the authenticated user's bio ID
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // Update the FamilyInfoSection record
+      $family_info->update($request->validated());
+
+      // Calculate percentage of family information filled
+      $familyFields = [
+        'family_members_info',
+        'uncles_info',
+        'descent',
+        'economic_status',
+        'economic_status_details',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($familyFields as $field) {
+        if (!empty($family_info->$field)) {
+          $filledFields++;
+        }
+      }
+
+      $familyFilledMarks = ($filledFields / count($familyFields)) * 100; // Calculate percentage
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
+        [
+          'family_filled_marks' => $familyFilledMarks,
+          // Add other filled marks columns if needed
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource for FamilyInfoSection
+      return new FamilyInfoResource($family_info);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+
+      // Handle the error, e.g., log it, return an error response, etc.
+      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+    }
   }
+
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(FamilyInfoSection $familyInfoSection)
+  public function destroy(FamilyInfoSection $family_info)
   {
     //
   }

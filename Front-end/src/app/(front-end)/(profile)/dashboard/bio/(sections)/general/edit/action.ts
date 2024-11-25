@@ -1,6 +1,6 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/data";
-import { GeneralCreateSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/form";
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/data";
+import { GeneralEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/form";
 import {
   allBio,
   backendUrl,
@@ -15,13 +15,13 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
 
-type ResponseType = GeneralFormInterface<GeneralCreateSchemaType>;
+type ResponseType = GeneralFormInterface<GeneralEditSchemaType>;
 
 type Props<T> = {
   data: T;
   id: number;
-  setError: UseFormSetError<GeneralCreateSchemaType>;
-  reset: UseFormReset<GeneralCreateSchemaType>;
+  setError: UseFormSetError<GeneralEditSchemaType>;
+  reset: UseFormReset<GeneralEditSchemaType>;
   toast: (props: Toast) => void;
   router: AppRouterInstance;
   setIsFormLoading: Dispatch<SetStateAction<boolean>>;
@@ -62,15 +62,14 @@ export const updateBioGeneral = async <T>({
         description: Data.success.description,
       });
       reset();
-
       router.push(Data.success.redirectUrl);
     }
     // Handle validation errors
     else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
-        Record<keyof GeneralCreateSchemaType, string[]>
+        Record<keyof GeneralEditSchemaType, string[]>
       >;
-      (Object.keys(errors) as (keyof GeneralCreateSchemaType)[]).forEach(
+      (Object.keys(errors) as (keyof GeneralEditSchemaType)[]).forEach(
         fieldName => {
           setError(fieldName, {
             type: "server",
@@ -86,7 +85,6 @@ export const updateBioGeneral = async <T>({
       });
     }
   } catch (error) {
-    console.log(error, "error on general edit form action");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

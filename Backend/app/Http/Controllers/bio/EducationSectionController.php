@@ -98,16 +98,66 @@ class EducationSectionController extends Controller
 
   /**
    * Update the specified resource in storage.
-   */
-  public function update(Request $request, EducationSection $educationSection)
+   */ public function update(StoreBioEducationRequest $request, EducationSection $education)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Ensure the EducationSection belongs to the authenticated user
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // Uncomment and ensure correct check for authorized access, if needed
+      // if (!$bio || $education->bio_id !== $bio->id) {
+      //     return response()->json(['error' => 'Unauthorized access to this resource.'], 403);
+      // }
+
+      // Update the EducationSection record
+      $education->update($request->validated());
+
+      // Calculate percentage of education information filled
+      $educationFields = [
+        'highest_qualification',
+        'current_study',
+        'previous_exams',
+        'other_qualifications',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($educationFields as $field) {
+        if (!empty($education->$field)) {
+          $filledFields++;
+        }
+      }
+
+      $educationFilledMarks = ($filledFields / count($educationFields)) * 100; // Calculate percentage
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
+        [
+          'education_filled_marks' => $educationFilledMarks,
+          // Add other filled marks columns if needed
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource for EducationSection
+      return new EducationSectionResource($education);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+    }
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(EducationSection $educationSection)
+  public function destroy(EducationSection $education)
   {
     //
   }

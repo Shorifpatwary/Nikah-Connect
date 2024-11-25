@@ -17,6 +17,7 @@ class HiddenInfoResource extends JsonResource
     return [
       'id' => $this->id,
       'name' => $this->name,
+      'location' => $this->location,
       'family_members_name' => $this->family_members_name,
       'current_parent' => $this->current_parent,
       'parent_mobile' => $this->parent_mobile,

@@ -96,6 +96,7 @@ const BioGeneralCreateForm = () => {
       setIsFormLoading,
     });
   };
+  // update location id value when change
   useEffect(() => {
     if (location) {
       setValue("location_id", location.id);

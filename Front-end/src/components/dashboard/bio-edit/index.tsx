@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 const BioEdit = () => {
   const [editMarks, setEditMarks] = useState<FilledMarksInterface | null>(null);
-  console.log(editMarks, "edit mark");
   useEffect(() => {
     const fetchFilledMarks = async () => {
       try {

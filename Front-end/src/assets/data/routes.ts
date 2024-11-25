@@ -1,4 +1,15 @@
-import { frontEndUrl } from "@/assets/data/config/app.config";
+import { backendUrl, frontEndUrl } from "@/assets/data/config/app.config";
+export type BioSection =
+  | "general"
+  | "location"
+  | "education"
+  | "personal-info"
+  | "family"
+  | "profession"
+  | "religious-activities"
+  | "marital-info"
+  | "expected-partner"
+  | "hidden-info";
 
 const Routes = {
   Home: "/",
@@ -42,7 +53,7 @@ const Routes = {
     },
     family: {
       create: "/dashboard/bio/family-info/create",
-      edit: "/dashboard/bio/family/edit",
+      edit: "/dashboard/bio/family-info/edit",
     },
     profession: {
       create: "/dashboard/bio/profession/create",
@@ -68,9 +79,8 @@ const Routes = {
   api: {
     csrf: `${frontEndUrl}/api/csrf-cookie`,
     bio: {
-      general: {
-        user_record: `${frontEndUrl}/api/bio/general/user-record`,
-      },
+      user_record: (section: BioSection) =>
+        `${backendUrl}/api/bio/${section}/user-bio-record`,
     },
   },
 };

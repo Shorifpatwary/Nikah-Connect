@@ -97,7 +97,7 @@ class HiddenInfoController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(HiddenInfo $hiddenInfo)
+  public function show(HiddenInfo $hidden_info)
   {
     //
   }
@@ -105,15 +105,68 @@ class HiddenInfoController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, HiddenInfo $hiddenInfo)
+  public function update(StoreBioHiddenInfoRequest $request, HiddenInfo $hidden_info)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Ensure the HiddenInfo belongs to the authenticated user
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // Update the HiddenInfo record with the validated data
+      $hidden_info->update($request->validated());
+
+      // Fields used to calculate filled percentage for hidden information
+      $hiddenInfoFields = [
+        'name',
+        'email',
+        'location',
+        'family_members_name',
+        'current_parent',
+        'parent_mobile',
+        'social_links',
+        'permanent_address_map_location',
+        'present_address_map_location',
+        'documents_link',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($hiddenInfoFields as $field) {
+        if (!empty($hidden_info->$field)) {
+          $filledFields++;
+        }
+      }
+
+      // Calculate the percentage of filled information for HiddenInfo
+      $hiddenInfoFilledMarks = ($filledFields / count($hiddenInfoFields)) * 100;
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id],
+        [
+          'hidden_info_filled_marks' => $hiddenInfoFilledMarks,
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource for HiddenInfo
+      return new HiddenInfoResource($hidden_info);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+      return response()->json(['error' => 'Unable to update records: ' . $e->getMessage()], 500);
+    }
   }
+
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(HiddenInfo $hiddenInfo)
+  public function destroy(HiddenInfo $hidden_info)
   {
     //
   }

@@ -3,7 +3,7 @@ import BioEducationCreateForm from "@/app/(front-end)/(profile)/dashboard/bio/(s
 import Section from "@/components/blocks/section";
 import FormContainer from "@/components/dashboard/form-container";
 
-const CreateLocation = () => {
+const CreateEducation = () => {
   return (
     <Section rowClassName="justify-center">
       <FormContainer formTitle={Data.title}>
@@ -13,4 +13,4 @@ const CreateLocation = () => {
   );
 };
 
-export default CreateLocation;
+export default CreateEducation;

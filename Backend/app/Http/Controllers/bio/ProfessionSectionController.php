@@ -89,7 +89,7 @@ class ProfessionSectionController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(ProfessionSection $professionSection)
+  public function show(ProfessionSection $profession)
   {
     //
   }
@@ -97,15 +97,60 @@ class ProfessionSectionController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, ProfessionSection $professionSection)
+  public function update(StoreBioProfessionRequest $request, ProfessionSection $profession)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Ensure the ProfessionSection belongs to the authenticated user
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // Update the ProfessionSection record with the validated data
+      $profession->update($request->validated());
+
+      // Calculate percentage of profession information filled
+      $professionFields = [
+        'profession',
+        'profession_description',
+        'monthly_income',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($professionFields as $field) {
+        if (!empty($profession->$field)) {
+          $filledFields++;
+        }
+      }
+
+      $professionFilledMarks = ($filledFields / count($professionFields)) * 100; // Calculate percentage
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
+        [
+          'profession_filled_marks' => $professionFilledMarks,
+          // Add other filled marks columns if needed
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource for ProfessionSection
+      return new ProfessionResource($profession);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+    }
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(ProfessionSection $professionSection)
+  public function destroy(ProfessionSection $profession)
   {
     //
   }

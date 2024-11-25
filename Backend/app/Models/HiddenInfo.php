@@ -12,6 +12,7 @@ class HiddenInfo extends Model
   protected $fillable = [
     'name',
     'family_members_name',
+    'location',
     'current_parent',
     'parent_mobile',
     'permanent_address_map_location',

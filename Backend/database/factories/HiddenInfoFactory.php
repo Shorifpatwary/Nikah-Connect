@@ -40,8 +40,8 @@ class HiddenInfoFactory extends Factory
       'current_parent' => $this->faker->sentence(),
       'parent_mobile' => $this->faker->phoneNumber(),
       'social_links' => $this->faker->sentence(),
-      'permanent_address_map_location' => $this->faker->sentence(100),
-      'present_address_map_location' => $this->faker->sentence(100),
+      'permanent_address_map_location' => $this->faker->sentence(10),
+      'present_address_map_location' => $this->faker->sentence(10),
       'documents_link' => $this->faker->url,
 
       'bio_id' => $bioId,

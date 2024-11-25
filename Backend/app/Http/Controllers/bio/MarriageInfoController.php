@@ -97,7 +97,7 @@ class MarriageInfoController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(MarriageInfo $marriageInfo)
+  public function show(MarriageInfo $marriage_info)
   {
     //
   }
@@ -105,15 +105,69 @@ class MarriageInfoController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, MarriageInfo $marriageInfo)
+  public function update(StoreBioMarriageInfoRequest $request, MarriageInfo $marriage_info)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Ensure the MarriageInfo belongs to the authenticated user
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // Update the MarriageInfo record with the validated data
+      $marriage_info->update($request->validated());
+
+      // Calculate percentage of marriage information filled
+      $marriageFields = [
+        'prev_marriage',
+        'work_after',
+        'study_after',
+        'ceremony_plans',
+        'partner_view_rules',
+        'marriage_weakness',
+        'family_pref',
+        'compromise_factors',
+        'dowry_amount',
+        'dowry_opinion',
+        'cash_gift_opinion',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($marriageFields as $field) {
+        if (!empty($marriage_info->$field)) {
+          $filledFields++;
+        }
+      }
+
+      $marriageFilledMarks = ($filledFields / count($marriageFields)) * 100; // Calculate percentage
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
+        [
+          'marriage_info_filled_marks' => $marriageFilledMarks,
+          // Add other filled marks columns if needed
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource for MarriageInfo
+      return new MarriageInfoResource($marriage_info);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+      return response()->json(['error' => 'Unable to update records. ' . $e->getMessage()], 500);
+    }
   }
+
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(MarriageInfo $marriageInfo)
+  public function destroy(MarriageInfo $marriage_info)
   {
     //
   }

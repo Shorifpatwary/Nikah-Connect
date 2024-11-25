@@ -97,7 +97,7 @@ class ExpectedPartnerController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(ExpectedPartner $expectedPartner)
+  public function show(ExpectedPartner $expected_partner)
   {
     //
   }
@@ -105,15 +105,69 @@ class ExpectedPartnerController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, ExpectedPartner $expectedPartner)
+  public function update(StoreBioExpectedPartnerRequest $request, ExpectedPartner $expected_partner)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Ensure the ExpectedPartner belongs to the authenticated user
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // Update the ExpectedPartner record with the validated data
+      $expected_partner->update(array_merge($request->validated(), [
+        'complexion' => is_array($request->complexion) ? implode(', ', $request->complexion) : $request->complexion,
+        'marital_status' => is_array($request->marital_status) ? implode(', ', $request->marital_status) : $request->marital_status,
+      ]));
+
+      // Calculate percentage of expected partner information filled
+      $expectedPartnerFields = [
+        'age',
+        'complexion',
+        'height',
+        'marital_status',
+        'educational_qualification',
+        'profession',
+        'economic_status',
+        'family',
+        'about_partner',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($expectedPartnerFields as $field) {
+        if (!empty($expected_partner->$field)) {
+          $filledFields++;
+        }
+      }
+
+      $expectedPartnerFilledMarks = ($filledFields / count($expectedPartnerFields)) * 100; // Calculate percentage
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
+        [
+          'expected_partner_filled_marks' => $expectedPartnerFilledMarks,
+          // Add other filled marks columns if needed
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource for ExpectedPartner
+      return new ExpectedPartnerResource($expected_partner);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+      return response()->json(['error' => 'Unable to update records. ' . $e->getMessage()], 500);
+    }
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(ExpectedPartner $expectedPartner)
+  public function destroy(ExpectedPartner $expected_partner)
   {
     //
   }

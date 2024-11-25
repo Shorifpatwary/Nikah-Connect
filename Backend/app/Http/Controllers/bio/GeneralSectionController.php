@@ -191,19 +191,4 @@ class GeneralSectionController extends Controller
   {
     //
   }
-
-  public function getUserRecord()
-  {
-    // Get the logged-in user's bio
-    $bio = Bio::where('user_id', auth()->id())->first();
-    // Check if the authenticated user's bio has a GeneralSection entry
-    $generalSection = GeneralSection::with('location')->where('bio_id', $bio->id)->first();
-    // If no GeneralSection exists, you can return a custom error response or handle it as needed
-    if (!$generalSection) {
-      return response()->json(['message' => 'No general section found.'], 404);
-    }
-
-    // Return the GeneralSectionResource with the fetched data
-    return new GeneralSectionResource($generalSection);
-  }
 }

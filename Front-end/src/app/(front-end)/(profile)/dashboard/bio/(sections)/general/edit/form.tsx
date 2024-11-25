@@ -1,4 +1,5 @@
 "use client";
+import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { updateBioGeneral } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/action";
 import {
   Data,
@@ -14,7 +15,6 @@ import {
 } from "@/assets/data/config/app.config";
 import { generalSectionInterface } from "@/assets/data/response-types/bio";
 import { LocationTypeWithoutChildren } from "@/assets/data/response-types/locations";
-import Routes from "@/assets/data/routes";
 import SelectLocation from "@/components/blocks/bioSearchBox/selectLocation";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
@@ -79,25 +79,10 @@ const BioGeneralEditForm = () => {
   const [location, setLocation] = useState<LocationTypeWithoutChildren | null>(
     null
   );
-  const [general, setGeneral] = useState<generalSectionInterface>();
+  const [general, setGeneral] = useState<generalSectionInterface | null>(null);
 
   useEffect(() => {
-    const fetchGeneral = async () => {
-      try {
-        const response = await fetch(Routes.api.bio.general.user_record);
-        if (!response.ok) {
-          throw new Error("Failed to fetch general");
-        }
-        const data = await response.json();
-        setGeneral(data.data);
-        if (data.data.location) {
-          setLocation(data.data.location);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchGeneral();
+    fetchBioSection<generalSectionInterface>("general", setGeneral);
   }, []);
 
   const {
@@ -120,10 +105,10 @@ const BioGeneralEditForm = () => {
       setValue("complexion", general.complexion);
       setValue("blood_group", general.blood_group);
       setValue("language_skills", general.language_skills);
-      setValue("location_id", general.location_id);
+      setValue("location_id", general.location.id);
     }
   }, [general]);
-
+  // update the location id value when change
   useEffect(() => {
     if (location) {
       setValue("location_id", location.id);
@@ -131,7 +116,7 @@ const BioGeneralEditForm = () => {
       // @ts-expect-error
       setValue("location_id", undefined);
     }
-  }, [location, setValue]);
+  }, [location]);
 
   const onSubmit: SubmitHandler<GeneralEditSchemaType> = async FormData => {
     await updateBioGeneral<GeneralEditSchemaType>({

@@ -1,4 +1,5 @@
 // ! must be server side
+// !Note: This function is designed for working with form.[nextjs & Laravel]
 "use server";
 import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { getHeaders } from "@/lib/request/header/getHeaders";

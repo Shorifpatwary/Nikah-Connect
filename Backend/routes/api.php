@@ -17,6 +17,7 @@ use App\Http\Controllers\Bio\MarriageInfoController;
 use App\Http\Controllers\Bio\PersonalDetailsController;
 use App\Http\Controllers\Bio\ProfessionSectionController;
 use App\Http\Controllers\Bio\ReligiousActivityController;
+use App\Http\Controllers\Bio\UserRecordController;
 use App\Models\ExpectedPartner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,8 +48,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::apiResource('bio', BioController::class);
   // Bio general
   Route::apiResource('bio/general', GeneralSectionController::class)->only(['store',  'update']);
-  //  new route for the get user specific record
-  Route::get('bio/general/user-record', [GeneralSectionController::class, 'getUserRecord']);
 
   // Bio location
   Route::apiResource('bio/location', LocationSectionController::class)->only(['store',  'update']);
@@ -79,6 +78,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::apiResource('filled-marks', FilledMarksController::class)->only(['index', 'store', 'show']);
   // Route to get the filled marks data for the logged-in user
   Route::get('/user-bio/filled-marks', [FilledMarksController::class, 'userFilledMarks'])->name('user.filled-marks');
+
+  // Bio user records 
+  Route::get('bio/{section}/user-bio-record', [UserRecordController::class, 'getBioUserRecord'])
+    ->where('section', 'general|location|education|personal-info|family|profession|religious-activities|marital-info|expected-partner|hidden-info');
 });
 
 // non protected route 

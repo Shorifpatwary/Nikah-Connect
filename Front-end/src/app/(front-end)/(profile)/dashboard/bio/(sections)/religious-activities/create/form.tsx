@@ -1,4 +1,5 @@
 "use client";
+import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { createBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/action";
 import {
   Data,
@@ -6,7 +7,6 @@ import {
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/data";
 import { mazhabs } from "@/assets/data/config/app.config";
 import { generalSectionInterface } from "@/assets/data/response-types/bio";
-import Routes from "@/assets/data/routes";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -51,21 +51,9 @@ const BioReligiousActivityCreateForm = () => {
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   // genera section data
-  const [general, setGeneral] = useState<generalSectionInterface>();
+  const [general, setGeneral] = useState<generalSectionInterface | null>(null);
   useEffect(() => {
-    const fetchGeneral = async () => {
-      try {
-        const response = await fetch(Routes.api.bio.general.user_record);
-        if (!response.ok) {
-          throw new Error("Failed to fetch general");
-        }
-        const data = await response.json();
-        setGeneral(data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchGeneral();
+    fetchBioSection<generalSectionInterface>("general", setGeneral);
   }, []);
 
   const {

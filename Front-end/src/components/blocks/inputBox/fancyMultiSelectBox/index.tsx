@@ -13,13 +13,14 @@ interface Props {
   errorMessage?: string | undefined;
   suggestions?: string[];
   options: Option[];
+  defaultValue?: Option[];
   setValue?: (value: Option[]) => void;
 }
 const FancyMultiSelectBox = ({
   label,
   labelRequired = false,
   setValue,
-
+  defaultValue = [],
   triggerText,
   options,
   errorMessage,
@@ -38,6 +39,7 @@ const FancyMultiSelectBox = ({
         options={options}
         triggerText={triggerText}
         setValue={setValue}
+        defaultValue={defaultValue}
       />
       {errorMessage && <Error>{errorMessage}</Error>}
     </div>

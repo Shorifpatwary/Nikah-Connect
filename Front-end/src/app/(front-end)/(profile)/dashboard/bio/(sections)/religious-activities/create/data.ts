@@ -2,8 +2,8 @@ import Routes from "@/assets/data/routes";
 
 export const Data = {
   title: "ধর্মীয় কার্যকলাপ",
-  submit: "ধর্মীয় কার্যকলাপ জমা দিন",
-  wait: "দয়া করে অপেক্ষা করুন...",
+  submit: "জমা দিন",
+  wait: "অপেক্ষা করুন...",
 
   success: {
     title: "ধর্মীয় কার্যকলাপ সফলভাবে সংরক্ষিত হয়েছে!",

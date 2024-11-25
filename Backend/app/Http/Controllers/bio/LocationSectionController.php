@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Bio;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Bio\StoreBioLocationRequest;
+use App\Http\Requests\Admin\Bio\UpdateBioLocationRequest;
 use App\Http\Resources\Bio\LocationSectionResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
@@ -94,19 +95,69 @@ class LocationSectionController extends Controller
   {
     //
   }
-
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, LocationSection $locationSection)
+  public function update(UpdateBioLocationRequest $request, LocationSection $location)
   {
-    //
+    // Begin a database transaction
+    DB::beginTransaction();
+
+    try {
+      // Ensure the LocationSection belongs to the authenticated user
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      // if (!$bio || $location->bio_id !== $bio->id) {
+      //   return response()->json(['error' => 'Unauthorized access to this resource.'], 403);
+      // }
+
+      // Update the LocationSection record
+      $location->update($request->validated());
+
+      // Calculate percentage of location information filled
+      $locationFields = [
+        'permanent_address',
+        'present_address',
+        'relocate_plan',
+        'childhood_address',
+      ];
+
+      $filledFields = 0;
+
+      foreach ($locationFields as $field) {
+        if (!empty($location->$field)) {
+          $filledFields++;
+        }
+      }
+
+      $locationFilledMarks = ($filledFields / count($locationFields)) * 100; // Calculate percentage
+
+      // Update or create the FilledMarks record with the updated filled marks
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
+        [
+          'location_filled_marks' => $locationFilledMarks,
+          // Add other filled marks columns if needed
+        ]
+      );
+
+      // Commit the transaction
+      DB::commit();
+
+      // Return the updated resource
+      return new LocationSectionResource($location);
+    } catch (\Exception $e) {
+      // Rollback the transaction if there's an error
+      DB::rollBack();
+      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+    }
   }
+
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(LocationSection $locationSection)
+  public function destroy(LocationSection $location)
   {
     //
   }

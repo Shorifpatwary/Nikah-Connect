@@ -13,13 +13,19 @@ import * as React from "react";
 interface Props {
   triggerText: string;
   options: Option[];
+  defaultValue?: Option[];
   setValue?: (value: Option[]) => void;
 }
 
-export function FancyMultiSelect({ setValue, triggerText, options }: Props) {
+export function FancyMultiSelect({
+  setValue,
+  triggerText,
+  options,
+  defaultValue = [],
+}: Props) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<Option[]>([]);
+  const [selected, setSelected] = React.useState<Option[]>(defaultValue);
   const [inputValue, setInputValue] = React.useState("");
 
   // Effect to call setValue when the selected value changes
