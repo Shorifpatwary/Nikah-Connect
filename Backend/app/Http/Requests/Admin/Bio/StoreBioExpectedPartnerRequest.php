@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Bio;
 
 use App\Enums\StatusEnum;
+use App\Models\GeneralSection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -28,7 +29,6 @@ class StoreBioExpectedPartnerRequest extends FormRequest
       'complexion' => [
         'required',
         'array',
-        // 'min:2', // Ensure at least two items in the array
       ],
       'complexion.*' => [
         "string",
@@ -39,17 +39,25 @@ class StoreBioExpectedPartnerRequest extends FormRequest
       'marital_status' => [
         'required',
         'array',
-        // 'min:2', // Ensure at least two items in the array
       ],
       'marital_status.*' => [
         'string',
-        Rule::in(StatusEnum::MARITAL_STATUS), // Each item must match the allowed values
+        Rule::in(StatusEnum::MARITAL_STATUS),
       ],
 
       'educational_qualification' => 'required|string|min:10|max:1000',
       'profession' => 'required|string|min:3|max:1000',
       'economic_status'
-      => 'required|string|min:10|max:1000',
+      => 'required|string|min:4|max:200',
+      'bio_profile_types' => [
+        'required',
+        'array',
+        'max:3',
+      ],
+      'bio_profile_types.*' => [
+        'string',
+        Rule::in(StatusEnum::BIO_PROFILE_TYPES),
+      ],
       'family' => 'nullable|string|max:1000',
       'about_partner' => 'nullable|string|max:2500',
     ];
@@ -100,6 +108,12 @@ class StoreBioExpectedPartnerRequest extends FormRequest
       'economic_status.min' => ':attribute কমপক্ষে :min অক্ষরের হতে হবে।',
       'economic_status.max' => ':attribute সর্বোচ্চ :max অক্ষরের হতে পারে।',
 
+      'bio_profile_types.required' => ':attribute নির্বাচন করা আবশ্যক।',
+      'bio_profile_types.array' => ':attribute এর মান একটি বৈধ তালিকা হতে হবে।',
+      'bio_profile_types.max' => ':attribute এ সর্বোচ্চ তিনটি আইটেম থাকতে পারবে।',
+      'bio_profile_types.*.in' => 'নির্বাচিত :attribute এর অন্তর্গত প্রতিটি মান সঠিক নয়।',
+      'bio_profile_types.*.string' => ':attribute এর প্রতিটি মান টেক্সট আকারে থাকা আবশ্যক।',
+
       'family.string' => ':attribute একটি টেক্সট হতে হবে।',
       'family.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
 
@@ -123,6 +137,7 @@ class StoreBioExpectedPartnerRequest extends FormRequest
       'educational_qualification' => 'শিক্ষাগত যোগ্যতা',
       'profession' => 'পেশা',
       'economic_status' => 'অর্থনৈতিক অবস্থা',
+      'bio_profile_types' => 'প্রোফাইলের ধরন',
       'family' => 'পরিবার',
       'about_partner' => 'পছন্দের সঙ্গী সম্পর্কে',
     ];

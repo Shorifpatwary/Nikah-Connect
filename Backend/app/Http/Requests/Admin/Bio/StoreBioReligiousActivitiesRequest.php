@@ -25,7 +25,7 @@ class StoreBioReligiousActivitiesRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'prayer_habits' => 'nullable|string|min:10|max:1000',
+      'prayer_habits' => 'required|string|min:10|max:1000',
       'haram_relationships' => 'nullable|string|min:10|max:1000',
       'quran_recitation' => 'nullable|string|min:10|max:1000',
       'mahram_adherence' => 'nullable|string|min:10|max:1000',
@@ -44,6 +44,8 @@ class StoreBioReligiousActivitiesRequest extends FormRequest
   public function messages(): array
   {
     return [
+      'prayer_habits.required'
+      => ':attribute আবশ্যক।',
       'prayer_habits.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
       'prayer_habits.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
       'haram_relationships.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',

@@ -5,16 +5,20 @@ import {
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/data";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
+import { getOppositeBioProfiles } from "@/app/(front-end)/bio/bio-card/bio-profile";
 import { complexions, marital_status } from "@/assets/data/config/app.config";
-import { ExpectedPartnerInterface } from "@/assets/data/response-types/bio";
+import {
+  ExpectedPartnerInterface,
+  GeneralSectionInterface,
+} from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import FancyMultiSelectBox from "@/components/blocks/inputBox/fancyMultiSelectBox";
-import { Option } from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
+import { parseSelectedOptions } from "@/lib/utils";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -50,6 +54,9 @@ const Schema = object({
     minLength(3, VM.economic_status.minLength),
     maxLength(1000, VM.economic_status.maxLength),
   ]),
+  bio_profile_types: array(string(), [
+    minLength(1, VM.bio_profile_types.required),
+  ]),
   family: string([maxLength(1000, VM.family.maxLength)]),
   about_partner: string([maxLength(2500, VM.about_partner.maxLength)]),
 });
@@ -81,20 +88,6 @@ const BioExpectedPartnerEditForm = () => {
     resolver: valibotResolver(Schema),
   });
 
-  const parseSelectedOptions = (
-    valueString: string,
-    options: Option[]
-  ): Option[] => {
-    if (!valueString) return [];
-    // Split the string into an array, trim whitespace, and match options
-    return options.filter(option =>
-      valueString
-        .split(",")
-        .map(val => val.trim())
-        .includes(option.value)
-    );
-  };
-
   useEffect(() => {
     if (expectedPartner) {
       Object.entries(expectedPartner).forEach(([key, value]) => {
@@ -117,6 +110,16 @@ const BioExpectedPartnerEditForm = () => {
       setIsFormLoading,
     });
   };
+
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+
+  useEffect(() => {
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+  }, []);
+
+  const bio_profile_types = getOppositeBioProfiles(
+    general?.gender === "পাত্র" ? "male" : "female"
+  ); // Returns only female options
 
   if (!expectedPartner) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
@@ -211,10 +214,27 @@ const BioExpectedPartnerEditForm = () => {
           suggestions={Data.inputs.economic_status.suggestions}
           register={register("economic_status")}
         />
+        {/* profile types */}
+        <FancyMultiSelectBox
+          label={Data.inputs.bio_profile_types.title}
+          labelRequired={true}
+          triggerText={Data.inputs.bio_profile_types.triggerText}
+          options={bio_profile_types}
+          errorMessage={errors.bio_profile_types?.message}
+          setValue={value =>
+            setValue(
+              "bio_profile_types",
+              value.map(item => item.value)
+            )
+          }
+          defaultValue={parseSelectedOptions(
+            expectedPartner.bio_profile_types,
+            bio_profile_types
+          )}
+        />
         {/* Family */}
         <TextareaBox
           label={Data.inputs.family.title}
-          labelRequired={false}
           errorMessage={errors.family?.message}
           fieldName="family"
           placeholder={Data.inputs.family.placeholder}
@@ -224,7 +244,6 @@ const BioExpectedPartnerEditForm = () => {
         {/* About Partner */}
         <TextareaBox
           label={Data.inputs.about_partner.title}
-          labelRequired={false}
           errorMessage={errors.about_partner?.message}
           fieldName="about_partner"
           placeholder={Data.inputs.about_partner.placeholder}

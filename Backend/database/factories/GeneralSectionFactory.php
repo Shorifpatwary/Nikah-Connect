@@ -38,8 +38,10 @@ class GeneralSectionFactory extends Factory
       'gender' => $this->faker->randomElement(StatusEnum::GENDERS),
       'marital_status' => $this->faker->randomElement(StatusEnum::MARITAL_STATUS),
       'birth_date' => $this->faker->dateTimeBetween('-50 years', '-18 years'),
-      'height' => $this->faker->randomFloat(2, 150, 200), // Height in cm
-      'weight' => $this->faker->numberBetween(20, 150), // Weight in kg
+      'height'
+      => $this->faker->randomElement(StatusEnum::HEIGHTS),
+      'weight' =>
+      $this->faker->randomElement(StatusEnum::WEIGHTS),
       'complexion' => $this->faker->randomElement(StatusEnum::COMPLEXIONS),
       'blood_group' => $this->faker->randomElement(StatusEnum::BLOOD_GROUPS),
       'language_skills' => $this->faker->sentence,

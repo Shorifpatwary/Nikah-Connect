@@ -12,6 +12,7 @@ class FamilyInfoSection extends Model
   protected $fillable = [
     'family_members_info',
     'uncles_info',
+    'descent',
     'economic_status',
     'economic_status_details',
     'bio_id',

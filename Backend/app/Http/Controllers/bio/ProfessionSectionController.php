@@ -30,15 +30,16 @@ class ProfessionSectionController extends Controller
     DB::beginTransaction();
 
     try {
-      // Retrieve the authenticated user's bio ID
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
+      if (!$bio) {
+        return response()->json(['error' => 'আপনার বায়ো রেকর্ড পাওয়া যায়নি।'], 404);
+      }
 
       // Check if the authenticated user already has a ProfessionSection entry via the Bio model
-      $existingProfessionSection = ProfessionSection::where('bio_id', $bio->id)->first();
-
-      if ($existingProfessionSection) {
+      if (ProfessionSection::where('bio_id', $bio->id)->exists()) {
         // If a ProfessionSection already exists, return an error response
-        return response()->json(['error' => 'You have already created a Profession Section entry.'], 403);
+        return response()->json(['error' => 'আপনি ইতিমধ্যে একটি পেশা বিভাগের রেকর্ড তৈরি করেছেন।'], 403);
       }
 
       // Create the ProfessionSection record
@@ -46,22 +47,8 @@ class ProfessionSectionController extends Controller
         'bio_id' => $bio->id,
       ]));
 
-      // Calculate percentage of profession information filled
-      $professionFields = [
-        'profession',
-        'profession_description',
-        'monthly_income',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($professionFields as $field) {
-        if (!empty($professionSection->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $professionFilledMarks = ($filledFields / count($professionFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for ProfessionSection
+      $professionFilledMarks = $this->calculateFilledMarks($professionSection);
 
       // Create or update the FilledMarks record with calculated filled marks
       FilledMarks::updateOrCreate(
@@ -82,7 +69,7 @@ class ProfessionSectionController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।' . $e->getMessage()], 500);
     }
   }
 
@@ -103,28 +90,16 @@ class ProfessionSectionController extends Controller
     DB::beginTransaction();
 
     try {
-      // Ensure the ProfessionSection belongs to the authenticated user
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
+      if (!$bio || $profession->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
       // Update the ProfessionSection record with the validated data
       $profession->update($request->validated());
 
-      // Calculate percentage of profession information filled
-      $professionFields = [
-        'profession',
-        'profession_description',
-        'monthly_income',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($professionFields as $field) {
-        if (!empty($profession->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $professionFilledMarks = ($filledFields / count($professionFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for ProfessionSection
+      $professionFilledMarks = $this->calculateFilledMarks($profession);
 
       // Update or create the FilledMarks record with the updated filled marks
       FilledMarks::updateOrCreate(
@@ -143,7 +118,7 @@ class ProfessionSectionController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড আপডেট করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।' . $e->getMessage()], 500);
     }
   }
 
@@ -153,5 +128,21 @@ class ProfessionSectionController extends Controller
   public function destroy(ProfessionSection $profession)
   {
     //
+  }
+
+
+  /**
+   * Helper function to calculate the filled marks percentage.
+   */
+  private function calculateFilledMarks(ProfessionSection $professionSection)
+  {
+    $professionFields = [
+      'profession',
+      'profession_description',
+      'monthly_income',
+    ];
+
+    $filledFields = count(array_filter($professionFields, fn($field) => !empty($professionSection->$field) || $professionSection->$field !== null));
+    return ($filledFields / count($professionFields)) * 100;
   }
 }

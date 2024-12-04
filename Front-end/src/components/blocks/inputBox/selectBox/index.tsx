@@ -11,7 +11,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { memo } from "react";
-export type Option = Record<"value" | "label", string>;
+export type Option = {
+  value: string;
+  label: string | JSX.Element;
+};
 interface Props {
   label: string;
   labelRequired?: boolean;

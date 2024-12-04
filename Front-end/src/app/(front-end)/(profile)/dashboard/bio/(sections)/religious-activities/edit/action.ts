@@ -82,13 +82,16 @@ export const updateBioReligiousActivity = async <T>({
     // Handle unknown errors
     else {
       toast({
-        title: Data.unKnownError.title,
+        title: response.data.error
+          ? `${response.data.error}`
+          : Data.unKnownError.title,
         variant: "destructive",
-        description: Data.unKnownError.description,
+        description: response.data.error
+          ? `${Data.error.tryAgainDescription}`
+          : Data.unKnownError.description,
       });
     }
   } catch (error) {
-    console.log(error, "error on religious activity update");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

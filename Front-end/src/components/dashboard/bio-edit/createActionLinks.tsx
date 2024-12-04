@@ -1,16 +1,29 @@
 import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-marks";
+import { ParagraphMd } from "@/components/blocks/typography";
 import { BioEditData } from "@/components/dashboard/bio-edit/data";
 import EditActionLinks from "@/components/dashboard/bio-edit/editActionLinks";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 type props = {
-  marks: FilledMarksInterface;
+  marks: FilledMarksInterface | 404;
 };
 
 const CreateActionLinks = ({ marks }: props) => {
+  if (marks === 404) {
+    return (
+      <div className="flex flex-col justify-center gap-2 align-middle">
+        <ParagraphMd>{BioEditData.initialText}</ParagraphMd>
+        <Link href={BioEditData.general.create.link} prefetch={false}>
+          <Button className="text-xl">
+            {BioEditData.general.create.label}
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
   if (!marks?.general_filled_marks) {
-    console.log(marks?.general_filled_marks, "filled marks-");
     return (
       <Link href={BioEditData.general.create.link} prefetch={false}>
         <Button className="text-xl">{BioEditData.general.create.label}</Button>

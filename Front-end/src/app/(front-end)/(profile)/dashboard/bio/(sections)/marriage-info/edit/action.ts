@@ -83,24 +83,19 @@ export const updateMarriageInfo = async <T>({
         description: Data.error[422].description,
       });
     }
-    // Handle authorization errors
-    else if (response.status === 403) {
-      toast({
-        title: Data.error[403].title,
-        variant: "destructive",
-        description: Data.error[403].description,
-      });
-    }
     // Handle unknown errors
     else {
       toast({
-        title: Data.unKnownError.title,
+        title: response.data.error
+          ? `${response.data.error}`
+          : Data.unKnownError.title,
         variant: "destructive",
-        description: Data.unKnownError.description,
+        description: response.data.error
+          ? `${Data.error.tryAgainDescription}`
+          : Data.unKnownError.description,
       });
     }
   } catch (error) {
-    console.log(error, "error on marriage info edit form action");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

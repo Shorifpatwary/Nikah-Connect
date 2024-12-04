@@ -53,7 +53,6 @@ export const createBioPersonalDetails = async <T>({
         `${filledMarks}_${userId}`,
       ],
     });
-    console.log(response, "res");
 
     // If there are errors in the response, set each error using setError
     if (response.status === 200 || response.status === 201) {
@@ -90,13 +89,16 @@ export const createBioPersonalDetails = async <T>({
       });
     } else {
       toast({
-        title: Data.unKnownError.title,
+        title: response.data.error
+          ? `${response.data.error}`
+          : Data.unKnownError.title,
         variant: "destructive",
-        description: Data.unKnownError.description,
+        description: response.data.error
+          ? `${Data.error.tryAgainDescription}`
+          : Data.unKnownError.description,
       });
     }
   } catch (error) {
-    console.log(error, "error");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

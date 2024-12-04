@@ -94,13 +94,16 @@ export const createMarriageInfo = async <T>({
     // Handle unknown error
     else {
       toast({
-        title: Data.unKnownError.title,
+        title: response.data.error
+          ? `${response.data.error}`
+          : Data.unKnownError.title,
         variant: "destructive",
-        description: Data.unKnownError.description,
+        description: response.data.error
+          ? `${Data.error.tryAgainDescription}`
+          : Data.unKnownError.description,
       });
     }
   } catch (error) {
-    console.log(error, "error");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

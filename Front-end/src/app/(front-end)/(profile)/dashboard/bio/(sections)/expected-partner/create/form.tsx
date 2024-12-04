@@ -4,7 +4,10 @@ import {
   Data,
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/create/data";
+import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
+import { getOppositeBioProfiles } from "@/app/(front-end)/bio/bio-card/bio-profile";
 import { complexions, marital_status } from "@/assets/data/config/app.config";
+import { GeneralSectionInterface } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import FancyMultiSelectBox from "@/components/blocks/inputBox/fancyMultiSelectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -13,7 +16,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { array, maxLength, minLength, object, Output, string } from "valibot";
 
@@ -45,6 +48,9 @@ const Schema = object({
     minLength(1, VM.economic_status.required),
     minLength(3, VM.economic_status.minLength),
     maxLength(1000, VM.economic_status.maxLength),
+  ]),
+  bio_profile_types: array(string(), [
+    minLength(1, VM.bio_profile_types.required),
   ]),
   family: string([maxLength(1000, VM.family.maxLength)]),
   about_partner: string([maxLength(2500, VM.about_partner.maxLength)]),
@@ -81,6 +87,16 @@ const BioExpectedPartnerCreateForm = () => {
       setIsFormLoading,
     });
   };
+
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+
+  useEffect(() => {
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+  }, []);
+
+  const bio_profile_types = getOppositeBioProfiles(
+    general?.gender === "পাত্র" ? "male" : "female"
+  ); // Returns only female options
 
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -162,6 +178,20 @@ const BioExpectedPartnerCreateForm = () => {
           placeholder={Data.inputs.economic_status.placeholder}
           suggestions={Data.inputs.economic_status.suggestions}
           register={register("economic_status")}
+        />
+        {/* Profile types */}
+        <FancyMultiSelectBox
+          label={Data.inputs.bio_profile_types.title}
+          labelRequired={true}
+          triggerText={Data.inputs.bio_profile_types.triggerText}
+          options={bio_profile_types}
+          errorMessage={errors.bio_profile_types?.message}
+          setValue={value =>
+            setValue(
+              "bio_profile_types",
+              value.map(item => item.value)
+            )
+          }
         />
         {/* Family */}
         <TextareaBox

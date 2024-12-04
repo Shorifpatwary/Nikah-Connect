@@ -84,8 +84,6 @@ const BioTable = () => {
     fetchData();
   }, [params]);
 
-  console.log(data, "data from bio table");
-
   const handleDelete = async (id: number) => {
     console.log(id, "delete handler ");
   };

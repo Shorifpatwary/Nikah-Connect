@@ -1,6 +1,7 @@
 import Routes from "@/assets/data/routes";
 const profileBio = Routes.profile_bio;
 export const BioEditData = {
+  initialText: "আপনি ইতোপূর্বে কোন বায়োডাটা ক্রিয়েট করেন নাই।",
   general: {
     label: "সাধারন তথ্য",
     create: {

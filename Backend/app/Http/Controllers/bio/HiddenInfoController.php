@@ -31,15 +31,16 @@ class HiddenInfoController extends Controller
     DB::beginTransaction();
 
     try {
-      // Retrieve the authenticated user's bio ID
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
+      if (!$bio) {
+        return response()->json(['error' => 'আপনার বায়ো রেকর্ড পাওয়া যায়নি।'], 404);
+      }
       // Check if the authenticated user already has a HiddenInfo entry via the Bio model
-      $existingHiddenInfo = HiddenInfo::where('bio_id', $bio->id)->first();
 
-      if ($existingHiddenInfo) {
+      if (HiddenInfo::where('bio_id', $bio->id)->exists()) {
         // If a HiddenInfo already exists, return an error response
-        return response()->json(['error' => 'You have already created a Hidden Information section.'], 403);
+        return response()->json(['error' => 'আপনি ইতিমধ্যে একটি গোপন তথ্য বিভাগ তৈরি করেছেন।'], 403);
       }
 
       // Create the HiddenInfo record
@@ -47,30 +48,9 @@ class HiddenInfoController extends Controller
         'bio_id' => $bio->id,
       ]));
 
-      // Fields used to calculate filled percentage for hidden information
-      $hiddenInfoFields = [
-        'name',
-        'email',
-        'location',
-        'family_members_name',
-        'current_parent',
-        'parent_mobile',
-        'social_links',
-        'permanent_address_map_location',
-        'present_address_map_location',
-        'documents_link',
-      ];
 
-      $filledFields = 0;
-
-      foreach ($hiddenInfoFields as $field) {
-        if (!empty($hiddenInfo->$field)) {
-          $filledFields++;
-        }
-      }
-
-      // Calculate the percentage of filled information for HiddenInfo
-      $hiddenInfoFilledMarks = ($filledFields / count($hiddenInfoFields)) * 100;
+      // Calculate the percentage of filled fields for HiddenInfo
+      $hiddenInfoFilledMarks = $this->calculateFilledMarks($hiddenInfo);
 
       // Create or update the FilledMarks record with calculated filled marks
       FilledMarks::updateOrCreate(
@@ -90,7 +70,7 @@ class HiddenInfoController extends Controller
       DB::rollBack();
 
       // Log or handle the error as needed
-      return response()->json(['error' => 'Unable to create records: ' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
 
@@ -111,36 +91,16 @@ class HiddenInfoController extends Controller
     DB::beginTransaction();
 
     try {
-      // Ensure the HiddenInfo belongs to the authenticated user
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
+      if (!$bio || $hidden_info->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই গোপন তথ্য বিভাগটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
       // Update the HiddenInfo record with the validated data
       $hidden_info->update($request->validated());
 
-      // Fields used to calculate filled percentage for hidden information
-      $hiddenInfoFields = [
-        'name',
-        'email',
-        'location',
-        'family_members_name',
-        'current_parent',
-        'parent_mobile',
-        'social_links',
-        'permanent_address_map_location',
-        'present_address_map_location',
-        'documents_link',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($hiddenInfoFields as $field) {
-        if (!empty($hidden_info->$field)) {
-          $filledFields++;
-        }
-      }
-
-      // Calculate the percentage of filled information for HiddenInfo
-      $hiddenInfoFilledMarks = ($filledFields / count($hiddenInfoFields)) * 100;
+      // Calculate the percentage of filled fields for HiddenInfo
+      $hiddenInfoFilledMarks = $this->calculateFilledMarks($hidden_info);
 
       // Update or create the FilledMarks record with the updated filled marks
       FilledMarks::updateOrCreate(
@@ -158,7 +118,7 @@ class HiddenInfoController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to update records: ' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড আপডেট করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
 
@@ -169,5 +129,29 @@ class HiddenInfoController extends Controller
   public function destroy(HiddenInfo $hidden_info)
   {
     //
+  }
+
+
+
+  /**
+   * Helper function to calculate the filled marks percentage.
+   */
+  private function calculateFilledMarks(HiddenInfo $hiddenInfo)
+  {
+    $hiddenInfoFields = [
+      'name',
+      'email',
+      'location',
+      'family_members_name',
+      'current_parent',
+      'parent_mobile',
+      'social_links',
+      'permanent_address_map_location',
+      'present_address_map_location',
+      'documents_link',
+    ];
+
+    $filledFields = count(array_filter($hiddenInfoFields, fn($field) => !empty($hiddenInfo->$field) || $hiddenInfo->$field !== null));
+    return ($filledFields / count($hiddenInfoFields)) * 100;
   }
 }

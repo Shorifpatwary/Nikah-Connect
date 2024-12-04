@@ -32,6 +32,11 @@ export async function GET(request: NextRequest) {
         // remove auth cookie
         deleteAuthCookies();
         redirect("/login");
+      } else if (response.status === 404) {
+        return NextResponse.json(
+          { error: "No filled marks data found for this user." },
+          { status: 404 }
+        );
       }
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

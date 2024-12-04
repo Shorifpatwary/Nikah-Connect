@@ -22,7 +22,12 @@ const Section: React.FC<SectionProps> = ({
       )}
       {...props}
     >
-      <div className={cn("flex w-11/12 justify-between gap-2", rowClassName)}>
+      <div
+        className={cn(
+          "flex w-11/12 flex-wrap justify-between gap-2",
+          rowClassName
+        )}
+      >
         {children}
       </div>
     </Tag>

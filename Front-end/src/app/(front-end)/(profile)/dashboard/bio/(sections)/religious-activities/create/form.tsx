@@ -1,4 +1,5 @@
 "use client";
+
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { createBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/action";
 import {
@@ -6,7 +7,7 @@ import {
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/data";
 import { mazhabs } from "@/assets/data/config/app.config";
-import { generalSectionInterface } from "@/assets/data/response-types/bio";
+import { GeneralSectionInterface } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -17,11 +18,21 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, object, Output, picklist, string } from "valibot";
-
+import {
+  maxLength,
+  minLength,
+  object,
+  Output,
+  picklist,
+  string,
+} from "valibot";
 // Valibot schema
 const Schema = object({
-  prayer_habits: string([maxLength(1000, VM.prayer_habits.maxLength)]),
+  prayer_habits: string([
+    minLength(1, VM.prayer_habits.required),
+    minLength(10, VM.prayer_habits.minLength),
+    maxLength(1000, VM.prayer_habits.maxLength),
+  ]),
   haram_relationships: string([
     maxLength(1000, VM.haram_relationships.maxLength),
   ]),
@@ -50,27 +61,27 @@ const BioReligiousActivityCreateForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  // genera section data
-  const [general, setGeneral] = useState<generalSectionInterface | null>(null);
-  useEffect(() => {
-    fetchBioSection<generalSectionInterface>("general", setGeneral);
-  }, []);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
     setError,
     reset,
+    setValue,
   } = useForm<ReligiousActivityCreateSchemaType>({
     resolver: valibotResolver(Schema),
   });
 
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+  useEffect(() => {
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+  }, []);
+
   const onSubmit: SubmitHandler<
     ReligiousActivityCreateSchemaType
   > = async formData => {
-    await createBioReligiousActivity<ReligiousActivityCreateSchemaType>({
+    await createBioReligiousActivity({
       data: formData,
       setError,
       reset,
@@ -86,6 +97,7 @@ const BioReligiousActivityCreateForm = () => {
         {/* Prayer Habits */}
         <TextareaBox
           label={Data.inputs.prayer_habits.title}
+          labelRequired={true}
           errorMessage={errors.prayer_habits?.message}
           fieldName="prayer_habits"
           placeholder={Data.inputs.prayer_habits.placeholder}
@@ -119,6 +131,7 @@ const BioReligiousActivityCreateForm = () => {
           suggestions={Data.inputs.mahram_adherence.suggestions}
           register={register("mahram_adherence")}
         />
+
         {/* Has Beard */}
         {general?.gender === "পাত্র" && (
           <TextareaBox
@@ -175,13 +188,14 @@ const BioReligiousActivityCreateForm = () => {
           suggestions={Data.inputs.family_religious_environment.suggestions}
           register={register("family_religious_environment")}
         />
+
         {/* Submit */}
         <Button
           className={`mt-3 w-full text-base`}
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : "জমা দিন"}
         </Button>
       </div>
       <Toaster />

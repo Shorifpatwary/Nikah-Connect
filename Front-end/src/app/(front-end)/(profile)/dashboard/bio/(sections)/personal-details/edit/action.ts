@@ -87,13 +87,16 @@ export const updateBioPersonalDetails = async <T>({
     // Handle unknown errors
     else {
       toast({
-        title: Data.unKnownError.title,
+        title: response.data.error
+          ? `${response.data.error}`
+          : Data.unKnownError.title,
         variant: "destructive",
-        description: Data.unKnownError.description,
+        description: response.data.error
+          ? `${Data.error.tryAgainDescription}`
+          : Data.unKnownError.description,
       });
     }
   } catch (error) {
-    console.log(error, "error on personal details edit form action");
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

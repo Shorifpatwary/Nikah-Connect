@@ -35,7 +35,7 @@ class PersonalDetailsFactory extends Factory
     return [
       'about_yourself' =>
       $this->faker->paragraph,
-      'outdoor_clothing' => $this->faker->paragraph,
+      'outdoor_clothing' => $this->faker->sentence(10),
       'physical_mental_illness' => $this->faker->paragraph,
       'favorite_books' => $this->faker->paragraph,
       'favorite_online_personalities' => $this->faker->paragraph,

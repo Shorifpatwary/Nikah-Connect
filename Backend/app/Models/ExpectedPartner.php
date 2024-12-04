@@ -17,6 +17,7 @@ class ExpectedPartner extends Model
     'educational_qualification',
     'profession',
     'economic_status',
+    'bio_profile_types',
     'family',
     'about_partner',
 

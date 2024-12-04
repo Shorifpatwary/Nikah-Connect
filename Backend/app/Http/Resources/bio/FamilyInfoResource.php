@@ -19,7 +19,7 @@ class FamilyInfoResource extends JsonResource
       'family_members_info'
       => $this->family_members_info,
       'uncles_info' => $this->uncles_info,
-      // 'uncles_info' => $this->uncles_info,
+      'descent' => $this->descent,
       'economic_status'   => $this->economic_status,
       'economic_status_details'   => $this->economic_status_details,
 

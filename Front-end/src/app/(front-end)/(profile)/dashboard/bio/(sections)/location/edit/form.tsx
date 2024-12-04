@@ -5,7 +5,7 @@ import {
   Data,
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/edit/data";
-import { locationSectionInterface } from "@/assets/data/response-types/bio";
+import { LocationSectionInterface } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
@@ -34,12 +34,12 @@ const BioLocationEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [location, setLocation] = useState<locationSectionInterface | null>(
+  const [location, setLocation] = useState<LocationSectionInterface | null>(
     null
   );
 
   useEffect(() => {
-    fetchBioSection<locationSectionInterface>("location", setLocation);
+    fetchBioSection<LocationSectionInterface>("location", setLocation);
   }, []);
 
   const {

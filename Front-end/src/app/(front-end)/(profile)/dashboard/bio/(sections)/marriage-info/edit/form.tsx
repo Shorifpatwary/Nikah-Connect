@@ -7,7 +7,7 @@ import {
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/edit/data";
 import {
-  generalSectionInterface,
+  GeneralSectionInterface,
   MarriageInfoInterface,
 } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
@@ -61,11 +61,11 @@ const MarriageInfoEditForm = () => {
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const [marriageInfo, setMarriageInfo] =
     useState<MarriageInfoInterface | null>(null);
-  const [general, setGeneral] = useState<generalSectionInterface | null>(null);
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
 
   useEffect(() => {
     fetchBioSection<MarriageInfoInterface>("marital-info", setMarriageInfo);
-    fetchBioSection<generalSectionInterface>("general", setGeneral);
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
   }, []);
 
   const {

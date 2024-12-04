@@ -22,8 +22,8 @@ return new class extends Migration
 
       $table->date('birth_date');
 
-      $table->decimal('height', 5, 2);
-      $table->integer('weight');
+      $table->enum('height', StatusEnum::HEIGHTS);
+      $table->enum('weight', StatusEnum::WEIGHTS);
 
       $table->enum('complexion', StatusEnum::COMPLEXIONS);
       $table->enum('blood_group', StatusEnum::BLOOD_GROUPS);

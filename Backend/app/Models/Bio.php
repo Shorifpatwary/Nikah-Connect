@@ -10,7 +10,7 @@ class Bio extends Model
   use HasFactory;
 
 
-  protected $fillable = ['title', 'status', 'user_id'];
+  protected $fillable = ['title', 'status', 'bio_profile', 'user_id'];
 
   /**
    * The tags that belong to the bio.

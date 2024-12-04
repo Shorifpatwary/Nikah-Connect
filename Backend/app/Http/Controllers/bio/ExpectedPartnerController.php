@@ -8,18 +8,10 @@ use App\Http\Resources\Bio\ExpectedPartnerResource;
 use App\Models\Bio;
 use App\Models\ExpectedPartner;
 use App\Models\FilledMarks;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ExpectedPartnerController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   */
-  public function index()
-  {
-    //
-  }
 
   /**
    * Store a newly created resource in storage.
@@ -30,76 +22,43 @@ class ExpectedPartnerController extends Controller
     DB::beginTransaction();
 
     try {
-      // Retrieve the authenticated user's bio ID
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
-      // Check if the authenticated user already has an ExpectedPartner entry via the Bio model
-      $existingExpectedPartner = ExpectedPartner::where('bio_id', $bio->id)->first();
-
-      if ($existingExpectedPartner) {
-        // If an ExpectedPartner already exists, return an error response
-        return response()->json(['error' => 'You have already created an Expected Partner entry.'], 403);
+      if (!$bio) {
+        return response()->json(['error' => 'আপনার বায়ো রেকর্ড পাওয়া যায়নি।'], 404);
       }
 
-      // Create the ExpectedPartner record
+      // Check for existing ExpectedPartner entry
+      if (ExpectedPartner::where('bio_id', $bio->id)->exists()) {
+        return response()->json(['error' => 'আপনি ইতিমধ্যে একটি প্রত্যাশিত পার্টনার এন্ট্রি তৈরি করেছেন।'], 403);
+      }
+
+      // Create ExpectedPartner record
       $expectedPartner = ExpectedPartner::create(array_merge($request->validated(), [
         'complexion' => is_array($request->complexion) ? implode(', ', $request->complexion) : $request->complexion,
         'marital_status' => is_array($request->marital_status) ? implode(', ', $request->marital_status) : $request->marital_status,
+        'bio_profile_types' => is_array($request->bio_profile_types) ? implode(', ', $request->bio_profile_types) : $request->bio_profile_types,
         'bio_id' => $bio->id,
       ]));
 
-      // Calculate percentage of expected partner information filled
-      $expectedPartnerFields = [
-        'age',
-        'complexion',
-        'height',
-        'marital_status',
-        'educational_qualification',
-        'profession',
-        'economic_status',
-        'family',
-        'about_partner',
-      ];
+      // Calculate the percentage of filled fields for the ExpectedPartner
+      $expectedPartnerFilledMarks = $this->calculateFilledMarks($expectedPartner);
 
-      $filledFields = 0;
-
-      foreach ($expectedPartnerFields as $field) {
-        if (!empty($expectedPartner->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $expectedPartnerFilledMarks = ($filledFields / count($expectedPartnerFields)) * 100; // Calculate percentage
-
-      // Create or update the FilledMarks record with calculated filled marks
+      // Update FilledMarks
       FilledMarks::updateOrCreate(
-        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
-        [
-          'expected_partner_filled_marks' => $expectedPartnerFilledMarks,
-          // Add other filled marks columns if needed
-        ]
+        ['bio_id' => $bio->id],
+        ['expected_partner_filled_marks' => $expectedPartnerFilledMarks]
       );
 
       // Commit the transaction
       DB::commit();
 
-      // Return the created resource for ExpectedPartner
       return new ExpectedPartnerResource($expectedPartner);
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-
-      // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records. ' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(ExpectedPartner $expected_partner)
-  {
-    //
   }
 
   /**
@@ -111,56 +70,37 @@ class ExpectedPartnerController extends Controller
     DB::beginTransaction();
 
     try {
-      // Ensure the ExpectedPartner belongs to the authenticated user
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
 
-      // Update the ExpectedPartner record with the validated data
+      if (!$bio || $expected_partner->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
+
+      // Update the ExpectedPartner record
       $expected_partner->update(array_merge($request->validated(), [
         'complexion' => is_array($request->complexion) ? implode(', ', $request->complexion) : $request->complexion,
         'marital_status' => is_array($request->marital_status) ? implode(', ', $request->marital_status) : $request->marital_status,
+        'bio_profile_types' => is_array($request->bio_profile_types) ? implode(', ', $request->bio_profile_types) : $request->bio_profile_types,
       ]));
 
-      // Calculate percentage of expected partner information filled
-      $expectedPartnerFields = [
-        'age',
-        'complexion',
-        'height',
-        'marital_status',
-        'educational_qualification',
-        'profession',
-        'economic_status',
-        'family',
-        'about_partner',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($expectedPartnerFields as $field) {
-        if (!empty($expected_partner->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $expectedPartnerFilledMarks = ($filledFields / count($expectedPartnerFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for the ExpectedPartner
+      $expectedPartnerFilledMarks = $this->calculateFilledMarks($expected_partner);
 
       // Update or create the FilledMarks record with the updated filled marks
       FilledMarks::updateOrCreate(
-        ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
-        [
-          'expected_partner_filled_marks' => $expectedPartnerFilledMarks,
-          // Add other filled marks columns if needed
-        ]
+        ['bio_id' => $bio->id],
+        ['expected_partner_filled_marks' => $expectedPartnerFilledMarks]
       );
 
       // Commit the transaction
       DB::commit();
 
-      // Return the updated resource for ExpectedPartner
       return new ExpectedPartnerResource($expected_partner);
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to update records. ' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
 
@@ -170,5 +110,27 @@ class ExpectedPartnerController extends Controller
   public function destroy(ExpectedPartner $expected_partner)
   {
     //
+  }
+
+  /**
+   * Helper function to calculate the filled marks percentage
+   */
+  private function calculateFilledMarks(ExpectedPartner $expected_partner)
+  {
+    $expectedPartnerFields = [
+      'age',
+      'complexion',
+      'height',
+      'marital_status',
+      'educational_qualification',
+      'profession',
+      'economic_status',
+      'bio_profile_types',
+      'family',
+      'about_partner',
+    ];
+
+    $filledFields = count(array_filter($expectedPartnerFields, fn($field) => !empty($expected_partner->$field) || $expected_partner->$field !== null));
+    return ($filledFields / count($expectedPartnerFields)) * 100;
   }
 }

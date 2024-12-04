@@ -1,13 +1,13 @@
 "use client";
 
+import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { createMarriageInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/create/action";
 import {
   Data,
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/create/data";
 
-import { generalSectionInterface } from "@/assets/data/response-types/bio";
-import Routes from "@/assets/data/routes";
+import { GeneralSectionInterface } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import { Button } from "@/components/ui/button";
@@ -57,21 +57,10 @@ const MarriageInfoCreateForm = () => {
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   // general section data
-  const [general, setGeneral] = useState<generalSectionInterface>();
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+
   useEffect(() => {
-    const fetchGeneral = async () => {
-      try {
-        const response = await fetch(Routes.api.bio.general.user_record);
-        if (!response.ok) {
-          throw new Error("Failed to fetch general");
-        }
-        const data = await response.json();
-        setGeneral(data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchGeneral();
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
   }, []);
 
   const {

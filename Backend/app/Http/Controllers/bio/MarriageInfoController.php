@@ -30,52 +30,31 @@ class MarriageInfoController extends Controller
     DB::beginTransaction();
 
     try {
-      // Retrieve the authenticated user's bio ID
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
+      if (!$bio) {
+        return response()->json(['error' => 'আপনার বায়ো রেকর্ড পাওয়া যায়নি।'], 404);
+      }
 
-      // Check if the authenticated user already has a MarriageInfo entry via the Bio model
-      $existingMarriageInfo = MarriageInfo::where('bio_id', $bio->id)->first();
-
-      if ($existingMarriageInfo) {
+      // Check if the authenticated user already has a MarriageInfo via the Bio model
+      if (MarriageInfo::where('bio_id', $bio->id)->exists()) {
         // If a MarriageInfo already exists, return an error response
-        return response()->json(['error' => 'You have already created a Marriage Information entry.'], 403);
+        return response()->json(['error' => 'আপনি ইতিমধ্যে একটি বিবাহ তথ্য রেকর্ড তৈরি করেছেন।'], 403);
       }
 
       // Create the MarriageInfo record
-      $marriageInfo = MarriageInfo::create(array_merge($request->validated(), [
+      $marriageInfo  = MarriageInfo::create(array_merge($request->validated(), [
         'bio_id' => $bio->id,
       ]));
 
-      // Calculate percentage of marriage information filled
-      $marriageFields = [
-        'prev_marriage',
-        'work_after',
-        'study_after',
-        'ceremony_plans',
-        'partner_view_rules',
-        'marriage_weakness',
-        'family_pref',
-        'compromise_factors',
-        'dowry_amount',
-        'dowry_opinion',
-        'cash_gift_opinion',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($marriageFields as $field) {
-        if (!empty($marriageInfo->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $marriageFilledMarks = ($filledFields / count($marriageFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for MarriageInfo
+      $marriageFilledMarks  = $this->calculateFilledMarks($marriageInfo);
 
       // Create or update the FilledMarks record with calculated filled marks
       FilledMarks::updateOrCreate(
         ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
         [
-          'marriage_info_filled_marks' => $marriageFilledMarks,
+          'marital_info_filled_marks' => $marriageFilledMarks,
           // Add other filled marks columns if needed
         ]
       );
@@ -90,7 +69,7 @@ class MarriageInfoController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records. ' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
 
@@ -111,42 +90,23 @@ class MarriageInfoController extends Controller
     DB::beginTransaction();
 
     try {
-      // Ensure the MarriageInfo belongs to the authenticated user
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
 
+      if (!$bio || $marriage_info->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
       // Update the MarriageInfo record with the validated data
       $marriage_info->update($request->validated());
 
-      // Calculate percentage of marriage information filled
-      $marriageFields = [
-        'prev_marriage',
-        'work_after',
-        'study_after',
-        'ceremony_plans',
-        'partner_view_rules',
-        'marriage_weakness',
-        'family_pref',
-        'compromise_factors',
-        'dowry_amount',
-        'dowry_opinion',
-        'cash_gift_opinion',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($marriageFields as $field) {
-        if (!empty($marriage_info->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $marriageFilledMarks = ($filledFields / count($marriageFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for MarriageInfo
+      $marriageFilledMarks = $this->calculateFilledMarks($marriage_info);
 
       // Update or create the FilledMarks record with the updated filled marks
       FilledMarks::updateOrCreate(
         ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
         [
-          'marriage_info_filled_marks' => $marriageFilledMarks,
+          'marital_info_filled_marks' => $marriageFilledMarks,
           // Add other filled marks columns if needed
         ]
       );
@@ -159,7 +119,7 @@ class MarriageInfoController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to update records. ' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড আপডেট করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
 
@@ -170,5 +130,28 @@ class MarriageInfoController extends Controller
   public function destroy(MarriageInfo $marriage_info)
   {
     //
+  }
+
+  /**
+   * Helper function to calculate the filled marks percentage.
+   */
+  private function calculateFilledMarks(MarriageInfo $marriageInfo)
+  {
+    $marriageFields = [
+      'prev_marriage',
+      'work_after',
+      'study_after',
+      'ceremony_plans',
+      'partner_view_rules',
+      'marriage_weakness',
+      'family_pref',
+      'compromise_factors',
+      'dowry_amount',
+      'dowry_opinion',
+      'cash_gift_opinion',
+    ];
+
+    $filledFields = count(array_filter($marriageFields, fn($field) => !empty($marriageInfo->$field) || $marriageInfo->$field !== null));
+    return ($filledFields / count($marriageFields)) * 100;
   }
 }

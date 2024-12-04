@@ -41,7 +41,7 @@ class GeneralSectionController extends Controller
 
       if ($existingGeneralSection) {
         // If a Bio already exists, return an error response
-        return response()->json(['error' => 'You have already created a General Section.'], 403);
+        return response()->json(['error' => 'আপনি ইতিমধ্যে একটি সাধারণ বিভাগের রেকর্ড তৈরি করেছেন।'], 403);
       }
       // Fetch location data using location_id
       $location = Location::find($request->input('location_id'));
@@ -62,28 +62,8 @@ class GeneralSectionController extends Controller
         'bio_id' => $bio->id,
       ]));
 
-      // Calculate percentage of general information filled
-      $generalFields = [
-        'gender',
-        'marital_status',
-        'birth_date',
-        'height',
-        'weight',
-        'complexion',
-        'blood_group',
-        'language_skills',
-        'location_id'
-      ];
-
-      $filledFields = 0;
-
-      foreach ($generalFields as $field) {
-        if (!empty($generalSection->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $generalFilledMarks = ($filledFields / count($generalFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for GeneralSection
+      $generalFilledMarks = $this->calculateFilledMarks($generalSection);
 
       // Create or update the FilledMarks record with calculated filled marks
       FilledMarks::updateOrCreate(
@@ -104,7 +84,7 @@ class GeneralSectionController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। .' . $e->getMessage()], 500);
     }
   }
 
@@ -124,6 +104,14 @@ class GeneralSectionController extends Controller
     // Begin a database transaction
     DB::beginTransaction();
     try {
+
+      // Retrieve the authenticated user's bio
+      $bio = Bio::where('user_id', auth()->id())->first();
+
+      if (!$bio || $general->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
+
       // Fetch the location data using location_id
       $location = Location::find($request->input('location_id'));
 
@@ -140,28 +128,8 @@ class GeneralSectionController extends Controller
       // Update the GeneralSection record with the validated data
       $general->update($request->validated());
 
-      // Calculate the percentage of general information filled
-      $generalFields = [
-        'gender',
-        'marital_status',
-        'birth_date',
-        'height',
-        'weight',
-        'complexion',
-        'blood_group',
-        'language_skills',
-        'location_id'
-      ];
-
-      $filledFields = 0;
-
-      foreach ($generalFields as $field) {
-        if (!empty($general->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $generalFilledMarks = ($filledFields / count($generalFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for GeneralSection
+      $generalFilledMarks = $this->calculateFilledMarks($general);
 
       // Create or update the FilledMarks record with the new filled marks
       FilledMarks::updateOrCreate(
@@ -180,7 +148,7 @@ class GeneralSectionController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if an error occurs
       DB::rollBack();
-      return response()->json(['error' => 'Failed to update General Section.', 'message' => $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড আপডেট করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।', 'message' => $e->getMessage()], 500);
     }
   }
 
@@ -190,5 +158,27 @@ class GeneralSectionController extends Controller
   public function destroy(GeneralSection $general)
   {
     //
+  }
+
+
+  /**
+   * Helper function to calculate the filled marks percentage.
+   */
+  private function calculateFilledMarks(GeneralSection $generalSection)
+  {
+    $generalFields = [
+      'gender',
+      'marital_status',
+      'birth_date',
+      'height',
+      'weight',
+      'complexion',
+      'blood_group',
+      'language_skills',
+      'location_id',
+    ];
+
+    $filledFields = count(array_filter($generalFields, fn($field) => !empty($generalSection->$field) || $generalSection->$field !== null));
+    return ($filledFields / count($generalFields)) * 100;
   }
 }

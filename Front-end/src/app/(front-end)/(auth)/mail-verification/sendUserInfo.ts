@@ -44,7 +44,6 @@ export async function sendUserInfo(request: Request) {
         body: JSON.stringify(userInfo),
       },
     });
-    console.log(response, "response");
   } catch (error) {
     console.log(error, "error ");
   }

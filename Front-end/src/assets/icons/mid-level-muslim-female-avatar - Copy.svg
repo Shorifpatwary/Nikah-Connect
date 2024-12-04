@@ -1,0 +1,32 @@
+<svg width="800" height="800" viewBox="0 0 128 128" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-6{fill:#393c54} .cls-3{fill:#393c54}.cls-4{fill:#fbc0aa}.cls-10,.cls-12{fill:none;stroke-linecap:round}.cls-9{fill:#515570}.cls-10,.cls-12{stroke:#515570;stroke-linejoin:round}.cls-11{fill:#f85565;opacity:.2}.cls-12{opacity:.2;stroke-width:2px}
+    </style>
+  </defs>
+  <circle cx="64" cy="64" r="60" style="fill:#f2bc0f"/>
+  <circle cx="64" cy="64" r="48" style="fill:#fff;opacity:.3"/>
+  <path class="cls-3" d="M64 14.88a32 32 0 0 1 32 32v42.71a21.59 21.59 0 0 1-21.59 21.59H53.59A21.59 21.59 0 0 1 32 89.59V46.88a32 32 0 0 1 32-32"/>
+  <circle class="cls-4" cx="88" cy="60" r="7"/>
+  <path class="cls-3" d="M64 124a59.7 59.7 0 0 0 32.55-9.61l-3.18-10.75A10 10 0 0 0 84 97H44.05a10 10 0 0 0-9.42 6.64l-3.18 10.75A59.7 59.7 0 0 0 64 124"/>
+  <path style="fill:none;stroke-linecap:round;stroke:#fba875;stroke-width:14px;stroke-miterlimit:10" d="M64 88.75v7.75"/>
+  <path class="cls-6" d="M71 90v-4H57v4a7 7 0 0 1-7 7v8h28v-8a7 7 0 0 1-7-7"/>
+  <circle class="cls-4" cx="40" cy="60" r="7"/>
+  <path d="M64 90a25 25 0 0 1-25-25V47.52a25 25 0 1 1 50 0V65a25 25 0 0 1-25 25" style="fill:#ffd8c9"/>
+  <path class="cls-3" d="M37 46a27 27 0 0 1 54 0Z"/>
+  <path d="M45.49 33.07A21 21 0 0 1 64 22" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke:#fff;stroke-width:4px;opacity:.1"/>
+  <circle class="cls-9" cx="76" cy="58.28" r="3"/>
+  <path class="cls-10" d="M70.5 59.37A6.61 6.61 0 0 1 82 58.06"/>
+  <path class="cls-4" d="m63.51 59.28-2.19 10.24A1 1 0 0 0 62 70.7a6.6 6.6 0 0 0 3.94 0 1 1 0 0 0 .71-1.18l-2.16-10.25a.5.5 0 0 0-.98.01"/>
+  <ellipse class="cls-11" cx="51" cy="66.54" rx="5.08" ry="3.54"/>
+  <ellipse class="cls-11" cx="77" cy="66.54" rx="5.08" ry="3.54"/>
+  <path class="cls-12" d="m72 52 5.18-2.36a4.6 4.6 0 0 1 4.67.5L83 51"/>
+  <circle class="cls-9" cx="51.5" cy="58.28" r="3"/>
+  <path class="cls-10" d="M57 59.37a6.62 6.62 0 0 0-11.51-1.31"/>
+  <path class="cls-12" d="m55.5 52-5.18-2.36a4.62 4.62 0 0 0-4.68.5L44.5 51"/>
+
+  <!-- <path class="cls-6" d="M39 41h50v9H39zm54.37 62.64A10 10 0 0 0 84 97H44.05a10 10 0 0 0-9.42 6.64l-.1.34a38 38 0 0 0 58.94 0Z"/> -->
+  <!-- remove cross  -->
+  <!-- <path class="cls-12" d="m76.78 95.5-9.61 12.38m-16-12.38 9.61 12.38"/> -->
+  <path style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;stroke:#f85565" d="M59 79h10"/>
+</svg>

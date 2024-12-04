@@ -40,6 +40,7 @@ class ExpectedPartnerFactory extends Factory
       'educational_qualification' => $this->faker->text(100),
       'profession' => $this->faker->text(100),
       'economic_status' => $this->faker->randomElement(StatusEnum::ECONOMIC_STATUS),
+      'bio_profile_types' => implode(', ', $this->faker->randomElements(StatusEnum::BIO_PROFILE_TYPES, 2)),
       'family' => $this->faker->optional()->text(100),
       'about_partner' => $this->faker->optional()->text(250),
 

@@ -23,8 +23,9 @@ class ExpectedPartnerResource extends JsonResource
       'educational_qualification' => $this->educational_qualification,
       'profession' => $this->profession,
       'economic_status' => $this->economic_status,
+      'bio_profile_types' => $this->bio_profile_types,
       'family' => $this->family,
-      'about_partner' => $this->family,
+      'about_partner' => $this->about_partner,
 
       'created_at' => (string) $this->created_at,
       'updated_at' => (string)  $this->updated_at,

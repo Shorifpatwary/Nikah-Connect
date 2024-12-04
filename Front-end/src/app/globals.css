@@ -11,6 +11,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 142.1 76.2% 36.3%;
+    /* //todo: needs to change primary foreground black color to white color */
     --primary-foreground: 144.9 80.4% 10%;
     /* --secondary: 240 4.8% 95.9%; */
     --secondary: 24.6 95% 53.1%;

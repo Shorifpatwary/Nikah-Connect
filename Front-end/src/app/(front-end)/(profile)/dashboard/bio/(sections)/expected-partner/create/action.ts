@@ -52,7 +52,6 @@ export const createExpectedPartner = async <T>({
         `${filledMarks}_${userId}`,
       ],
     });
-
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
@@ -95,13 +94,16 @@ export const createExpectedPartner = async <T>({
     // Handle unknown error
     else {
       toast({
-        title: Data.unKnownError.title,
+        title: response.data.error
+          ? `${response.data.error}`
+          : Data.unKnownError.title,
         variant: "destructive",
-        description: Data.unKnownError.description,
+        description: response.data.error
+          ? `${Data.error.tryAgainDescription}`
+          : Data.unKnownError.description,
       });
     }
   } catch (error) {
-    console.error(error);
     toast({
       title: Data.unKnownError.title,
       variant: "destructive",

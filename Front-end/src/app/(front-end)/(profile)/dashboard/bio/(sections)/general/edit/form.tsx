@@ -13,7 +13,7 @@ import {
   marital_status,
   weights,
 } from "@/assets/data/config/app.config";
-import { generalSectionInterface } from "@/assets/data/response-types/bio";
+import { GeneralSectionInterface } from "@/assets/data/response-types/bio";
 import { LocationTypeWithoutChildren } from "@/assets/data/response-types/locations";
 import SelectLocation from "@/components/blocks/bioSearchBox/selectLocation";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
@@ -79,10 +79,10 @@ const BioGeneralEditForm = () => {
   const [location, setLocation] = useState<LocationTypeWithoutChildren | null>(
     null
   );
-  const [general, setGeneral] = useState<generalSectionInterface | null>(null);
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
 
   useEffect(() => {
-    fetchBioSection<generalSectionInterface>("general", setGeneral);
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
   }, []);
 
   const {

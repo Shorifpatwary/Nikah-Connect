@@ -30,19 +30,16 @@ class LocationSectionController extends Controller
     DB::beginTransaction();
 
     try {
-      // Fetch the Bio model for the authenticated user
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
       if (!$bio) {
-        return response()->json(['error' => 'No associated Bio found for this user.'], 404);
+        return response()->json(['error' => 'আপনার বায়ো রেকর্ড পাওয়া যায়নি।'], 404);
       }
 
       // Check if the authenticated user already has a LocationSection via the Bio model
-      $existingLocationSection = LocationSection::where('bio_id', $bio->id)->first();
-
-      if ($existingLocationSection) {
+      if (LocationSection::where('bio_id', $bio->id)->exists()) {
         // If a LocationSection already exists, return an error response
-        return response()->json(['error' => 'You have already created a Location Section.'], 403);
+        return response()->json(['error' => 'আপনি ইতিমধ্যে একটি অবস্থান বিভাগের রেকর্ড তৈরি করেছেন।'], 403);
       }
 
       // Create the LocationSection record
@@ -50,23 +47,8 @@ class LocationSectionController extends Controller
         'bio_id' => $bio->id,
       ]));
 
-      // Calculate percentage of location information filled
-      $locationFields = [
-        'permanent_address',
-        'present_address',
-        'relocate_plan',
-        'childhood_address',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($locationFields as $field) {
-        if (!empty($locationSection->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $locationFilledMarks = ($filledFields / count($locationFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for LocationSection
+      $locationFilledMarks = $this->calculateFilledMarks($locationSection);
 
       // Create or update the FilledMarks record with calculated filled marks
       FilledMarks::updateOrCreate(
@@ -84,7 +66,7 @@ class LocationSectionController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।' . $e->getMessage()], 500);
     }
   }
 
@@ -104,33 +86,17 @@ class LocationSectionController extends Controller
     DB::beginTransaction();
 
     try {
-      // Ensure the LocationSection belongs to the authenticated user
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
-      // if (!$bio || $location->bio_id !== $bio->id) {
-      //   return response()->json(['error' => 'Unauthorized access to this resource.'], 403);
-      // }
+      if (!$bio || $location->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
 
       // Update the LocationSection record
       $location->update($request->validated());
 
-      // Calculate percentage of location information filled
-      $locationFields = [
-        'permanent_address',
-        'present_address',
-        'relocate_plan',
-        'childhood_address',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($locationFields as $field) {
-        if (!empty($location->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $locationFilledMarks = ($filledFields / count($locationFields)) * 100; // Calculate percentage
+      // Calculate the percentage of filled fields for LocationSection
+      $locationFilledMarks = $this->calculateFilledMarks($location);
 
       // Update or create the FilledMarks record with the updated filled marks
       FilledMarks::updateOrCreate(
@@ -149,7 +115,7 @@ class LocationSectionController extends Controller
     } catch (\Exception $e) {
       // Rollback the transaction if there's an error
       DB::rollBack();
-      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড আপডেট করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।' . $e->getMessage()], 500);
     }
   }
 
@@ -160,5 +126,22 @@ class LocationSectionController extends Controller
   public function destroy(LocationSection $location)
   {
     //
+  }
+
+
+  /**
+   * Helper function to calculate the filled marks percentage.
+   */
+  private function calculateFilledMarks(LocationSection $locationSection)
+  {
+    $locationFields = [
+      'permanent_address',
+      'present_address',
+      'relocate_plan',
+      'childhood_address',
+    ];
+
+    $filledFields = count(array_filter($locationFields, fn($field) => !empty($locationSection->$field) || $locationSection->$field !== null));
+    return ($filledFields / count($locationFields)) * 100;
   }
 }

@@ -6,18 +6,23 @@ import CreateActionLinks from "@/components/dashboard/bio-edit/createActionLinks
 import { useEffect, useState } from "react";
 
 const BioEdit = () => {
-  const [editMarks, setEditMarks] = useState<FilledMarksInterface | null>(null);
+  const [editMarks, setEditMarks] = useState<FilledMarksInterface | null | 404>(
+    null
+  );
   useEffect(() => {
     const fetchFilledMarks = async () => {
       try {
         const response = await fetch(`/api/bio/filled-marks`);
         if (!response.ok) {
+          if (response.status === 404) {
+            setEditMarks(404);
+          }
           throw new Error("Failed to fetch Data");
         }
         const data = await response.json();
         setEditMarks(data.data);
       } catch (error) {
-        console.error(error);
+        console.error(error, "from edit marks");
       }
     };
     fetchFilledMarks();
@@ -26,7 +31,7 @@ const BioEdit = () => {
   if (!editMarks) {
     return (
       <Section rowClassName="justify-center items-center h-30">
-        <DefaultLoading skeletonCN="" />
+        <DefaultLoading />
       </Section>
     );
   }

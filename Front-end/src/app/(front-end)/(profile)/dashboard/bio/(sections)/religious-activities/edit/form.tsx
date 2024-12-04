@@ -7,7 +7,7 @@ import {
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/edit/data";
 import { mazhabs } from "@/assets/data/config/app.config";
 import {
-  generalSectionInterface,
+  GeneralSectionInterface,
   ReligiousActivityInterface,
 } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
@@ -21,11 +21,22 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, object, Output, picklist, string } from "valibot";
+import {
+  maxLength,
+  minLength,
+  object,
+  Output,
+  picklist,
+  string,
+} from "valibot";
 
 // Valibot schema
 const Schema = object({
-  prayer_habits: string([maxLength(1000, VM.prayer_habits.maxLength)]),
+  prayer_habits: string([
+    minLength(1, VM.prayer_habits.required),
+    minLength(10, VM.prayer_habits.minLength),
+    maxLength(1000, VM.prayer_habits.maxLength),
+  ]),
   haram_relationships: string([
     maxLength(1000, VM.haram_relationships.maxLength),
   ]),
@@ -56,7 +67,7 @@ const BioReligiousActivityEditForm = () => {
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const [religiousActivity, setReligiousActivity] =
     useState<ReligiousActivityInterface | null>(null);
-  const [general, setGeneral] = useState<generalSectionInterface | null>(null);
+  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
 
   // Fetch the bio section and general data
   useEffect(() => {
@@ -64,7 +75,7 @@ const BioReligiousActivityEditForm = () => {
       "religious-activities",
       setReligiousActivity
     );
-    fetchBioSection<generalSectionInterface>("general", setGeneral);
+    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
   }, []);
 
   const {
@@ -112,6 +123,7 @@ const BioReligiousActivityEditForm = () => {
         {/* Prayer Habits */}
         <TextareaBox
           label={Data.inputs.prayer_habits.title}
+          labelRequired={true}
           errorMessage={errors.prayer_habits?.message}
           fieldName="prayer_habits"
           placeholder={Data.inputs.prayer_habits.placeholder}

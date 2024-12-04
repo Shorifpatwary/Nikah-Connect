@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserInfoController;
 use App\Http\Controllers\App\LocationController;
 use App\Http\Controllers\Bio\BioController;
+use App\Http\Controllers\App\BioController
+as AppBioController;
 use App\Http\Controllers\Bio\EducationSectionController;
 use App\Http\Controllers\Bio\ExpectedPartnerController;
 use App\Http\Controllers\Bio\FamilyInfoSectionController;
@@ -18,7 +19,6 @@ use App\Http\Controllers\Bio\PersonalDetailsController;
 use App\Http\Controllers\Bio\ProfessionSectionController;
 use App\Http\Controllers\Bio\ReligiousActivityController;
 use App\Http\Controllers\Bio\UserRecordController;
-use App\Models\ExpectedPartner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,23 +40,29 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function () {
   // user
   Route::apiResource('user', UserController::class)->only(['index', 'show']);
+
   Route::post('/update-user-role', [UserController::class, 'updateUserRole'])->name('user.update-role');
+
   Route::apiResource('user-info', UserInfoController::class)->only(['index', 'store', 'show']);
 
-
   // Bio 
-  Route::apiResource('bio', BioController::class);
+  Route::apiResource('bio', BioController::class)->only(['index', 'store', 'update', 'destroy']);
+
   // Bio general
   Route::apiResource('bio/general', GeneralSectionController::class)->only(['store',  'update']);
 
   // Bio location
   Route::apiResource('bio/location', LocationSectionController::class)->only(['store',  'update']);
+
   // Bio education
   Route::apiResource('bio/education', EducationSectionController::class)->only(['store',  'update']);
+
   // Bio personal-details
   Route::apiResource('bio/personal-details', PersonalDetailsController::class)->only(['store',  'update']);
+
   // Bio family-info
   Route::apiResource('bio/family-info', FamilyInfoSectionController::class)->only(['store',  'update']);
+
   // Bio profession
   Route::apiResource('bio/profession', ProfessionSectionController::class)->only(['store',  'update']);
 
@@ -74,8 +80,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // Bio Tags
   Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);
+
   // filled marks 
   Route::apiResource('filled-marks', FilledMarksController::class)->only(['index', 'store', 'show']);
+
   // Route to get the filled marks data for the logged-in user
   Route::get('/user-bio/filled-marks', [FilledMarksController::class, 'userFilledMarks'])->name('user.filled-marks');
 
@@ -84,5 +92,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     ->where('section', 'general|location|education|personal-info|family|profession|religious-activities|marital-info|expected-partner|hidden-info');
 });
 
-// non protected route 
+// NON PROTECTED ROUTES
+// location route
 Route::apiResource('location', LocationController::class)->only(['index']);
+
+// Bio 
+Route::apiResource('bio/public', AppBioController::class)->only(['index', 'show']);

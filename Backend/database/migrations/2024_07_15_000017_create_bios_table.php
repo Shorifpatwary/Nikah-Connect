@@ -14,7 +14,9 @@ return new class extends Migration
   {
     Schema::create('bios', function (Blueprint $table) {
       $table->id()->startingValue(1000);
-      $table->string('title')->nullable();
+
+      $table->enum('bio_profile', StatusEnum::BIO_PROFILE_TYPES)->nullable();
+      $table->string('title')->nullable()->default("TOP_MALE"); // this should be required in validation. 
       $table->enum('status', StatusEnum::BIO_STATUS)->default('incomplete');
 
       $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

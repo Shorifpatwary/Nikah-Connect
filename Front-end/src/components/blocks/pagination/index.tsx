@@ -40,7 +40,8 @@ const CustomPagination = ({ className, meta }: Props) => {
     router.push(`?${newQuery}`);
   };
   return (
-    <Pagination className={cn("mx-0 w-5/12", className)}>
+    // mx-auto
+    <Pagination className={cn(" w-11/12 md:w-5/12", className)}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

@@ -1,13 +1,17 @@
 import { LocationType } from "@/assets/data/response-types/locations";
 import {
+  BioProfileType,
   BioStatusType,
   BloodType,
   ComplexionType,
   EconomicStatusType,
   EducationType,
   GenderType,
+  HeightType,
   MaritalStatusType,
   MazhabType,
+  ProfessionType,
+  WeightType,
 } from "@/assets/data/response-types/status-types";
 import { TagInterface } from "@/assets/data/response-types/tag";
 import { DataWithPagination, Timestamps } from ".";
@@ -15,54 +19,41 @@ import { DataWithPagination, Timestamps } from ".";
 export interface BioInterface extends Timestamps {
   id: number;
   title: string;
+  bio_profile: BioProfileType;
   status: BioStatusType;
   tags: TagInterface[];
-  general_section?: generalSectionInterface;
-  location_section?: locationSectionInterface;
+  general_section?: GeneralSectionInterface;
+  location_section?: LocationSectionInterface;
   education_section?: EducationSectionInterface;
   personal_details?: PersonalDetailsSectionInterface;
   family_info_sections?: FamilyInfoSectionInterface;
-  profession_sections?: ProfessionInterface;
+  profession_section?: ProfessionInterface;
   expected_partner?: ExpectedPartnerInterface;
   hidden_infos?: HiddenInfoInterface;
 }
 
-// bio info with form
-export interface BioFormInterface<Error> extends BioInterface {
-  message?: string;
-  errors?: Partial<Error>;
-}
-
 export type BiosWithPagination = DataWithPagination<BioInterface>;
 
-export interface generalSectionInterface extends Timestamps {
+export interface GeneralSectionInterface extends Timestamps {
   id: number;
   gender: GenderType;
   marital_status: MaritalStatusType;
   birth_date: string;
-  height: number;
-  weight: number;
+  height: HeightType;
+  weight: WeightType;
   complexion: ComplexionType;
   blood_group: BloodType;
   language_skills: string;
   location_id: number;
   location: LocationType;
 }
-export interface GeneralFormInterface<Error> extends generalSectionInterface {
-  message?: string;
-  errors?: Partial<Error>;
-}
 
-export interface locationSectionInterface extends Timestamps {
+export interface LocationSectionInterface extends Timestamps {
   id: number;
   permanent_address: string;
   present_address?: string;
   relocate_plan?: string;
   childhood_address?: string;
-}
-export interface LocationFormInterface<Error> extends locationSectionInterface {
-  message?: string;
-  errors?: Partial<Error>;
 }
 
 export interface EducationSectionInterface extends Timestamps {
@@ -72,11 +63,6 @@ export interface EducationSectionInterface extends Timestamps {
   current_study?: string;
   previous_exams: string;
   other_qualifications?: string;
-}
-export interface EducationFormInterface<Error>
-  extends EducationSectionInterface {
-  message?: string;
-  errors?: Partial<Error>;
 }
 
 export interface PersonalDetailsSectionInterface extends Timestamps {
@@ -89,53 +75,35 @@ export interface PersonalDetailsSectionInterface extends Timestamps {
   device_usage_time?: string;
   affiliations?: string;
 }
-export interface PersonalDetailsFormInterface<Error>
-  extends PersonalDetailsSectionInterface {
-  message?: string;
-  errors?: Partial<Error>;
-}
 
 export interface FamilyInfoSectionInterface extends Timestamps {
   id: number;
   family_members_info: string;
-  descent: string;
+  descent?: string;
   uncles_info?: string;
   economic_status: EconomicStatusType;
   economic_status_details?: string;
 }
-export interface FamilyInfoFormInterface<Error>
-  extends FamilyInfoSectionInterface {
-  message?: string;
-  errors?: Partial<Error>;
-}
 
 export interface ProfessionInterface extends Timestamps {
   id: number;
-  profession: string;
+  profession: ProfessionType;
   profession_description: string;
   monthly_income: string;
-}
-export interface ProfessionFormInterface<Error> extends ProfessionInterface {
-  message?: string;
-  errors?: Partial<Error>;
 }
 
 export interface ExpectedPartnerInterface extends Timestamps {
   id: number;
   age: number;
   complexion: string;
-  height: number;
+  height: string;
   marital_status: MaritalStatusType;
   educational_qualification: string;
   profession: string;
   economic_status: EconomicStatusType;
+  bio_profile_types: BioProfileType;
   family?: string;
   about_partner?: string;
-}
-export interface ExpectedPartnerFormInterface<Error>
-  extends ExpectedPartnerInterface {
-  message?: string;
-  errors?: Partial<Error>;
 }
 
 export interface HiddenInfoInterface extends Timestamps {
@@ -148,10 +116,6 @@ export interface HiddenInfoInterface extends Timestamps {
   present_address_map_location?: string;
   email: string;
   social_links?: string;
-}
-export interface HiddenInfoFormInterface<Error> extends HiddenInfoInterface {
-  message?: string;
-  errors?: Partial<Error>;
 }
 
 export interface ReligiousActivityInterface extends Timestamps {
@@ -166,11 +130,6 @@ export interface ReligiousActivityInterface extends Timestamps {
   religious_beliefs?: string;
   religious_knowledge?: string;
   family_religious_environment?: string;
-}
-export interface ReligiousActivityFormInterface<Error>
-  extends ReligiousActivityInterface {
-  message?: string;
-  errors?: Partial<Error>;
 }
 
 export interface MarriageInfoInterface extends Timestamps {
@@ -187,8 +146,64 @@ export interface MarriageInfoInterface extends Timestamps {
   compromise_factors?: string;
   cash_gift_opinion?: string;
 }
-export interface MarriageInfoFormInterface<Error>
-  extends MarriageInfoInterface {
+// Generic form interface for common fields
+export interface FormErrorInterface<Error> {
   message?: string;
+  error: string;
   errors?: Partial<Error>;
 }
+
+// BioFormInterface
+export interface BioFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    BioInterface {}
+
+// LocationFormInterface
+export interface GeneralFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    GeneralSectionInterface {}
+
+// LocationFormInterface
+export interface LocationFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    LocationSectionInterface {}
+
+// EducationFormInterface
+export interface EducationFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    EducationSectionInterface {}
+
+// PersonalDetailsFormInterface
+export interface PersonalDetailsFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    PersonalDetailsSectionInterface {}
+
+// FamilyInfoFormInterface
+export interface FamilyInfoFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    FamilyInfoSectionInterface {}
+
+// ProfessionFormInterface
+export interface ProfessionFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    ProfessionInterface {}
+
+// ExpectedPartnerFormInterface
+export interface ExpectedPartnerFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    ExpectedPartnerInterface {}
+
+// HiddenInfoFormInterface
+export interface HiddenInfoFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    HiddenInfoInterface {}
+
+// ReligiousActivityFormInterface
+export interface ReligiousActivityFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    ReligiousActivityInterface {}
+
+// MarriageInfoFormInterface
+export interface MarriageInfoFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    MarriageInfoInterface {}

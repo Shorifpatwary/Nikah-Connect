@@ -19,9 +19,11 @@ return new class extends Migration
       $table->string('marital_status');
       $table->text('educational_qualification');
       $table->text('profession');
-      $table->string('economic_status',);
+      $table->string('economic_status');
       $table->text('family')->nullable();
       $table->text('about_partner')->nullable();
+      $table->string('bio_profile_types');
+
 
       $table->foreignId('bio_id')->constrained('bios')->cascadeOnDelete();
 

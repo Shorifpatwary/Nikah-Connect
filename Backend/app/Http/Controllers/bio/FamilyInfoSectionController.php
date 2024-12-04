@@ -30,13 +30,15 @@ class FamilyInfoSectionController extends Controller
     DB::beginTransaction();
 
     try {
-      // Retrieve the authenticated user's bio ID
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
-
+      if (!$bio) {
+        return response()->json(['error' => 'আপনার বায়ো রেকর্ড পাওয়া যায়নি।'], 404);
+      }
       // Check if the authenticated user already has a BioFamilyInfo entry via the Bio model
       $existingFamilyInfo = FamilyInfoSection::where('bio_id', $bio->id)->first();
 
-      if ($existingFamilyInfo) {
+      if (FamilyInfoSection::where('bio_id', $bio->id)->exists()) {
         // If a BioFamilyInfo already exists, return an error response
         return response()->json(['error' => 'You have already created a Family Information entry.'], 403);
       }
@@ -46,30 +48,13 @@ class FamilyInfoSectionController extends Controller
         'bio_id' => $bio->id,
       ]));
 
-      // Calculate percentage of family information filled
-      $familyFields = [
-        'family_members_info',
-        'uncles_info',
-        'descent',
-        'economic_status',
-        'economic_status_details',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($familyFields as $field) {
-        if (!empty($familyInfo->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $familyFilledMarks = ($filledFields / count($familyFields)) * 100; // Calculate percentage
-
+      // Calculate the percentage of filled fields for the FamilyInfo
+      $familyInfoFilledMarks = $this->calculateFilledMarks($familyInfo);
       // Create or update the FilledMarks record with calculated family filled marks
       FilledMarks::updateOrCreate(
         ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
         [
-          'family_filled_marks' => $familyFilledMarks,
+          'family_filled_marks' => $familyInfoFilledMarks,
           // Add other filled marks columns if needed
         ]
       );
@@ -84,7 +69,7 @@ class FamilyInfoSectionController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to create records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
 
@@ -105,36 +90,22 @@ class FamilyInfoSectionController extends Controller
     DB::beginTransaction();
 
     try {
-      // Retrieve the authenticated user's bio ID
+      // Retrieve the authenticated user's bio
       $bio = Bio::where('user_id', auth()->id())->first();
 
+      if (!$bio || $family_info->bio_id !== $bio->id) {
+        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+      }
       // Update the FamilyInfoSection record
       $family_info->update($request->validated());
 
-      // Calculate percentage of family information filled
-      $familyFields = [
-        'family_members_info',
-        'uncles_info',
-        'descent',
-        'economic_status',
-        'economic_status_details',
-      ];
-
-      $filledFields = 0;
-
-      foreach ($familyFields as $field) {
-        if (!empty($family_info->$field)) {
-          $filledFields++;
-        }
-      }
-
-      $familyFilledMarks = ($filledFields / count($familyFields)) * 100; // Calculate percentage
-
+      // Calculate the percentage of filled fields for the FamilyInfo
+      $familyInfoFilledMarks = $this->calculateFilledMarks($family_info);
       // Update or create the FilledMarks record with the updated filled marks
       FilledMarks::updateOrCreate(
         ['bio_id' => $bio->id], // Condition to check if a FilledMarks record exists for this bio
         [
-          'family_filled_marks' => $familyFilledMarks,
+          'family_filled_marks' => $familyInfoFilledMarks,
           // Add other filled marks columns if needed
         ]
       );
@@ -149,10 +120,9 @@ class FamilyInfoSectionController extends Controller
       DB::rollBack();
 
       // Handle the error, e.g., log it, return an error response, etc.
-      return response()->json(['error' => 'Unable to update records.' . $e->getMessage()], 500);
+      return response()->json(['error' => 'রেকর্ড তৈরি করা সম্ভব হয়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন। ' . $e->getMessage()], 500);
     }
   }
-
 
   /**
    * Remove the specified resource from storage.
@@ -160,5 +130,22 @@ class FamilyInfoSectionController extends Controller
   public function destroy(FamilyInfoSection $family_info)
   {
     //
+  }
+
+  /**
+   * Helper function to calculate the filled marks percentage
+   */
+  private function calculateFilledMarks(FamilyInfoSection $familyInfo)
+  {
+    $familyFields = [
+      'family_members_info',
+      'uncles_info',
+      'descent',
+      'economic_status',
+      'economic_status_details',
+    ];
+
+    $filledFields = count(array_filter($familyFields, fn($field) => !empty($familyInfo->$field) || $familyInfo->$field !== null));
+    return ($filledFields / count($familyFields)) * 100;
   }
 }

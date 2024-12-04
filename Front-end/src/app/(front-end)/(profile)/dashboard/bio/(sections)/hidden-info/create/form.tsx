@@ -16,7 +16,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, minLength, object, Output, string } from "valibot";
+import { email, maxLength, minLength, object, Output, string } from "valibot";
 
 // Valibot schema
 const Schema = object({
@@ -29,6 +29,7 @@ const Schema = object({
     minLength(1, VM.email.required),
     minLength(5, VM.email.minLength),
     maxLength(255, VM.email.maxLength),
+    email(VM.email.email),
   ]),
   location: string([
     minLength(1, VM.location.required),
@@ -73,7 +74,6 @@ const HiddenInfoCreateForm = () => {
     formState: { errors },
     setError,
     reset,
-    setValue,
   } = useForm<HiddenInfoCreateSchemaType>({
     resolver: valibotResolver(Schema),
   });
@@ -98,6 +98,7 @@ const HiddenInfoCreateForm = () => {
         <TextInputBox
           label={Data.inputs.name.title}
           labelRequired={true}
+          placeholder={Data.inputs.name.placeholder}
           suggestions={Data.inputs.name.suggestions}
           errorMessage={errors.name?.message}
           fieldName="name"
@@ -108,6 +109,7 @@ const HiddenInfoCreateForm = () => {
         <TextInputBox
           label={Data.inputs.email.title}
           labelRequired={true}
+          placeholder={Data.inputs.email.placeholder}
           type="email"
           suggestions={Data.inputs.email.suggestions}
           errorMessage={errors.email?.message}
@@ -119,6 +121,7 @@ const HiddenInfoCreateForm = () => {
         <TextareaBox
           label={Data.inputs.location.title}
           labelRequired={true}
+          placeholder={Data.inputs.location.placeholder}
           suggestions={Data.inputs.location.suggestions}
           errorMessage={errors.location?.message}
           fieldName="location"
@@ -129,6 +132,7 @@ const HiddenInfoCreateForm = () => {
         <TextareaBox
           label={Data.inputs.family_members_name.title}
           labelRequired={true}
+          placeholder={Data.inputs.family_members_name.placeholder}
           suggestions={Data.inputs.family_members_name.suggestions}
           errorMessage={errors.family_members_name?.message}
           fieldName="family_members_name"
@@ -139,6 +143,7 @@ const HiddenInfoCreateForm = () => {
         <TextInputBox
           label={Data.inputs.current_parent.title}
           labelRequired={true}
+          placeholder={Data.inputs.current_parent.placeholder}
           errorMessage={errors.current_parent?.message}
           fieldName="current_parent"
           register={register("current_parent")}
@@ -148,6 +153,7 @@ const HiddenInfoCreateForm = () => {
         <TextInputBox
           label={Data.inputs.parent_mobile.title}
           labelRequired={true}
+          placeholder={Data.inputs.parent_mobile.placeholder}
           suggestions={Data.inputs.parent_mobile.suggestions}
           errorMessage={errors.parent_mobile?.message}
           fieldName="parent_mobile"
@@ -157,6 +163,7 @@ const HiddenInfoCreateForm = () => {
         {/* Social Links */}
         <TextareaBox
           label={Data.inputs.social_links.title}
+          placeholder={Data.inputs.social_links.placeholder}
           suggestions={Data.inputs.social_links.suggestions}
           errorMessage={errors.social_links?.message}
           fieldName="social_links"
@@ -166,6 +173,7 @@ const HiddenInfoCreateForm = () => {
         {/* Permanent Address Map Location */}
         <TextInputBox
           label={Data.inputs.permanent_address_map_location.title}
+          placeholder={Data.inputs.permanent_address_map_location.placeholder}
           suggestions={Data.inputs.permanent_address_map_location.suggestions}
           errorMessage={errors.permanent_address_map_location?.message}
           fieldName="permanent_address_map_location"
@@ -175,6 +183,7 @@ const HiddenInfoCreateForm = () => {
         {/* Present Address Map Location */}
         <TextInputBox
           label={Data.inputs.present_address_map_location.title}
+          placeholder={Data.inputs.present_address_map_location.placeholder}
           suggestions={Data.inputs.present_address_map_location.suggestions}
           fieldName="present_address_map_location"
           register={register("present_address_map_location")}
@@ -183,6 +192,7 @@ const HiddenInfoCreateForm = () => {
         {/* Documents Links */}
         <TextInputBox
           label={Data.inputs.documents_links.title}
+          placeholder={Data.inputs.documents_links.placeholder}
           suggestions={Data.inputs.documents_links.suggestions}
           errorMessage={errors.documents_links?.message}
           fieldName="documents_links"
