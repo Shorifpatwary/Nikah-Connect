@@ -5,7 +5,7 @@ import {
   VM,
 } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/data";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
-import { getOppositeBioProfiles } from "@/app/(front-end)/bio/bio-card/bio-profile";
+import { getOppositeBioProfiles } from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
 import { complexions, marital_status } from "@/assets/data/config/app.config";
 import {
   ExpectedPartnerInterface,

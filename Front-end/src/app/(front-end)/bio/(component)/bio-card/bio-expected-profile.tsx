@@ -1,4 +1,4 @@
-import BioProfile from "@/app/(front-end)/bio/bio-card/bio-profile";
+import BioProfile from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
 import { BioProfileType } from "@/assets/data/response-types/status-types";
 import { cn } from "@/lib/utils";
 

@@ -6,7 +6,9 @@ export interface QueryParams {
   page?: number;
   per_page?: number;
   search?: string | null;
+  [key: string]: string | number | null | undefined; // Allow additional dynamic keys
 }
+
 export const queryString = () => {
   const searchParams = useSearchParams();
 
@@ -15,10 +17,10 @@ export const queryString = () => {
       const newSearchParams = new URLSearchParams(searchParams.toString());
 
       for (const [key, value] of Object.entries(params)) {
-        if (value === null) {
-          newSearchParams.delete(key);
+        if (value === null || value === undefined) {
+          newSearchParams.delete(key); // Remove null/undefined params
         } else {
-          newSearchParams.set(key, String(value));
+          newSearchParams.set(key, String(value)); // Set new or update existing params
         }
       }
 

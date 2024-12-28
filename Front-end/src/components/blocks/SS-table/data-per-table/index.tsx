@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import { queryString } from "@/lib/query/queryString";
+import createQueryString from "@/lib/query/queryString";
 import { useRouter } from "next/navigation";
 
 interface RecordTypes {
@@ -18,7 +18,6 @@ interface RecordTypes {
 
 const RecordsPerPage = () => {
   const router = useRouter();
-  const createQueryString = queryString();
 
   const handleRowsChange = (value: number) => {
     const currentQueryParams = getQueryParams();

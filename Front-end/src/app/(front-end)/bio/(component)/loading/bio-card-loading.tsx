@@ -5,7 +5,7 @@ const BioCardLoader = () => {
   return (
     <div
       className={cn(
-        "box-border flex w-full max-w-sm grow flex-col gap-2 border border-accent  py-8 sm:w-[49%] sm:flex-col sm:gap-5 lg:w-[32.5%] 2xl:w-[24%]"
+        "box-border flex w-full max-w-sm grow flex-col gap-2 border border-accent  px-1 py-8 sm:w-[49%] sm:flex-col sm:gap-5 lg:w-[32.5%] 2xl:w-[24%]"
       )}
     >
       <div className="border-0 border-b border-primary pt-4">
@@ -20,7 +20,7 @@ const BioCardLoader = () => {
             </div>
           </div>
           {/* Info Section */}
-          <div className="flex w-6/12 flex-col items-end justify-end  gap-6 p-1  align-middle">
+          <div className="flex w-6/12 flex-col items-end justify-end  gap-8 p-1  align-middle">
             <Skeleton className="h-6 w-2/4" />
             <div className="flex w-full flex-col items-end gap-2">
               <Skeleton className="h-6 w-3/4" />

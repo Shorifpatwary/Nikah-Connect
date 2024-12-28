@@ -30,7 +30,7 @@ const TextInputBox = ({
         htmlFor={fieldName}
         className={"text-lg capitalize max-md:text-xl"}
       >
-        {label}{" "}
+        {label}
         {labelRequired && <span className="ml-1 text-red-600">(*)</span>}
       </Label>
       {suggestions && suggestions.length > 0 && (

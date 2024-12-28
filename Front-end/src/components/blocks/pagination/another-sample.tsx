@@ -9,7 +9,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import { queryString } from "@/lib/query/queryString";
+import createQueryString from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 interface Props extends PaginationProps {
@@ -22,7 +22,6 @@ const AnotherPagination = ({
   last_page,
   links,
 }: Props) => {
-  const createQueryString = queryString();
   const router = useRouter();
   const handleUpdateQuery = (page: number) => {
     const currentQueryParams = getQueryParams();

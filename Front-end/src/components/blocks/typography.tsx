@@ -33,7 +33,7 @@ export const TitleMd: React.FC<TypographyProps> = ({
   );
 };
 
-//  mid title
+//  small title
 export const TitleSm: React.FC<TypographyProps> = ({
   className,
   tag: Tag = "h3",
@@ -47,7 +47,7 @@ export const TitleSm: React.FC<TypographyProps> = ({
   );
 };
 
-// paragraph
+// large paragraph
 export const ParagraphLg: React.FC<TypographyProps> = ({
   className,
   tag: Tag = "p",
@@ -60,7 +60,7 @@ export const ParagraphLg: React.FC<TypographyProps> = ({
     </Tag>
   );
 };
-
+// mid paragraph
 export const ParagraphMd: React.FC<TypographyProps> = ({
   className,
   tag: Tag = "p",
@@ -68,12 +68,12 @@ export const ParagraphMd: React.FC<TypographyProps> = ({
   ...props
 }) => {
   return (
-    <Tag className={cn("font-primary text-xl ", className)} {...props}>
+    <Tag className={cn("font-primary text-xl", className)} {...props}>
       {children}
     </Tag>
   );
 };
-
+// small paragraph
 export const ParagraphSm: React.FC<TypographyProps> = ({
   className,
   tag: Tag = "p",
@@ -86,7 +86,7 @@ export const ParagraphSm: React.FC<TypographyProps> = ({
     </Tag>
   );
 };
-
+// extra small paragraph
 export const ParagraphXS: React.FC<TypographyProps> = ({
   className,
   tag: Tag = "p",

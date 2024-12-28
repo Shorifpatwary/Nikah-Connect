@@ -1,6 +1,6 @@
-import BioExpectedProfile from "@/app/(front-end)/bio/bio-card/bio-expected-profile";
-import BioProfile from "@/app/(front-end)/bio/bio-card/bio-profile";
-import QuestionColumn from "@/app/(front-end)/bio/bio-card/question-column";
+import BioExpectedProfile from "@/app/(front-end)/bio/(component)/bio-card/bio-expected-profile";
+import BioProfile from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
+import QuestionColumn from "@/app/(front-end)/bio/(component)/bio-card/question-column";
 import { heights, weights } from "@/assets/data/config/app.config";
 import {
   BioInterface,
@@ -48,16 +48,6 @@ const BioCard = ({
   profession,
   updated_at,
 }: Props) => {
-  console.log(profession, "profession", gender, "gender", id, "id");
-  console.log(
-    height,
-    "height_",
-    heights.filter(item => Number(item.value) == Number(height))[0]?.label,
-    "height",
-    id,
-    "id"
-  );
-
   return (
     <Card
       className={cn(

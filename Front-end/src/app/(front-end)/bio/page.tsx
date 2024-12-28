@@ -1,7 +1,7 @@
 "use client";
-import BioCard from "@/app/(front-end)/bio/bio-card";
-import BioFilterAction from "@/app/(front-end)/bio/bio-filter-action";
-import BioPageLoader from "@/app/(front-end)/bio/loading/bio-page-loading";
+import BioCard from "@/app/(front-end)/bio/(component)/bio-card";
+import BioFilterAction from "@/app/(front-end)/bio/(component)/bio-filter-action";
+import BioPageLoader from "@/app/(front-end)/bio/(component)/loading/bio-page-loading";
 import { BiosWithPagination } from "@/assets/data/response-types/bio";
 import Routes from "@/assets/data/routes";
 import CustomPagination from "@/components/blocks/pagination";
@@ -54,6 +54,7 @@ const BioPage = () => {
         </ParagraphMd>
       </Section>
       <Section className="justify-center py-6">
+        {/* // todo make this lazy load. */}
         <BioFilterAction />
       </Section>
       <Section
@@ -62,6 +63,7 @@ const BioPage = () => {
       >
         {data.data.map(item => (
           <BioCard
+            key={item.id}
             id={item.id}
             bio_profile={item.bio_profile}
             gender={item.general_section?.gender}

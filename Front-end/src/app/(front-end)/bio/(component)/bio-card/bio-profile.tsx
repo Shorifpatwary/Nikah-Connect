@@ -1,4 +1,4 @@
-import GenerateBioProfileLabel from "@/app/(front-end)/bio/bio-card/generateBioProfileLabel";
+import GenerateBioProfileLabel from "@/app/(front-end)/bio/(component)/bio-card/generateBioProfileLabel";
 import { BioInterface } from "@/assets/data/response-types/bio";
 import dummyAvatarImage from "@/assets/icons/dummy-avatar.svg";
 import lowFemaleAvatarImage from "@/assets/icons/low-level-muslim-female-avatar.svg";
@@ -89,7 +89,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={topMaleAvatarImage}
-        alt="best practicing muslim male avatar"
+        alt="Best practicing Muslim male avatar"
+        title="Top practicing Muslim male"
       />
     );
   } else if (bio_profile === "MID_MALE") {
@@ -97,7 +98,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={midMaleAvatarImage}
-        alt="medium practicing muslim male avatar"
+        alt="Medium practicing Muslim male avatar"
+        title="Medium practicing Muslim male"
       />
     );
   } else if (bio_profile === "LOW_MALE") {
@@ -105,7 +107,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={lowMaleAvatarImage}
-        alt="low practicing muslim male avatar"
+        alt="Low practicing Muslim male avatar"
+        title="Low practicing Muslim male"
       />
     );
   } else if (bio_profile === "TOP_FEMALE") {
@@ -113,7 +116,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={topFemaleAvatarImage}
-        alt="best practicing muslim female avatar"
+        alt="Best practicing Muslim female avatar"
+        title="Top practicing Muslim female"
       />
     );
   } else if (bio_profile === "MID_FEMALE") {
@@ -121,7 +125,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={midFemaleAvatarImage}
-        alt="medium practicing muslim female avatar"
+        alt="Medium practicing Muslim female avatar"
+        title="Medium practicing Muslim female"
       />
     );
   } else if (bio_profile === "LOW_FEMALE") {
@@ -129,7 +134,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={lowFemaleAvatarImage}
-        alt="low practicing muslim female avatar"
+        alt="Low practicing Muslim female avatar"
+        title="Low practicing Muslim female"
       />
     );
   } else {
@@ -137,7 +143,8 @@ const BioProfile = ({ className, bio_profile }: Props) => {
       <Image
         className={className}
         src={dummyAvatarImage}
-        alt="muslim  avatar"
+        alt="Default Muslim avatar"
+        title="Default Muslim avatar"
       />
     );
   }

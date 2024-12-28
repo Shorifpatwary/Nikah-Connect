@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { findNestedItemsByIds } from "@/lib/findNestedItemById";
 import { cn } from "@/lib/utils";
 import { MoveLeft, MoveRight, X } from "lucide-react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -26,6 +27,7 @@ type Props = {
   setValues: Dispatch<SetStateAction<LocationTypeWithoutChildren[]>>;
   isOnlyChildren?: boolean;
   triggerText: string;
+  defaultValues?: number[];
 };
 
 const SelectLocations = ({
@@ -35,6 +37,7 @@ const SelectLocations = ({
   label,
   isOnlyChildren = false,
   triggerText,
+  defaultValues = [],
 }: Props) => {
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const [locations, setLocations] = useState<LocationType[]>([]);
@@ -42,6 +45,7 @@ const SelectLocations = ({
   const [selectedLocations, setSelectedLocations] = useState<LocationType[]>(
     []
   );
+
   const handleLocations = (locationString: string) => {
     const locationObject: LocationType = JSON.parse(locationString);
     const locationIsInValues = values.some(
@@ -155,7 +159,7 @@ const SelectLocations = ({
     } else {
       displayLocations = currentLocation.children;
     }
-
+    console.log(values, "values");
     displayLocations = displayLocations.filter(
       location =>
         !values.some(selectedLocation => selectedLocation.id === location.id)
@@ -217,8 +221,18 @@ const SelectLocations = ({
         if (!response.ok) {
           throw new Error("Failed to fetch locations");
         }
-        const data = await response.json();
+        const data: LocationType[] = await response.json();
         setLocations(data);
+
+        // set default value
+        if (defaultValues.length > 0 && data.length > 0) {
+          const defaultLocationItems = findNestedItemsByIds(
+            data,
+            defaultValues
+          );
+          setSelectedLocations(defaultLocationItems);
+          setValues(defaultLocationItems);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -226,6 +240,7 @@ const SelectLocations = ({
     fetchLocations();
     // setTimeout(() => fetchLocations(), 3000);
   }, []);
+
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {/* show dynamic select box */}
@@ -265,10 +280,10 @@ const SelectLocations = ({
                   <MoveRight />
                 </Button>
               </SelectLabel>
-              {getDisplayLocations().map(location => {
+              {getDisplayLocations().map((location, index) => {
                 return (
                   <SelectItem
-                    key={location.id}
+                    key={`${location.id + location.name}-${index}`}
                     className="capitalize"
                     value={JSON.stringify(location)}
                   >
@@ -283,17 +298,17 @@ const SelectLocations = ({
 
       {/* show selected values */}
       <div className="my-4 flex flex-wrap gap-2">
-        {values.map(location => (
+        {values.map((location, index) => (
           <Badge
             variant="outline"
-            key={location.id}
-            className=" border-y-2 border-primary px-3 py-1 text-base font-thin"
+            key={`${location.id}-${index}`}
+            className="border-y-2 border-primary px-2 py-1 text-base font-thin md:text-sm"
           >
             {`${location.name} ${location.type}`}
             <button
               type="button"
               className={
-                "ml-2 rounded-full  text-primary outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                "ml-1 rounded-full text-primary outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
               }
               onClick={() => handleUnselect(location.id)}
             >

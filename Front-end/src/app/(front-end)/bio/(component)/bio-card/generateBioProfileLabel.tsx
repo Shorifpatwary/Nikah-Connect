@@ -1,4 +1,4 @@
-import BioProfile from "@/app/(front-end)/bio/bio-card/bio-profile";
+import BioProfile from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
 import { BioInterface } from "@/assets/data/response-types/bio";
 import { ParagraphMd } from "@/components/blocks/typography";
 interface Props extends Pick<BioInterface, "bio_profile"> {

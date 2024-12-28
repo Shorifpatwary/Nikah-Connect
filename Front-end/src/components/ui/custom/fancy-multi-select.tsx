@@ -71,7 +71,11 @@ export function FancyMultiSelect({
       <div className="group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex flex-wrap gap-1">
           {selected.map(item => (
-            <Badge key={item.value} variant="secondary">
+            <Badge
+              key={item.value}
+              variant="secondary"
+              className="max-lg:text-sm"
+            >
               {item.label}
               <button
                 className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"

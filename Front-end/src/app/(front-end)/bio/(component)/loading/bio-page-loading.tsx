@@ -1,4 +1,4 @@
-import BioCardLoader from "@/app/(front-end)/bio/loading/bio-card-loading";
+import BioCardLoader from "@/app/(front-end)/bio/(component)/loading/bio-card-loading";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const BioPageLoader = () => {

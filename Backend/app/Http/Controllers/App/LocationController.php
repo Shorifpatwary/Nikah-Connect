@@ -30,7 +30,7 @@ class LocationController extends Controller
 
   public function index()
   {
-    $nestedLocations = Cache::remember('nested_locations', now()->addMinute(), function () {
+    $nestedLocations = Cache::remember('nested_locations', now()->addDays(10), function () {
       return $this->getNestedLocations();
     });
 
@@ -86,5 +86,30 @@ class LocationController extends Controller
     }
 
     return $nestedLocations;
+  }
+
+  public function getHierarchicalLocationIds($parentIds = [])
+  {
+    // If input is a single value, convert it to an array
+    if (!is_array($parentIds)) {
+      $parentIds = [$parentIds];
+    }
+
+    // Retrieve all locations based on the parent IDs
+    $locations = Location::whereIn('parent_id', $parentIds)->get();
+
+    // Initialize an array to store location IDs
+    $locationIds = [];
+
+    // Iterate through the locations and collect their IDs
+    foreach ($locations as $location) {
+      // Add the current location's ID to the array
+      $locationIds[] = $location->id;
+
+      // Recursively get nested locations and merge them into the main array
+      $locationIds = array_merge($locationIds, $this->getHierarchicalLocationIds($location->id));
+    }
+
+    return $locationIds;
   }
 }

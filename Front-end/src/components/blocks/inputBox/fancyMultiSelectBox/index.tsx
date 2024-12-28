@@ -3,6 +3,7 @@ import Suggestion from "@/components/blocks/form-helper/suggestion";
 import { Option } from "@/components/blocks/inputBox/selectBox";
 import { FancyMultiSelect } from "@/components/ui/custom/fancy-multi-select";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { memo } from "react";
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
   options: Option[];
   defaultValue?: Option[];
   setValue?: (value: Option[]) => void;
+  className?: string;
 }
 const FancyMultiSelectBox = ({
   label,
@@ -25,10 +27,11 @@ const FancyMultiSelectBox = ({
   options,
   errorMessage,
   suggestions,
+  className,
 }: Props) => {
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor="name" className="text-lg capitalize max-md:text-xl">
+    <div className={cn("flex flex-col gap-2", className)}>
+      <Label htmlFor={label} className="text-lg capitalize max-md:text-xl">
         {label}{" "}
         {labelRequired && <span className="ml-1 text-red-600">(*)</span>}
       </Label>

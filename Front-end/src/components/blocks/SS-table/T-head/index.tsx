@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import { queryString } from "@/lib/query/queryString";
+import createQueryString from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { ArrowDownUp } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 export interface columnType {
   name: string;
   label: string;
@@ -19,22 +20,27 @@ type Props = {
 
 const T_Head = ({ className, columns }: Props) => {
   const router = useRouter();
-  const createQueryString = queryString();
 
   const handleSort = (columnName: string) => {
-    const currentQueryParams = getQueryParams();
+    const searchParams = useSearchParams(); // Fetch search parameters
+    const router = useRouter();
+
+    // Memoize query params and filters
+    const { filters, params } = useMemo(
+      () => getQueryParams(searchParams),
+      [searchParams]
+    );
 
     // Determine the current sort direction for the column
-    const currentSortColumn = currentQueryParams.sort;
+    const currentSortColumn = params.sort;
     let newSortDirection: "asc" | "desc" = "asc";
 
     if (currentSortColumn === columnName) {
       // If the column is already being sorted, toggle the sort direction
-      newSortDirection =
-        currentQueryParams.sort_direction === "asc" ? "desc" : "asc";
+      newSortDirection = params.sort_direction === "asc" ? "desc" : "asc";
     }
     const newQuery = createQueryString({
-      ...currentQueryParams,
+      ...params,
       sort: columnName,
       sort_direction: newSortDirection,
       page: 1,

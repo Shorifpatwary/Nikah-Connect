@@ -6,24 +6,28 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 export const parseSelectedOptions = (
-  valueString: string,
+  valueInput: string | string[],
   options: Option[]
 ): Option[] => {
-  if (!valueString) return [];
-  // Split the string into an array, trim whitespace, and match options
-  return options.filter(option =>
-    valueString
-      .split(",")
-      .map(val => val.trim())
-      .includes(option.value)
-  );
+  if (!valueInput) return [];
+
+  // Convert input to an array if it's a string
+  const values = Array.isArray(valueInput)
+    ? valueInput
+    : valueInput.split(",").map(val => val.trim());
+
+  // Filter the options based on the values array
+  return options.filter(option => values.includes(option.value));
 };
 
-export function convertStringToArray<T>(input: string): T[] {
+export function convertStringToArray<T>(
+  input: string,
+  separator: string = ","
+): T[] {
   if (!input) {
     return []; // Return an empty array if input is falsy
   }
-  return input.split(",").map(item => item.trim()) as T[];
+  return input.split(separator).map(item => item.trim()) as T[];
 }
 
 export function extractDate<T extends string>(datetime: T): string {
