@@ -8,8 +8,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import createQueryString from "@/lib/query/queryString";
-import { useRouter } from "next/navigation";
+import { queryString } from "@/lib/query/queryString";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 
 interface RecordTypes {
   label: string;
@@ -18,11 +19,17 @@ interface RecordTypes {
 
 const RecordsPerPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const createQueryString = queryString();
+  const { params } = useMemo(
+    () => getQueryParams(searchParams),
+    [searchParams]
+  );
 
   const handleRowsChange = (value: number) => {
-    const currentQueryParams = getQueryParams();
     const newQuery = createQueryString({
-      ...currentQueryParams,
+      ...params,
       page: 1,
       per_page: value,
     });

@@ -74,7 +74,7 @@ export function FancyMultiSelect({
             <Badge
               key={item.value}
               variant="secondary"
-              className="max-lg:text-sm"
+              className="text-lg sm:text-base"
             >
               {item.label}
               <button
@@ -101,7 +101,7 @@ export function FancyMultiSelect({
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             placeholder={triggerText || "Select Items ..."}
-            className="ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+            className="ml-2 flex-1 bg-transparent text-lg outline-none placeholder:text-muted-foreground max-md:text-xl"
           />
         </div>
       </div>
@@ -121,7 +121,7 @@ export function FancyMultiSelect({
                       setInputValue("");
                       setSelected(prev => [...prev, item]);
                     }}
-                    className="cursor-pointer"
+                    className="cursor-pointer text-lg sm:text-base"
                   >
                     {item.label}
                   </CommandItem>

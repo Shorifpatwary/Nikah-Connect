@@ -4,64 +4,73 @@ export const Data = {
     inputs: {
       gender: {
         title: "বায়োডাটার ধরন",
-        triggerText: "আপনার বায়োডাটার ধরন নির্বাচন করুন",
+        triggerText: "বায়োডাটার ধরন নির্বাচন করুন",
       },
       marital_status: {
         title: "বৈবাহিক অবস্থা",
-        triggerText: "আপনার বৈবাহিক অবস্থা নির্বাচন করুন",
+        triggerText: "বৈবাহিক অবস্থা নির্বাচন করুন",
       },
       birth_date: {
         title: "জন্ম তারিখ",
-        placeholder: "আপনার জন্ম তারিখ নির্ধারণ করুন",
+        placeholder: "জন্ম তারিখ নির্ধারণ করুন",
       },
       height: {
         title: "উচ্চতা",
-        triggerText: "আপনার উচ্চতা নির্বাচন করুন",
+        triggerText: "উচ্চতা নির্বাচন করুন",
       },
       weight: {
         title: "ওজন",
-        triggerText: "আপনার ওজন নির্বাচন করুন",
+        triggerText: "ওজন নির্বাচন করুন",
       },
       complexion: {
         title: "গাত্রবর্ণ",
-        triggerText: "আপনার গাত্রবর্ণ নির্বাচন করুন",
+        triggerText: "গাত্রবর্ণ নির্বাচন করুন",
       },
       blood_group: {
         title: "রক্তের গ্রুপ",
-        triggerText: "আপনার রক্তের গ্রুপ নির্বাচন করুন",
+        triggerText: "রক্তের গ্রুপ নির্বাচন করুন",
       },
-      birth_date_min: {
-        title: "ন্যূনতম জন্ম তারিখ",
-        placeholder: "ন্যূনতম জন্ম তারিখ নির্বাচন করুন",
+      education_medium: {
+        title: "শিক্ষা মাধ্যম",
+        triggerText: "শিক্ষা মাধ্যম নির্বাচন করুন",
       },
-      birth_date_max: {
-        title: "সর্বোচ্চ জন্ম তারিখ",
-        placeholder: "সর্বোচ্চ জন্ম তারিখ নির্বাচন করুন",
+      economic_status: {
+        title: "আর্থিক সচ্ছলতা",
+        triggerText: "আর্থিক সচ্ছলতা নির্বাচন করুন",
       },
-      height_min: {
-        title: "ন্যূনতম উচ্চতা",
-        triggerText: "ন্যূনতম উচ্চতা নির্বাচন করুন",
+      profession: {
+        title: "পেশা",
+        triggerText: "পেশা নির্বাচন করুন",
       },
-      height_max: {
-        title: "সর্বোচ্চ উচ্চতা",
-        triggerText: "সর্বোচ্চ উচ্চতা নির্বাচন করুন",
+      mazhab: {
+        title: "মাযহাব",
+        triggerText: "মাযহাব নির্বাচন করুন",
       },
-      weight_min: {
-        title: "ন্যূনতম ওজন",
-        triggerText: "ন্যূনতম ওজন নির্বাচন করুন",
+      profile_type: {
+        title: "ধার্মিকতা",
+        triggerText: "ধার্মিকতা নির্বাচন করুন",
       },
-      weight_max: {
-        title: "সর্বোচ্চ ওজন",
-        triggerText: "সর্বোচ্চ ওজন নির্বাচন করুন",
+      expected_complexion: {
+        title: "যিনি প্রত্যাশা করেন গাত্রবর্ণ",
+        triggerText: "গাত্রবর্ণ নির্বাচন করুন",
       },
+      expected_marital_status: {
+        title: "যিনি প্রত্যাশা করেন বৈবাহিক অবস্থা",
+        triggerText: "বৈবাহিক অবস্থা নির্বাচন করুন",
+      },
+      expected_bio_profile_types: {
+        title: "যিনি প্রত্যাশা করেন ধার্মিকতা",
+        triggerText: "ধার্মিকতা নির্বাচন করুন",
+      },
+
       language_skills: {
         title: "ভাষাগত দক্ষতা",
         placeholder: "উদাহরণ: বাংলা, ইংরেজি, আরবি",
       },
       location: {
         hintText: "ঠিকানা নির্বাচন করুন",
-        triggerText: "আপনার ঠিকানা নির্বাচন করুন",
-        label: "ঠিকানা নির্বাচন করুন",
+        triggerText: "ঠিকানা নির্বাচন করুন",
+        label: "ঠিকানা",
       },
     },
   },

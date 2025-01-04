@@ -9,9 +9,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import createQueryString from "@/lib/query/queryString";
+import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 interface Props extends PaginationProps {
   className?: string;
 }
@@ -23,10 +24,18 @@ const AnotherPagination = ({
   links,
 }: Props) => {
   const router = useRouter();
+  const createQueryString = queryString();
+
+  const searchParams = useSearchParams();
+
+  const { params } = useMemo(
+    () => getQueryParams(searchParams),
+    [searchParams]
+  );
+
   const handleUpdateQuery = (page: number) => {
-    const currentQueryParams = getQueryParams();
     const newQuery = createQueryString({
-      ...currentQueryParams,
+      ...params,
       page,
     });
     router.push(`?${newQuery}`);

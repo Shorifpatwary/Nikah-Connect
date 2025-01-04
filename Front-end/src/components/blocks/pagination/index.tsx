@@ -10,9 +10,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import createQueryString from "@/lib/query/queryString";
+import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 interface Props {
   className?: string;
   meta: Meta;
@@ -29,18 +30,25 @@ const CustomPagination = ({ className, meta }: Props) => {
     links: numberPageLinks,
   });
 
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const { params } = useMemo(
+    () => getQueryParams(searchParams),
+    [searchParams]
+  );
+  const createQueryString = queryString();
+
   const handleUpdateQuery = (page: number) => {
-    const currentQueryParams = getQueryParams();
     const newQuery = createQueryString({
-      ...currentQueryParams,
+      ...params,
       page,
     });
     router.push(`?${newQuery}`);
   };
+
   return (
     // mx-auto
-    <Pagination className={cn(" w-11/12 md:w-5/12", className)}>
+    <Pagination className={cn("w-11/12 md:w-5/12", className)}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

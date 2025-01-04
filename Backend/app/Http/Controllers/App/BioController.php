@@ -36,40 +36,40 @@ class BioController extends Controller
 
       // Map of relations and their fields
       $relationFilters = [
-        'generalSection' => ['gender', 'marital_status', 'birth_date', 'height', 'weight', 'complexion', "blood_group", "location_id"],
-        'expectedPartner' => ['bio_profile_types'],
+        'generalSection' => ['gender', 'marital_status', 'birth_date', 'height', 'weight', 'complexion', 'blood_group', 'location_id'],
+        'educationSection' => ['education_medium'],
+        'familyInfoSection' => ['economic_status'],
+        'professionSection' => ['profession'],
+        'religiousActivity' => ['mazhab'],
+        'expectedPartner' => ['expected_complexion', 'expected_marital_status', 'expected_bio_profile_types'],
       ];
 
       // Exclude non-filterable parameters
       $excludedParams = ['sort', 'sort_direction', 'page', 'per_page'];
 
-      // Check if 'location_id' is present and handle it separately
+      // Handle location_id filtering separately
       if ($request->has('location_id') && !empty($request->input('location_id'))) {
         $locationIds = $request->input('location_id');
-
-        // Process location IDs
         $locationIdsArray = explode(',', $locationIds);
 
         // Sort the array to normalize the order
         sort($locationIdsArray);
 
-        // Generate a unique cache key based on the input location IDs
+        // Generate a unique cache key for hierarchical IDs
         $cacheKey = 'nested_location_ids_' . md5(json_encode($locationIdsArray));
 
-        // Cache the result of getHierarchicalLocationIds
-        // Cache the result permanently
+        // Cache the hierarchical location IDs
         $nestedLocationIds = Cache::rememberForever($cacheKey, function () use ($locationIdsArray) {
           $locationController = new LocationController();
           return $locationController->getHierarchicalLocationIds($locationIdsArray);
         });
 
-        // Merge original and nested location IDs
+        // Merge and de-duplicate location IDs
         $locationIdsArray = array_merge($locationIdsArray, $nestedLocationIds);
         $locationIdsArray = array_unique($locationIdsArray);
 
+        // Update the request with modified location IDs
         $locationIdsString = implode(',', $locationIdsArray);
-
-        // Merge the modified location_id into the request for further filtering
         $request->merge(['location_id' => $locationIdsString]);
       }
 
@@ -81,25 +81,34 @@ class BioController extends Controller
           foreach ($relationFilters as $relation => $fields) {
             if (in_array($field, $fields)) {
               $filtered = true;
+              $column = $field;
+
+              // Adjust column name for `expectedPartner` relation
+              if ($relation === 'expectedPartner') {
+                $column = str_replace('expected_', '', $field);
+              }
 
               if (in_array($field, ['birth_date', 'height', 'weight'])) {
                 $values = explode(',', $value);
                 if (count($values) === 2) {
-                  $query->whereHas($relation, function ($q) use ($field, $values) {
-                    $q->whereBetween($field, [(float)$values[0], (float)$values[1]]);
+                  $query->whereHas($relation, function ($q) use ($column, $values) {
+                    $q->whereBetween($column, [(float)$values[0], (float)$values[1]]);
                   });
                 }
               } else {
                 $values = explode(',', $value);
-                $query->whereHas($relation, function ($q) use ($field, $values) {
-                  $q->whereIn($field, $values);
+                $query->whereHas($relation, function ($q) use ($column, $values) {
+                  $q->whereIn($column, $values);
                 });
               }
               break;
             }
           }
-
-          if (!$filtered) {
+          // Direct filtering for the 'bio_profile' column
+          if (!$filtered && $field === 'bio_profile') {
+            $values = explode(',', $value);
+            $query->whereIn('bios.bio_profile', $values);
+          } elseif (!$filtered) {
             $query->where($field, $value);
           }
         }
@@ -123,9 +132,7 @@ class BioController extends Controller
     return BioResource::collection($bios);
   }
 
-
-  // GET /api/bios?gender=male,female&complexion=fair,dusky&weight=50,80&sort=updated_at&sort_direction=desc&page=1&per_page=10
-
+  // GET /api/bios?gender=male,female&complexion=fair,dusky&weight=50,80&height=150,180&birth_date=1980-01-01,2000-12-31&location_id=1,2,3&expected_partner_marital_status=single,divorced&expected_partner_complexion=fair,medium&sort=updated_at&sort_direction=desc&page=1&per_page=10
 
   /**
    * Store a newly created resource in storage.

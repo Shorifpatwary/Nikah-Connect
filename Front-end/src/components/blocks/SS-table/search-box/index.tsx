@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import createQueryString from "@/lib/query/queryString";
+import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ type Props = {
 
 const TableSearchBox = ({ className }: Props) => {
   const router = useRouter();
+  const createQueryString = queryString();
   const handleSearch = (value: string) => {
     const trimmedValue = value.trim();
     if (trimmedValue) {

@@ -35,7 +35,6 @@ class Bio extends Model
   {
     return $this->hasOne(EducationSection::class);
   }
-
   public function personalDetails()
   {
     return $this->hasOne(PersonalDetails::class);

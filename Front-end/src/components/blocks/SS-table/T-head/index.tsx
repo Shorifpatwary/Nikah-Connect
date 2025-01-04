@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getQueryParams } from "@/lib/query/getQueryParams";
-import createQueryString from "@/lib/query/queryString";
+import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { ArrowDownUp } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -20,13 +20,12 @@ type Props = {
 
 const T_Head = ({ className, columns }: Props) => {
   const router = useRouter();
+  const createQueryString = queryString();
 
   const handleSort = (columnName: string) => {
     const searchParams = useSearchParams(); // Fetch search parameters
-    const router = useRouter();
-
     // Memoize query params and filters
-    const { filters, params } = useMemo(
+    const { params } = useMemo(
       () => getQueryParams(searchParams),
       [searchParams]
     );

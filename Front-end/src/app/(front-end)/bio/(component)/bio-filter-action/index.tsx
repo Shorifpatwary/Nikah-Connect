@@ -1,18 +1,12 @@
 "use client";
 
-import GeneralFilter from "@/app/(front-end)/bio/(component)/bio-filter-action/section-filter-box/general-filter";
+import FilterBox from "@/app/(front-end)/bio/(component)/bio-filter-action/filter-box";
+// import GeneralFilter from "@/app/(front-end)/bio/(component)/bio-filter-action/section-filter-box/general-filter";
 import SectionFilterContainer from "@/app/(front-end)/bio/(component)/bio-filter-action/section-filter-container";
 import { LocationTypeWithoutChildren } from "@/assets/data/response-types/locations";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
-import TextInputBox from "@/components/blocks/inputBox/textInputBox";
 import Section from "@/components/blocks/section";
 import { ParagraphMd } from "@/components/blocks/typography";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -35,10 +29,12 @@ import {
 import { getQueryParams } from "@/lib/query/getQueryParams";
 import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
+import { valibotResolver } from "@hookform/resolvers/valibot";
 import { FilterIcon, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { memo, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { array, object, string } from "valibot";
 
 interface Props {
   className?: string;
@@ -53,7 +49,14 @@ export type SectionFormInputsType = Partial<{
   weight: number[];
   complexion: string[];
   blood_group: string[];
-  locations: LocationTypeWithoutChildren[];
+  education_medium: string[];
+  economic_status: string[];
+  profession: string[];
+  mazhab: string[];
+  bio_profile: string[];
+  expected_complexion: string[];
+  expected_marital_status: string[];
+  expected_bio_profile_types: string[];
 }>;
 
 export const defaultValues = {
@@ -62,13 +65,43 @@ export const defaultValues = {
   marital_status: [],
   height: [3, 7], // Default height range
   weight: [30, 120], // Default weight range
-  birth_date: [1970, 2020], // Default year range
+  birth_date: [1960, 2020], // Default year range
   complexion: [],
   blood_group: [],
+  education_medium: [],
+  economic_status: [],
+  profession: [],
+  mazhab: [],
+  bio_profile: [],
+  expected_complexion: [],
+  expected_marital_status: [],
+  expected_bio_profile_types: [],
 };
 
+import { number, optional } from "valibot";
+
+// Schema definition
+export const Schema = object({
+  id: optional(string()),
+  gender: optional(array(string())),
+  marital_status: optional(array(string())),
+  height: optional(array(number())),
+  weight: optional(array(number())),
+  birth_date: optional(array(number())),
+  complexion: optional(array(string())),
+  blood_group: optional(array(string())),
+  education_medium: optional(array(string())),
+  economic_status: optional(array(string())),
+  profession: optional(array(string())),
+  mazhab: optional(array(string())),
+  bio_profile: optional(array(string())),
+  expected_complexion: optional(array(string())),
+  expected_marital_status: optional(array(string())),
+  expected_bio_profile_types: optional(array(string())),
+});
+
 const BioFilterAction = ({ className }: Props) => {
-  const searchParams = useSearchParams(); // Fetch search parameters
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const { params } = useMemo(
@@ -83,24 +116,16 @@ const BioFilterAction = ({ className }: Props) => {
     handleSubmit,
     register,
     setValue,
-    watch,
     reset,
+    getValues,
+    watch,
     formState: { isLoading },
-  } = useForm<SectionFormInputsType>({ defaultValues });
+  } = useForm<SectionFormInputsType>({
+    resolver: valibotResolver(Schema),
+    defaultValues,
+  });
 
-  const [
-    gender,
-    complexion,
-    blood_group,
-    marital_status,
-    height,
-    weight,
-    birth_date,
-  ] = watch([
-    "gender",
-    "complexion",
-    "blood_group",
-    "marital_status",
+  const [height, weight, birth_date] = watch([
     "height",
     "weight",
     "birth_date",
@@ -112,13 +137,74 @@ const BioFilterAction = ({ className }: Props) => {
     // Create a dynamic query object based on form data and locations
     const queryObject: Record<string, any> = {
       // general section query
-      gender: data.gender?.join(",") || null,
-      marital_status: data.marital_status?.join(",") || null,
-      height: data.height?.join(",") || null,
-      weight: data.weight?.join(",") || null,
-      birth_date: data.birth_date?.join(",") || null,
-      complexion: data.complexion?.join(",") || null,
-      blood_group: data.blood_group?.join(",") || null,
+      id: data.id || null,
+      gender:
+        data.gender?.join(",") !== defaultValues.gender.join(",")
+          ? data.gender?.join(",") || null
+          : null,
+      marital_status:
+        data.marital_status?.join(",") !==
+        defaultValues.marital_status.join(",")
+          ? data.marital_status?.join(",") || null
+          : null,
+      height:
+        data.height?.join(",") !== defaultValues.height.join(",")
+          ? data.height?.join(",") || null
+          : null,
+      weight:
+        data.weight?.join(",") !== defaultValues.weight.join(",")
+          ? data.weight?.join(",") || null
+          : null,
+      birth_date:
+        data.birth_date?.join(",") !== defaultValues.birth_date.join(",")
+          ? data.birth_date?.join(",") || null
+          : null,
+      complexion:
+        data.complexion?.join(",") !== defaultValues.complexion.join(",")
+          ? data.complexion?.join(",") || null
+          : null,
+      blood_group:
+        data.blood_group?.join(",") !== defaultValues.blood_group.join(",")
+          ? data.blood_group?.join(",") || null
+          : null,
+      education_medium:
+        data.education_medium?.join(",") !==
+        defaultValues.education_medium.join(",")
+          ? data.education_medium?.join(",") || null
+          : null,
+      economic_status:
+        data.economic_status?.join(",") !==
+        defaultValues.economic_status.join(",")
+          ? data.economic_status?.join(",") || null
+          : null,
+      profession:
+        data.profession?.join(",") !== defaultValues.profession.join(",")
+          ? data.profession?.join(",") || null
+          : null,
+      mazhab:
+        data.mazhab?.join(",") !== defaultValues.mazhab.join(",")
+          ? data.mazhab?.join(",") || null
+          : null,
+      bio_profile:
+        data.bio_profile?.join(",") !== defaultValues.bio_profile.join(",")
+          ? data.bio_profile?.join(",") || null
+          : null,
+      expected_complexion:
+        data.expected_complexion?.join(",") !==
+        defaultValues.expected_complexion.join(",")
+          ? data.expected_complexion?.join(",") || null
+          : null,
+      expected_marital_status:
+        data.expected_marital_status?.join(",") !==
+        defaultValues.expected_marital_status.join(",")
+          ? data.expected_marital_status?.join(",") || null
+          : null,
+      expected_bio_profile_types:
+        data.expected_bio_profile_types?.join(",") !==
+        defaultValues.expected_bio_profile_types.join(",")
+          ? data.expected_bio_profile_types?.join(",") || null
+          : null,
+
       location_id: locations.map(loc => loc.id).join(",") || null,
       // Sorting parameters moved to the end
     };
@@ -159,6 +245,36 @@ const BioFilterAction = ({ className }: Props) => {
       }
       if (params.blood_group) {
         setValue("blood_group", params.blood_group.split(","));
+      }
+      if (params.education_medium) {
+        setValue("education_medium", params.education_medium.split(","));
+      }
+      if (params.economic_status) {
+        setValue("economic_status", params.economic_status.split(","));
+      }
+      if (params.profession) {
+        setValue("profession", params.profession.split(","));
+      }
+      if (params.mazhab) {
+        setValue("mazhab", params.mazhab.split(","));
+      }
+      if (params.bio_profile) {
+        setValue("bio_profile", params.bio_profile.split(","));
+      }
+      if (params.expected_complexion) {
+        setValue("expected_complexion", params.expected_complexion.split(","));
+      }
+      if (params.expected_marital_status) {
+        setValue(
+          "expected_marital_status",
+          params.expected_marital_status.split(",")
+        );
+      }
+      if (params.expected_bio_profile_types) {
+        setValue(
+          "expected_bio_profile_types",
+          params.expected_bio_profile_types.split(",")
+        );
       }
 
       // Set range values (like height, weight)
@@ -211,10 +327,9 @@ const BioFilterAction = ({ className }: Props) => {
           <form
             className="flex w-full flex-col gap-4"
             onSubmit={handleSubmit(onSubmit)}
-            action=""
           >
             <DrawerHeader className="w-11/12 justify-center">
-              <DrawerTitle className=" sr-only">Move Goal</DrawerTitle>
+              <DrawerTitle className="sr-only">Move Goal</DrawerTitle>
               <DrawerDescription className="sr-only">
                 Set your daily activity goal.
               </DrawerDescription>
@@ -239,47 +354,19 @@ const BioFilterAction = ({ className }: Props) => {
               <ScrollArea className="h-[75vh]  min-w-full rounded-md border p-4">
                 <div className="flex flex-col justify-start gap-2 align-middle">
                   <SectionFilterContainer>
-                    <Accordion type="multiple" className="w-full">
-                      {/* general section fields filter item */}
-                      <GeneralFilter
-                        setValue={setValue}
-                        gender={gender}
-                        complexion={complexion}
-                        blood_group={blood_group}
-                        marital_status={marital_status}
-                        height={height}
-                        weight={weight}
-                        birth_date={birth_date}
-                        location_id={locationIds}
-                        locations={locations}
-                        setLocations={setLocations}
-                      />
-                      {/* ID */}
-                      <TextInputBox
-                        label="ID:"
-                        type="number"
-                        placeholder="1524"
-                        aria-label="ID"
-                        register={register("id")}
-                        fieldName="id"
-                        min="999"
-                        max="9999999"
-                      />
-                      {/* Add additional filters here */}
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                        <AccordionContent>
-                          Yes. It adheres to the WAI-ARIA design pattern.
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      // onClick={submitClick}
-                    >
-                      {isLoading ? <SubmitLoader /> : "Submit"}
-                    </Button>
+                    {/* filter  box */}
+                    <FilterBox
+                      setValue={setValue}
+                      register={register}
+                      getValues={getValues}
+                      location_id={locationIds}
+                      locations={locations}
+                      setLocations={setLocations}
+                      // pass range type inputs state
+                      height={height}
+                      weight={weight}
+                      birth_date={birth_date}
+                    />
                   </SectionFilterContainer>
                 </div>
               </ScrollArea>

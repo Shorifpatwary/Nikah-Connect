@@ -2,10 +2,12 @@ import Error from "@/components/blocks/form-helper/error";
 import Suggestion from "@/components/blocks/form-helper/suggestion";
 import { Input, InputProps } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { Dispatch, memo, ReactNode, SetStateAction } from "react";
 
 interface Props extends InputProps {
   fieldName: string;
+  className?: string;
   label: string | ReactNode;
   labelRequired?: boolean;
   errorMessage?: string | undefined;
@@ -22,10 +24,11 @@ const TextInputBox = ({
   errorMessage,
   suggestions,
   register,
+  className,
   ...props
 }: Props) => {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={cn("flex flex-col gap-1", className)}>
       <Label
         htmlFor={fieldName}
         className={"text-lg capitalize max-md:text-xl"}
