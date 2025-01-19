@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   className?: string;
+  profileClassName?: string;
   bio_profile_types: BioProfileType[];
 }
 const BioExpectedProfile = ({ className, bio_profile_types }: Props) => {

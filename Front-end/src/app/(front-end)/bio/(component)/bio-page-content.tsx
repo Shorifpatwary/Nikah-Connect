@@ -65,6 +65,7 @@ const BioPageContent = () => {
               <BioCard
                 key={item.id}
                 id={item.id}
+                title={item.title}
                 bio_profile={item.bio_profile}
                 gender={item.general_section?.gender}
                 birth_date={item.general_section?.birth_date || ""}

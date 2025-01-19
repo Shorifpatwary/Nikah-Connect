@@ -7,6 +7,7 @@ import {
   GeneralSectionInterface,
   ProfessionInterface,
 } from "@/assets/data/response-types/bio";
+import Routes from "@/assets/data/routes";
 import { ParagraphMd } from "@/components/blocks/typography";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,11 +18,11 @@ import {
 } from "@/components/ui/card";
 import { cn, convertStringToArray, formatMonthYearInBangla } from "@/lib/utils";
 import { ExternalLink, EyeIcon } from "lucide-react";
+import Link from "next/link";
 
 interface Props
   extends Pick<
       GeneralSectionInterface,
-      | "id"
       | "gender"
       | "height"
       | "weight"
@@ -29,7 +30,7 @@ interface Props
       | "birth_date"
       | "updated_at"
     >,
-    Pick<BioInterface, "bio_profile">,
+    Pick<BioInterface, "bio_profile" | "id" | "title">,
     Pick<ProfessionInterface, "profession"> {
   bio_profile_types: string;
   className?: string;
@@ -38,6 +39,7 @@ interface Props
 const BioCard = ({
   className,
   id,
+  title,
   gender,
   birth_date,
   height,
@@ -122,10 +124,17 @@ const BioCard = ({
         )}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="w-full gap-4 p-6">
-          <ExternalLink />{" "}
-          <ParagraphMd className="text-2xl">বায়োডাটা দেখুন</ParagraphMd>
-        </Button>
+        <Link
+          href={`${Routes.bio}/${id}/${title}`}
+          className="w-full"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button className="w-full gap-4 p-6">
+            <ExternalLink />{" "}
+            <ParagraphMd className="text-2xl">বায়োডাটা দেখুন</ParagraphMd>
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

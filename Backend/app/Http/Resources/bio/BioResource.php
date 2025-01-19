@@ -4,7 +4,6 @@ namespace App\Http\Resources\Bio;
 
 use App\Http\Resources\Bio\GeneralSectionResource;
 use App\Http\Resources\TagResource;
-use App\Models\ProfessionSection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -31,7 +30,10 @@ class BioResource extends JsonResource
       'location_section' => new LocationSectionResource($this->whenLoaded('locationSection')),
       'education_section' => new EducationSectionResource($this->whenLoaded('educationSection')),
       'personal_details' => new PersonalDetailsSectionResource($this->whenLoaded('personalDetails')),
+      'family_info_sections' => new FamilyInfoResource($this->whenLoaded(relationship: 'familyInfoSection')),
       'profession_section' => new ProfessionResource($this->whenLoaded('professionSection')),
+      'religious_activity' => new ReligiousActivityResource($this->whenLoaded('religiousActivity')),
+      'marriage_info' => new MarriageInfoResource($this->whenLoaded('marriageInfo')),
       'expected_partner' => new ExpectedPartnerResource($this->whenLoaded('expectedPartner')),
     ];
   }

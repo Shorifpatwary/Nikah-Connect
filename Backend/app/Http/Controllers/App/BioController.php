@@ -147,7 +147,17 @@ class BioController extends Controller
    */
   public function show(string $id)
   {
-    //
+    // Retrieve the bio using the provided ID
+    $bio = Bio::with(['generalSection', 'locationSection', 'educationSection', 'personalDetails', 'familyInfoSection', 'professionSection', 'religiousActivity', 'expectedPartner', 'marriageInfo'])
+      ->find($id);
+
+    // Check if the bio exists
+    if (!$bio) {
+      return response()->json(['error' => 'Bio not found'], 404);
+    }
+
+    // Return the bio data as a resource
+    return new BioResource($bio);
   }
 
   /**

@@ -224,15 +224,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bn" className="dark" id="rootElement">
+    <html lang="bn" className="dark" id="rootElement" translate="no">
       <body
         className={cn(
-          "min-h-screen bg-background font-primary  antialiased",
+          "min-h-screen bg-background font-primary antialiased",
           primaryFont.variable
         )}
       >
         <DesktopHeader />
-
         {children}
         <Footer />
       </body>

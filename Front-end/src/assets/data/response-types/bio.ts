@@ -28,6 +28,8 @@ export interface BioInterface extends Timestamps {
   personal_details?: PersonalDetailsSectionInterface;
   family_info_sections?: FamilyInfoSectionInterface;
   profession_section?: ProfessionInterface;
+  religious_activity?: ReligiousActivityInterface;
+  marriage_info?: MarriageInfoInterface;
   expected_partner?: ExpectedPartnerInterface;
   hidden_infos?: HiddenInfoInterface;
 }
@@ -94,7 +96,7 @@ export interface ProfessionInterface extends Timestamps {
 
 export interface ExpectedPartnerInterface extends Timestamps {
   id: number;
-  age: number;
+  age: string;
   complexion: string;
   height: string;
   marital_status: MaritalStatusType;

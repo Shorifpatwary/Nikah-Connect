@@ -2,10 +2,10 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   className?: string;
-  question: string | number;
-  answer: string | number;
+  question: string | number | undefined;
+  answer: string | number | undefined;
 }
-const QuestionColumn = ({ className, question, answer }: Props) => {
+const QuestionColumn = ({ className, question = "", answer = "" }: Props) => {
   return (
     <div
       className={cn(

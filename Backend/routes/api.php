@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::apiResource('user-info', UserInfoController::class)->only(['index', 'store', 'show']);
 
   // Bio 
-  Route::apiResource('bio', BioController::class)->only(['index', 'store', 'update', 'destroy']);
+  Route::apiResource('bio', BioController::class)->only(['index', 'store',  'update', 'destroy']);
 
   // Bio general
   Route::apiResource('bio/general', GeneralSectionController::class)->only(['store',  'update']);
