@@ -1,9 +1,7 @@
-import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { allBio, backendUrl } from "@/assets/data/config/app.config";
 import { BiosWithPagination } from "@/assets/data/response-types/bio";
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
-import { redirect } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -28,12 +26,10 @@ export async function GET(request: NextRequest) {
     // update the credentials
     await setCookiesFromResponse(response);
     if (!response.ok) {
-      if (response.status === 401) {
-        // remove auth cookie
-        deleteAuthCookies();
-        redirect("/login");
-      }
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      return NextResponse.json(
+        { error: `HTTP error! Status: ${response.status}` },
+        { status: response.status }
+      );
     }
 
     const data: BiosWithPagination = await response.json();

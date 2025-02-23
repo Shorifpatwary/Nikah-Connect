@@ -15,6 +15,7 @@ class ProfessionSection extends Model
     'monthly_income',
     'bio_id',
   ];
+  public const FILLED_MARKS_KEY = 'profession_filled_marks';
 
   public function bio()
   {

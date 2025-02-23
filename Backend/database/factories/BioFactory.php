@@ -37,6 +37,7 @@ class BioFactory extends Factory
       'title' => $this->faker->sentence,
       'bio_profile' => $this->faker->randomElement(StatusEnum::BIO_PROFILE_TYPES),
       'status' => $this->faker->randomElement(StatusEnum::BIO_STATUS),
+      'type' => $this->faker->randomElement(StatusEnum::BIO__TYPES),
       'user_id' =>  $userId,
     ];
   }

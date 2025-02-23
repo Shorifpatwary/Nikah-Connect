@@ -3,7 +3,7 @@ import { createBioFamilyInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/data";
 import { economic_status } from "@/assets/data/config/app.config";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
@@ -18,6 +18,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   object,
   Output,
   picklist,
@@ -31,12 +32,8 @@ const Schema = object({
     minLength(10, VM.family_members_info.minLength),
     maxLength(1500, VM.family_members_info.maxLength),
   ]),
-  uncles_info: string([
-    maxLength(1000, VM.uncles_info.maxLength), // Optional field
-  ]),
-  descent: string([
-    maxLength(1000, VM.descent.maxLength), // Optional field
-  ]),
+  uncles_info: nullable(string([maxLength(1000, VM.uncles_info.maxLength)])),
+  descent: nullable(string([maxLength(1000, VM.descent.maxLength)])),
   economic_status: picklist(
     economic_status.map(option => option.value),
     VM.economic_status.required
@@ -140,7 +137,7 @@ const BioFamilyInfoCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.create.submit}
         </Button>
       </div>
       <Toaster />

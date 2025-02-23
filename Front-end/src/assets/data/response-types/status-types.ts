@@ -4,7 +4,15 @@ export type BioProfileType =
   | "LOW_MALE"
   | "TOP_FEMALE"
   | "MID_FEMALE"
-  | "LOW_FEMALE";
+  | "LOW_FEMALE"
+  | "SHORT_MALE"
+  | "SHORT_FEMALE";
+
+export type BioType =
+  | "LONG"
+  | "SHORT"
+  | "SHORT_TO_LONG_DRAFT"
+  | "SHORT_TO_LONG_APPROVED_REQUEST";
 
 export type GenderType = "পাত্র" | "পাত্রী";
 export type EducationType =

@@ -1,5 +1,5 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/edit/data"; // Update path to the education data
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/data"; // Update path to the education data
 import { EducationEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/edit/form"; // Update path to the education schema
 import {
   allBio,
@@ -7,10 +7,12 @@ import {
   educations,
   filledMarks,
 } from "@/assets/data/config/app.config"; // Add `educations` to config
-import { EducationFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for education
+import {
+  BioWithEducationSection,
+  EducationFormInterface,
+} from "@/assets/data/response-types/bio"; // Define the response type for education
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -19,7 +21,7 @@ type ResponseType = EducationFormInterface<EducationEditSchemaType>;
 
 type Props<T> = {
   data: T;
-  id: number; // Accept the ID for the specific education record to be updated
+  bio: BioWithEducationSection | null;
   setError: UseFormSetError<EducationEditSchemaType>;
   reset: UseFormReset<EducationEditSchemaType>;
   toast: (props: Toast) => void;
@@ -29,7 +31,7 @@ type Props<T> = {
 
 export const updateBioEducation = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -39,8 +41,7 @@ export const updateBioEducation = async <T>({
   try {
     setIsFormLoading(true);
     // Make fetch request to update education section
-    const url = `${backendUrl}/api/bio/education/${id}`; // Update endpoint for updating education section
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/education/${bio?.education_section?.id}`; // Update endpoint for updating education section
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -48,21 +49,27 @@ export const updateBioEducation = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${educations}_${userId}`, // Cache revalidation for educations
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${educations}_${bio?.id}`, // Cache revalidation for educations
+        `${filledMarks}_${bio?.id}`,
       ],
     });
 
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset(); // Reset form data after successful update
-      router.push(Data.success.redirectUrl); // Redirect to the success page after update
+
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -86,7 +93,7 @@ export const updateBioEducation = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

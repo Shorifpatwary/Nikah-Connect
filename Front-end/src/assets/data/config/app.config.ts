@@ -23,6 +23,7 @@ export const allUsersInfoTag = "users_info";
 export const allLocations = "locations";
 export const allTag = "tags";
 export const allBio = "bios";
+export const shortBios = "shortBios";
 export const generals = "generals";
 export const locations = "locations";
 export const educations = "educations";
@@ -53,8 +54,7 @@ export const marital_status: Option[] = [
   { value: "অবিবাহিত", label: "অবিবাহিত" },
   { value: "বিবাহিত", label: "বিবাহিত" },
   { value: "ডিভোর্সড", label: "ডিভোর্সড" },
-  { value: "বিধবা", label: "বিধবা" },
-  { value: "বিপত্নিক", label: "বিপত্নিক" },
+  { value: "সহধর্মীহীন", label: "বিধবা / বিপত্নিক" },
 ];
 
 export const heights: Option[] = [
@@ -284,7 +284,7 @@ export const professions: Option[] = [
 
 export const mazhabs: Option[] = [
   { value: "হানাফী (সুন্নি)", label: "হানাফী (সুন্নি)" },
-  { value: "মালিকি(সুন্নি)", label: "মালিকি(সুন্নি)" },
+  { value: "মালিকি (সুন্নি)", label: "মালিকি (সুন্নি)" },
   { value: "শাফিয়ি (সুন্নি)", label: "শাফিয়ি (সুন্নি)" },
   { value: "হানবালী (সুন্নি)", label: "হানবালী (সুন্নি)" },
   { value: "আহলে হাদিস", label: "আহলে হাদিস" },
@@ -292,3 +292,22 @@ export const mazhabs: Option[] = [
   { value: "জাফরি (শিয়া)", label: "জাফরি (শিয়া)" },
   { value: "যায়দী (শিয়া)", label: "যায়দী (শিয়া)" },
 ];
+
+export const bio_user_status: Option[] = [
+  { value: "married", label: "বিবাহিত" },
+  { value: "inactive", label: "নিষ্ক্রিয়" },
+  { value: "approved", label: "সক্রিয়" },
+];
+
+export const bioMinFilledMarks = {
+  general: 85,
+  location: 25,
+  education: 50,
+  personal_info: 40,
+  family: 60,
+  profession: 100,
+  religious: 20,
+  marital: 20,
+  expected_partner: 50,
+  hidden: 50,
+};

@@ -19,6 +19,7 @@ class PersonalDetails extends Model
     'affiliations',
     'bio_id',
   ];
+  public const FILLED_MARKS_KEY = 'personal_info_filled_marks';
 
   /**
    * Get the bio associated with the description.

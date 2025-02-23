@@ -1,11 +1,11 @@
 "use client";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
-import { updateBioLocation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/edit/data";
-import { LocationSectionInterface } from "@/assets/data/response-types/bio";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/data";
+import { updateBioLocation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/edit/action";
+import { BioWithLocationSection } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
@@ -16,16 +16,30 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, minLength, object, Output, string } from "valibot";
+import {
+  maxLength,
+  minLength,
+  nullable,
+  object,
+  Output,
+  string,
+} from "valibot";
 
 const Schema = object({
   permanent_address: string([
     minLength(1, VM.permanent_address.required),
+    minLength(10, VM.permanent_address.minLength),
     maxLength(1000, VM.permanent_address.maxLength),
   ]),
-  present_address: string([maxLength(1000, VM.present_address.maxLength)]),
-  relocate_plan: string([maxLength(1000, VM.relocate_plan.maxLength)]),
-  childhood_address: string([maxLength(1000, VM.childhood_address.maxLength)]),
+  present_address: nullable(
+    string([maxLength(1000, VM.present_address.maxLength)])
+  ),
+  relocate_plan: nullable(
+    string([maxLength(1000, VM.relocate_plan.maxLength)])
+  ),
+  childhood_address: nullable(
+    string([maxLength(1000, VM.childhood_address.maxLength)])
+  ),
 });
 
 export type LocationEditSchemaType = Output<typeof Schema>;
@@ -34,12 +48,11 @@ const BioLocationEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [location, setLocation] = useState<LocationSectionInterface | null>(
-    null
-  );
+  const [bioWithLocation, setBioWithLocation] =
+    useState<BioWithLocationSection | null>(null);
 
   useEffect(() => {
-    fetchBioSection<LocationSectionInterface>("location", setLocation);
+    fetchBioSection<BioWithLocationSection>("location", setBioWithLocation);
   }, []);
 
   const {
@@ -54,18 +67,18 @@ const BioLocationEditForm = () => {
   });
 
   useEffect(() => {
-    if (location) {
+    if (bioWithLocation?.location_section) {
+      const location = bioWithLocation?.location_section;
       Object.entries(location).forEach(([key, value]) => {
         setValue(key as keyof LocationEditSchemaType, value || "");
       });
     }
-  }, [location, setValue]);
+  }, [bioWithLocation, setValue]);
 
   const onSubmit: SubmitHandler<LocationEditSchemaType> = async FormData => {
     await updateBioLocation<LocationEditSchemaType>({
       data: FormData,
-      // @ts-expect-error
-      id: location?.id,
+      bio: bioWithLocation,
       setError,
       reset,
       toast,
@@ -74,7 +87,7 @@ const BioLocationEditForm = () => {
     });
   };
 
-  if (!location) {
+  if (!bioWithLocation) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -128,7 +141,11 @@ const BioLocationEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader text={Data.wait} /> : Data.submit}
+          {isFormLoading ? (
+            <SubmitLoader text={Data.wait} />
+          ) : (
+            Data.create.submit
+          )}
         </Button>
       </div>
       <Toaster />

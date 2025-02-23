@@ -20,10 +20,9 @@ class ExpectedPartner extends Model
     'bio_profile_types',
     'family',
     'about_partner',
-
     'bio_id',
   ];
-
+  public const FILLED_MARKS_KEY = 'expected_partner_filled_marks';
   public function bio()
   {
     return $this->belongsTo(Bio::class);

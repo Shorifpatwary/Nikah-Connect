@@ -5,9 +5,9 @@ import { createBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboar
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/data";
 import { mazhabs } from "@/assets/data/config/app.config";
-import { GeneralSectionInterface } from "@/assets/data/response-types/bio";
+import { BioWithGeneralSection } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -21,11 +21,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   object,
   Output,
   picklist,
   string,
 } from "valibot";
+
 // Valibot schema
 const Schema = object({
   prayer_habits: string([
@@ -33,26 +35,32 @@ const Schema = object({
     minLength(10, VM.prayer_habits.minLength),
     maxLength(1000, VM.prayer_habits.maxLength),
   ]),
-  haram_relationships: string([
-    maxLength(1000, VM.haram_relationships.maxLength),
-  ]),
-  quran_recitation: string([maxLength(1000, VM.quran_recitation.maxLength)]),
-  mahram_adherence: string([maxLength(1000, VM.mahram_adherence.maxLength)]),
-  has_beard: string([maxLength(1000, VM.has_beard.maxLength)]),
-  entertainment_habits: string([
-    maxLength(1000, VM.entertainment_habits.maxLength),
-  ]),
+  haram_relationships: nullable(
+    string([maxLength(1000, VM.haram_relationships.maxLength)])
+  ),
+  quran_recitation: nullable(
+    string([maxLength(1000, VM.quran_recitation.maxLength)])
+  ),
+  mahram_adherence: nullable(
+    string([maxLength(1000, VM.mahram_adherence.maxLength)])
+  ),
+  has_beard: nullable(string([maxLength(1000, VM.has_beard.maxLength)])),
+  entertainment_habits: nullable(
+    string([maxLength(1000, VM.entertainment_habits.maxLength)])
+  ),
   mazhab: picklist(
     mazhabs.map(option => option.value),
     VM.mazhab.required
   ), // required
-  religious_beliefs: string([maxLength(1000, VM.religious_beliefs.maxLength)]),
-  religious_knowledge: string([
-    maxLength(1000, VM.religious_knowledge.maxLength),
-  ]),
-  family_religious_environment: string([
-    maxLength(1000, VM.family_religious_environment.maxLength),
-  ]),
+  religious_beliefs: nullable(
+    string([maxLength(1000, VM.religious_beliefs.maxLength)])
+  ),
+  religious_knowledge: nullable(
+    string([maxLength(1000, VM.religious_knowledge.maxLength)])
+  ),
+  family_religious_environment: nullable(
+    string([maxLength(1000, VM.family_religious_environment.maxLength)])
+  ),
 });
 
 export type ReligiousActivityCreateSchemaType = Output<typeof Schema>;
@@ -73,9 +81,10 @@ const BioReligiousActivityCreateForm = () => {
     resolver: valibotResolver(Schema),
   });
 
-  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+  const [bioWithGeneral, setBioWithGeneral] =
+    useState<BioWithGeneralSection | null>(null);
   useEffect(() => {
-    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+    fetchBioSection<BioWithGeneralSection>("general", setBioWithGeneral);
   }, []);
 
   const onSubmit: SubmitHandler<
@@ -133,7 +142,7 @@ const BioReligiousActivityCreateForm = () => {
         />
 
         {/* Has Beard */}
-        {general?.gender === "পাত্র" && (
+        {bioWithGeneral?.general_section?.gender === "পাত্র" && (
           <TextareaBox
             label={Data.inputs.has_beard.title}
             errorMessage={errors.has_beard?.message}
@@ -195,7 +204,7 @@ const BioReligiousActivityCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : "জমা দিন"}
+          {isFormLoading ? <SubmitLoader /> : Data.create.submit}
         </Button>
       </div>
       <Toaster />

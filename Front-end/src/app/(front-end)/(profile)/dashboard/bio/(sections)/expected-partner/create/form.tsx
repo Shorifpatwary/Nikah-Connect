@@ -3,11 +3,11 @@ import { createExpectedPartner } from "@/app/(front-end)/(profile)/dashboard/bio
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/data";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { getOppositeBioProfiles } from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
 import { complexions, marital_status } from "@/assets/data/config/app.config";
-import { GeneralSectionInterface } from "@/assets/data/response-types/bio";
+import { BioWithGeneralSection } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import FancyMultiSelectBox from "@/components/blocks/inputBox/fancyMultiSelectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -18,19 +18,27 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { array, maxLength, minLength, object, Output, string } from "valibot";
+import {
+  array,
+  maxLength,
+  minLength,
+  nullable,
+  object,
+  Output,
+  string,
+} from "valibot";
 
 // Valibot schema
 const Schema = object({
   age: string([
     minLength(1, VM.age.required),
-    minLength(2, VM.age.minLength),
+    minLength(5, VM.age.minLength),
     maxLength(250, VM.age.maxLength),
   ]),
   complexion: array(string(), [minLength(1, VM.complexion.required)]),
   height: string([
     minLength(1, VM.height.required),
-    minLength(3, VM.height.minLength),
+    minLength(5, VM.height.minLength),
     maxLength(250, VM.height.maxLength),
   ]),
   marital_status: array(string(), [minLength(1, VM.marital_status.required)]),
@@ -41,19 +49,21 @@ const Schema = object({
   ]),
   profession: string([
     minLength(1, VM.profession.required),
-    minLength(3, VM.profession.minLength),
+    minLength(10, VM.profession.minLength),
     maxLength(1000, VM.profession.maxLength),
   ]),
   economic_status: string([
     minLength(1, VM.economic_status.required),
-    minLength(3, VM.economic_status.minLength),
-    maxLength(1000, VM.economic_status.maxLength),
+    minLength(5, VM.economic_status.minLength),
+    maxLength(200, VM.economic_status.maxLength),
   ]),
   bio_profile_types: array(string(), [
     minLength(1, VM.bio_profile_types.required),
   ]),
-  family: string([maxLength(1000, VM.family.maxLength)]),
-  about_partner: string([maxLength(2500, VM.about_partner.maxLength)]),
+  family: nullable(string([maxLength(1000, VM.family.maxLength)])),
+  about_partner: nullable(
+    string([maxLength(2500, VM.about_partner.maxLength)])
+  ),
 });
 
 export type ExpectedPartnerCreateSchemaType = Output<typeof Schema>;
@@ -88,16 +98,18 @@ const BioExpectedPartnerCreateForm = () => {
     });
   };
 
-  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+  const [bioWithGeneral, setBioWithGeneral] =
+    useState<BioWithGeneralSection | null>(null);
 
   useEffect(() => {
-    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+    fetchBioSection<BioWithGeneralSection>("general", setBioWithGeneral);
   }, []);
 
   const bio_profile_types = getOppositeBioProfiles(
-    general?.gender === "পাত্র" ? "male" : "female"
-  ); // Returns only female options
-
+    bioWithGeneral?.general_section?.gender === "পাত্র" ? "male" : "female"
+  ); // Returns only opposite options
+  console.log(bioWithGeneral, "bio with general ");
+  console.log(bio_profile_types, "bio profile type");
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
@@ -219,7 +231,7 @@ const BioExpectedPartnerCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.create.submit}
         </Button>
       </div>
       <Toaster />

@@ -9,7 +9,8 @@ export type BioSection =
   | "religious-activities"
   | "marital-info"
   | "expected-partner"
-  | "hidden-info";
+  | "hidden-info"
+  | "filled-marks";
 
 const Routes = {
   Home: "/",
@@ -28,13 +29,22 @@ const Routes = {
   services: "/services",
   affiliates: "/affiliates",
   blog: "/blog",
-  bio: "/bio",
+  bio: {
+    url: "/bio",
+    create: "/bio/create",
+  },
   bookmark: "/bookmark",
   aboutUs: "/about-us",
   Admin: "/admin",
   MailVerification: "/mail-verification",
   profile_bio: {
     url: "/dashboard/bio",
+    create: "/dashboard/bio/create",
+    change_status: "/dashboard/bio/change-status",
+    short_bio: {
+      create: "/dashboard/bio/short/create",
+      edit: "/dashboard/bio/short/edit",
+    },
     general: {
       create: "/dashboard/bio/general/create",
       edit: "/dashboard/bio/general/edit",

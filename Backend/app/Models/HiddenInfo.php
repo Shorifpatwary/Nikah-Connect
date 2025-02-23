@@ -11,17 +11,19 @@ class HiddenInfo extends Model
 
   protected $fillable = [
     'name',
-    'family_members_name',
+    'email',
     'location',
+    'family_members_name',
     'current_parent',
     'parent_mobile',
     'permanent_address_map_location',
     'present_address_map_location',
-    'email',
     'social_links',
+    'documents_link',
 
     'bio_id',
   ];
+  public const FILLED_MARKS_KEY = 'hidden_info_filled_marks';
 
   public function bio()
   {

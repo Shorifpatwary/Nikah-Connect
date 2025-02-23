@@ -40,7 +40,7 @@ const SelectBox = ({
 }: Props) => {
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor="name" className="text-lg capitalize max-md:text-xl">
+      <Label className="text-lg capitalize max-md:text-xl">
         {label}{" "}
         {labelRequired && <span className="ml-1 text-red-600">(*)</span>}
       </Label>
@@ -66,7 +66,6 @@ const SelectBox = ({
                 key={option.label + option.value}
                 className="capitalize"
                 value={option.value}
-                data-state={option.value === "পাত্র" ? "checked" : "unchecked"}
               >
                 {option.label}
               </SelectItem>

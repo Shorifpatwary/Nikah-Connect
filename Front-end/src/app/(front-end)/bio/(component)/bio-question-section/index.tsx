@@ -16,7 +16,7 @@ const BioQuestionsSection = ({
   return (
     <div
       className={cn(
-        "rounder flex w-full flex-col justify-center gap-2 rounded-lg   py-2 text-center",
+        "rounder flex w-full flex-col justify-center gap-2 rounded-lg py-2 text-center",
         className
       )}
     >

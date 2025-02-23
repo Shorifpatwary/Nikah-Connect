@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Bio;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Bio\BioResource;
 use App\Http\Resources\Bio\FilledMarksResource;
+use App\Models\Bio;
 use App\Models\FilledMarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,13 +90,59 @@ class FilledMarksController extends Controller
   public function userFilledMarks()
   {
     $user = Auth::user();
-    // Access bio via the user's bio_id in users table
     $bio = $user->bio;
 
-    if ($bio && $bio->filledMarks) {
-      return new FilledMarksResource($bio->filledMarks);
+    if ($bio) {
+      return new BioResource($bio->load('filledMarks'));
     }
 
     return response()->json(['message' => 'No filled marks data found for this user.'], 404);
+  }
+
+  public static function updateFilledMarks(string $sectionClass, Bio $bio, Request $request)
+  {
+    $fillableFields = (new $sectionClass)->getFillable();
+    $section = $sectionClass::where('bio_id', $bio->id)->first();
+
+    if ($section) {
+      // Define the fields to exclude from the calculation dynamically
+      $excludedFields = ['bio_id'];  // Add more fields as needed
+      // Calculate filled marks for this section
+      $filledMarks = self::calculateFilledMarks($section, $fillableFields, $excludedFields);
+
+      // Get the key for filled marks directly from the section class, assuming the key is defined as a constant or similar
+      $filledMarksKey = $sectionClass::FILLED_MARKS_KEY;
+
+      // Update or create FilledMarks record with the appropriate key
+      FilledMarks::updateOrCreate(
+        ['bio_id' => $section->bio->id],
+        [$filledMarksKey => $filledMarks]
+      );
+    }
+  }
+
+  private static function calculateFilledMarks($section, array $fillableFields, array $excludedFields = [])
+  {
+    $filledFields = 0;
+    $totalFields = count($fillableFields);
+
+    foreach ($fillableFields as $field) {
+      // Skip the excluded fields
+      if (in_array($field, $excludedFields)) {
+        continue;
+      }
+
+      // Check if the field is filled
+      if (!empty($section->$field) || $section->$field !== null) {
+        $filledFields++;
+      }
+    }
+
+    // Prevent division by zero if no valid fields are provided
+    if ($totalFields - count($excludedFields) > 0) {
+      return ($filledFields / ($totalFields - count($excludedFields))) * 100;
+    } else {
+      return 0; // No valid fields, return 0%
+    }
   }
 }

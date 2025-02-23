@@ -3,7 +3,7 @@ import { createBioLocation } from "@/app/(front-end)/(profile)/dashboard/bio/(se
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/data";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import { Button } from "@/components/ui/button";
@@ -13,18 +13,33 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, minLength, object, Output, string } from "valibot";
+import {
+  maxLength,
+  minLength,
+  nullable,
+  object,
+  Output,
+  string,
+} from "valibot";
 
 // Valibot
 const Schema = object({
   permanent_address: string([
     minLength(1, VM.permanent_address.required),
+    minLength(10, VM.permanent_address.minLength),
     maxLength(1000, VM.permanent_address.maxLength),
   ]),
-  present_address: string([maxLength(1000, VM.present_address.maxLength)]),
-  relocate_plan: string([maxLength(1000, VM.relocate_plan.maxLength)]),
-  childhood_address: string([maxLength(1000, VM.childhood_address.maxLength)]),
+  present_address: nullable(
+    string([maxLength(1000, VM.present_address.maxLength)])
+  ),
+  relocate_plan: nullable(
+    string([maxLength(1000, VM.relocate_plan.maxLength)])
+  ),
+  childhood_address: nullable(
+    string([maxLength(1000, VM.childhood_address.maxLength)])
+  ),
 });
+
 export type LocationCreateSchemaType = Output<typeof Schema>;
 const BioLocationCreateForm = () => {
   const { toast } = useToast();
@@ -55,7 +70,7 @@ const BioLocationCreateForm = () => {
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
-        {/* date of birth */}
+        {/* permanent address */}
         <TextareaBox
           label={Data.inputs.permanent_address.title}
           labelRequired={true}
@@ -102,7 +117,11 @@ const BioLocationCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader text={Data.wait} /> : Data.submit}
+          {isFormLoading ? (
+            <SubmitLoader text={Data.wait} />
+          ) : (
+            Data.create.submit
+          )}
         </Button>
       </div>
       <Toaster />

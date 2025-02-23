@@ -23,16 +23,16 @@ class StoreBioHiddenInfoRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'name' => 'required|string|min:2|max:255',
-      'email' => 'required|email|min:5|max:255',
-      'location' => 'required|string|min:5|max:1000',
-      'family_members_name' => 'required|string|min:5|max:1000',
-      'current_parent' => 'required|string|min:2|max:255',
-      'parent_mobile' => 'required|string|min:10|max:25',
-      'social_links' => 'nullable|string|min:5|max:1000',
+      'name' => 'required|string|min:5|max:100',
+      'email' => 'required|email|min:5|max:50',
+      'location' => 'required|string|min:10|max:1000',
+      'family_members_name' => 'required|string|min:10|max:1000',
+      'current_parent' => 'required|string|min:5|max:255',
+      'parent_mobile' => 'required|string|min:10|max:30',
+      'social_links' => 'nullable|string|min:10|max:1000',
       'permanent_address_map_location' => 'nullable|string|min:5|max:255',
       'present_address_map_location' => 'nullable|string|min:5|max:255',
-      'documents_link' => 'nullable|url|min:5|max:100',
+      'documents_link' => 'nullable|url|min:10|max:250',
     ];
   }
 
@@ -41,36 +41,36 @@ class StoreBioHiddenInfoRequest extends FormRequest
     return [
       'name.required' => ':attribute আবশ্যক।',
       'name.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'name.min' => ':attribute সর্বনিম্ন ২ অক্ষর হতে হবে।',
-      'name.max' => ':attribute সর্বাধিক ২৫৫ অক্ষর হতে পারবে।',
+      'name.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
+      'name.max' => ':attribute সর্বাধিক ১০০ অক্ষর হতে পারবে।',
 
       'email.required' => ':attribute আবশ্যক।',
       'email.email' => ':attribute একটি বৈধ ইমেইল হতে হবে।',
       'email.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
-      'email.max' => ':attribute সর্বাধিক ২৫৫ অক্ষর হতে পারবে।',
+      'email.max' => ':attribute সর্বাধিক ৫০ অক্ষর হতে পারবে।',
 
       'location.required' => ':attribute নির্বাচন করা আবশ্যক।',
       'location.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'location.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
+      'location.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
       'location.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
 
       'family_members_name.required' => ':attribute আবশ্যক।',
       'family_members_name.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'family_members_name.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
+      'family_members_name.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
       'family_members_name.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
 
       'current_parent.required' => ':attribute আবশ্যক।',
       'current_parent.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'current_parent.min' => ':attribute সর্বনিম্ন ২ অক্ষর হতে হবে।',
+      'current_parent.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'current_parent.max' => ':attribute সর্বাধিক ২৫৫ অক্ষর হতে পারবে।',
 
       'parent_mobile.required' => ':attribute আবশ্যক।',
       'parent_mobile.string' => ':attribute একটি টেক্সট হতে হবে।',
       'parent_mobile.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
-      'parent_mobile.max' => ':attribute সর্বাধিক ২৫ অক্ষর হতে পারবে।',
+      'parent_mobile.max' => ':attribute সর্বাধিক ৩০ অক্ষর হতে পারবে।',
 
       'social_links.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'social_links.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
+      'social_links.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
       'social_links.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
 
       'permanent_address_map_location.string' => ':attribute একটি টেক্সট হতে হবে।',
@@ -82,8 +82,8 @@ class StoreBioHiddenInfoRequest extends FormRequest
       'present_address_map_location.max' => ':attribute সর্বাধিক ২৫৫ অক্ষর হতে পারবে।',
 
       'documents_link.url' => ':attribute একটি বৈধ URL হতে হবে।',
-      'documents_link.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
-      'documents_link.max' => ':attribute সর্বাধিক ১০০ অক্ষর হতে পারবে।',
+      'documents_link.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
+      'documents_link.max' => ':attribute সর্বাধিক ২৫০ অক্ষর হতে পারবে।',
     ];
   }
 

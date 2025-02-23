@@ -13,16 +13,17 @@ return new class extends Migration
   {
     Schema::create('expected_partners', function (Blueprint $table) {
       $table->id();
-      $table->string('age',);
-      $table->string('complexion');
-      $table->text('height',);
-      $table->string('marital_status');
-      $table->text('educational_qualification');
-      $table->text('profession');
-      $table->string('economic_status');
+      // all fields are nullable for short bio
+      $table->string('age',)->nullable();
+      $table->string('complexion')->nullable();
+      $table->text('height',)->nullable();
+      $table->string('marital_status')->nullable();
+      $table->text('educational_qualification')->nullable();
+      $table->text('profession')->nullable();
+      $table->string('economic_status')->nullable();
       $table->text('family')->nullable();
       $table->text('about_partner')->nullable();
-      $table->string('bio_profile_types');
+      $table->string('bio_profile_types')->nullable();
 
 
       $table->foreignId('bio_id')->constrained('bios')->cascadeOnDelete();

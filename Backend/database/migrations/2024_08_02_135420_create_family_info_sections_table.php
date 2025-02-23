@@ -18,7 +18,7 @@ return new class extends Migration
 			$table->text('uncles_info')->nullable();
 			$table->text('descent')->nullable();
 			$table->enum('economic_status', StatusEnum::ECONOMIC_STATUS);
-			$table->text('economic_status_details');
+			$table->text('economic_status_details')->nullable();
 
 			$table->foreignId('bio_id')->constrained('bios')->cascadeOnDelete();
 

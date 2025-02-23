@@ -8,7 +8,6 @@ use App\Http\Resources\Bio\ReligiousActivityResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\ReligiousActivity;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReligiousActivityController extends Controller

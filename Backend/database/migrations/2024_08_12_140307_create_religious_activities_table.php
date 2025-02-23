@@ -14,6 +14,7 @@ return new class extends Migration
   {
     Schema::create('religious_activities', function (Blueprint $table) {
       $table->id();
+      // nullable for short bio
       $table->text('prayer_habits')->nullable();
       $table->text('haram_relationships')->nullable();
       $table->text('quran_recitation')->nullable();

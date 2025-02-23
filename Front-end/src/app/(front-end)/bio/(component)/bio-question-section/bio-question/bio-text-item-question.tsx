@@ -17,7 +17,7 @@ const BioTextItemQuestion = ({
   return (
     <div
       className={cn(
-        "flex flex-wrap text-start text-xl first:border-t-border md:text-xl lg:text-base",
+        "flex flex-wrap text-start text-xl first:border-t-border",
         className
       )}
     >

@@ -1,16 +1,18 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/edit/data"; // Update path to the religious activity data
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/data"; // Update path to the religious activity data
 import { ReligiousActivityEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/edit/form"; // Update path to the religious activity schema
 import {
   allBio,
   backendUrl,
   filledMarks,
   religiousActivities,
-} from "@/assets/data/config/app.config"; // Add `religiousActivities` to config
-import { ReligiousActivityFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for religious activity
+} from "@/assets/data/config/app.config";
+import {
+  BioWithReligiousActivity,
+  ReligiousActivityFormInterface,
+} from "@/assets/data/response-types/bio"; // Define the response type for religious activity
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -20,7 +22,7 @@ type ResponseType =
 
 type Props<T> = {
   data: T;
-  id: number; // Adding the `id` to identify the bio for updating
+  bio: BioWithReligiousActivity | null;
   setError: UseFormSetError<ReligiousActivityEditSchemaType>;
   reset: UseFormReset<ReligiousActivityEditSchemaType>;
   toast: (props: Toast) => void;
@@ -30,7 +32,7 @@ type Props<T> = {
 
 export const updateBioReligiousActivity = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -40,8 +42,8 @@ export const updateBioReligiousActivity = async <T>({
   try {
     setIsFormLoading(true);
     // Make fetch request to update religious activity section
-    const url = `${backendUrl}/api/bio/religious-activities/${id}`; // Update the endpoint to use PUT and include the id for the specific record
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/religious-activities/${bio?.religious_activity?.id}`; // Update the endpoint to use PUT and include the id for the specific record
+
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -49,22 +51,29 @@ export const updateBioReligiousActivity = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${religiousActivities}_${userId}`, // Cache revalidation for religious activities info
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${religiousActivities}_${bio?.id}`, // Cache revalidation for religious activities info
+        `${filledMarks}_${bio?.id}`,
       ],
     });
 
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset(); // Reset form data after successful update
-      router.push(Data.success.redirectUrl); // Redirect to the success page after update
+
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     }
+
     // Handle validation errors
     else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
@@ -87,7 +96,7 @@ export const updateBioReligiousActivity = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

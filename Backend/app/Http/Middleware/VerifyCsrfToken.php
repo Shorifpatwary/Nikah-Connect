@@ -43,5 +43,8 @@ class VerifyCsrfToken extends Middleware
     'api/bio/expected-partner/*',
     'api/bio/hidden-info',
     'api/bio/hidden-info/*',
+    'api/bio/short',
+    'api/bio/short/*',
+    'api/bio/update-statuses-types',
   ];
 }

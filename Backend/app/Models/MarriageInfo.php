@@ -23,6 +23,7 @@ class MarriageInfo extends Model
     'cash_gift_opinion',
     'bio_id',
   ];
+  public const FILLED_MARKS_KEY = 'marital_info_filled_marks';
 
   /**
    * Get the bio that owns the marriage information.

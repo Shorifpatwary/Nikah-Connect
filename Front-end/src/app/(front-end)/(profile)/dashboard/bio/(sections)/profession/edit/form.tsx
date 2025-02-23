@@ -1,12 +1,12 @@
 "use client";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
-import { updateBioProfession } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/edit/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/data";
+import { updateBioProfession } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/edit/action";
 import { professions } from "@/assets/data/config/app.config";
-import { ProfessionInterface } from "@/assets/data/response-types/bio";
+import { BioWithProfessionSection } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -40,6 +40,7 @@ const Schema = object({
   ]),
   monthly_income: string([
     minLength(1, VM.monthly_income.required),
+    minLength(5, VM.monthly_income.minLength),
     maxLength(100, VM.monthly_income.maxLength),
   ]),
 });
@@ -50,12 +51,14 @@ const BioProfessionEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [profession, setProfession] = useState<ProfessionInterface | null>(
-    null
-  );
+  const [bioWithProfession, setBioWithProfession] =
+    useState<BioWithProfessionSection | null>(null);
 
   useEffect(() => {
-    fetchBioSection<ProfessionInterface>("profession", setProfession);
+    fetchBioSection<BioWithProfessionSection>(
+      "profession",
+      setBioWithProfession
+    );
   }, []);
 
   const {
@@ -70,18 +73,18 @@ const BioProfessionEditForm = () => {
   });
 
   useEffect(() => {
-    if (profession) {
+    if (bioWithProfession?.profession_section) {
+      const profession = bioWithProfession.profession_section;
       Object.entries(profession).forEach(([key, value]) => {
         setValue(key as keyof ProfessionEditSchemaType, value || "");
       });
     }
-  }, [profession, setValue]);
+  }, [bioWithProfession, setValue]);
 
   const onSubmit: SubmitHandler<ProfessionEditSchemaType> = async formData => {
     await updateBioProfession<ProfessionEditSchemaType>({
       data: formData,
-      // @ts-expect-error
-      id: profession?.id,
+      bio: bioWithProfession,
       setError,
       reset,
       toast,
@@ -90,7 +93,7 @@ const BioProfessionEditForm = () => {
     });
   };
 
-  if (!profession) {
+  if (!bioWithProfession) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -105,7 +108,7 @@ const BioProfessionEditForm = () => {
           options={professions}
           errorMessage={errors.profession?.message}
           setValue={value => setValue("profession", value)}
-          defaultValue={profession.profession}
+          defaultValue={bioWithProfession.profession_section?.profession}
         />
 
         {/* Profession Description */}
@@ -136,7 +139,7 @@ const BioProfessionEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

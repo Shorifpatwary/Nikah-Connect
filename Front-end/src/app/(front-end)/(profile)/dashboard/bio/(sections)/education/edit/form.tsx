@@ -1,12 +1,12 @@
 "use client";
-import { updateBioEducation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/edit/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/data";
+import { updateBioEducation } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/edit/action";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { education_mediums } from "@/assets/data/config/app.config";
-import { EducationSectionInterface } from "@/assets/data/response-types/bio";
+import { BioWithEducationSection } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -21,6 +21,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   object,
   Output,
   picklist,
@@ -38,15 +39,17 @@ const Schema = object({
     minLength(5, VM.highest_qualification.minLength),
     maxLength(1000, VM.highest_qualification.maxLength),
   ]),
-  current_study: string([maxLength(1000, VM.current_study.maxLength)]),
+  current_study: nullable(
+    string([maxLength(1000, VM.current_study.maxLength)])
+  ),
   previous_exams: string([
     minLength(1, VM.previous_exams.required),
     minLength(50, VM.previous_exams.minLength),
     maxLength(2500, VM.previous_exams.maxLength),
   ]),
-  other_qualifications: string([
-    maxLength(2500, VM.other_qualifications.maxLength),
-  ]),
+  other_qualifications: nullable(
+    string([maxLength(2500, VM.other_qualifications.maxLength)])
+  ),
 });
 
 export type EducationEditSchemaType = Output<typeof Schema>;
@@ -56,12 +59,10 @@ const BioEducationEditForm = () => {
   const router = useRouter();
   // form status
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [education, setEducation] = useState<EducationSectionInterface | null>(
-    null
-  );
-
+  const [bioWithEducation, setBioWithEducation] =
+    useState<BioWithEducationSection | null>(null);
   useEffect(() => {
-    fetchBioSection<EducationSectionInterface>("education", setEducation);
+    fetchBioSection<BioWithEducationSection>("education", setBioWithEducation);
   }, []);
 
   const {
@@ -76,18 +77,19 @@ const BioEducationEditForm = () => {
   });
 
   useEffect(() => {
-    if (education) {
+    if (bioWithEducation?.education_section) {
+      const education = bioWithEducation?.education_section;
       Object.entries(education).forEach(([key, value]) => {
         setValue(key as keyof EducationEditSchemaType, value || "");
       });
     }
-  }, [education, setValue]);
+  }, [bioWithEducation, setValue]);
 
   const onSubmit: SubmitHandler<EducationEditSchemaType> = async FormData => {
     await updateBioEducation<EducationEditSchemaType>({
       data: FormData,
-      // @ts-expect-error
-      id: education?.id,
+
+      bio: bioWithEducation,
       setError,
       reset,
       toast,
@@ -96,7 +98,7 @@ const BioEducationEditForm = () => {
     });
   };
 
-  if (!education) {
+  if (!bioWithEducation) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -111,7 +113,7 @@ const BioEducationEditForm = () => {
           options={education_mediums}
           errorMessage={errors.education_medium?.message}
           setValue={value => setValue("education_medium", value)}
-          defaultValue={education.education_medium}
+          defaultValue={bioWithEducation.education_section?.education_medium}
         />
 
         {/* Highest Qualification */}
@@ -162,7 +164,7 @@ const BioEducationEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

@@ -3,7 +3,7 @@ import { createBioGeneral } from "@/app/(front-end)/(profile)/dashboard/bio/(sec
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/data";
 import {
   blood_groups,
   complexions,
@@ -27,6 +27,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   number,
   object,
   Output,
@@ -64,7 +65,9 @@ const Schema = object({
     blood_groups.map(option => option.value),
     VM.blood_group.required
   ),
-  language_skills: string([maxLength(100, VM.language_skills.maxLength)]),
+  language_skills: nullable(
+    string([maxLength(100, VM.language_skills.maxLength)])
+  ),
   location_id: number(VM.location.required),
 });
 export type GeneralCreateSchemaType = Output<typeof Schema>;
@@ -198,7 +201,11 @@ const BioGeneralCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader text={Data.wait} /> : Data.submit}
+          {isFormLoading ? (
+            <SubmitLoader text={Data.wait} />
+          ) : (
+            Data.create.submit
+          )}
         </Button>
       </div>
       <Toaster />

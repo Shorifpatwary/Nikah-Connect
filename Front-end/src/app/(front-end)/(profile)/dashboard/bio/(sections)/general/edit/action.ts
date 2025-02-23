@@ -1,5 +1,5 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/data";
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/data";
 import { GeneralEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/general/edit/form";
 import {
   allBio,
@@ -7,10 +7,12 @@ import {
   filledMarks,
   generals,
 } from "@/assets/data/config/app.config";
-import { GeneralFormInterface } from "@/assets/data/response-types/bio";
+import {
+  BioWithGeneralSection,
+  GeneralFormInterface,
+} from "@/assets/data/response-types/bio";
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -19,7 +21,7 @@ type ResponseType = GeneralFormInterface<GeneralEditSchemaType>;
 
 type Props<T> = {
   data: T;
-  id: number;
+  bio: BioWithGeneralSection | null;
   setError: UseFormSetError<GeneralEditSchemaType>;
   reset: UseFormReset<GeneralEditSchemaType>;
   toast: (props: Toast) => void;
@@ -29,7 +31,7 @@ type Props<T> = {
 
 export const updateBioGeneral = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -40,8 +42,7 @@ export const updateBioGeneral = async <T>({
     setIsFormLoading(true);
     // Make fetch request to update general section
 
-    const url = `${backendUrl}/api/bio/general/${id}`; // Update endpoint for updating general section
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/general/${bio?.general_section?.id}`; // Update endpoint for updating general section
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -49,20 +50,25 @@ export const updateBioGeneral = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${generals}_${userId}`,
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${generals}_${bio?.id}`,
+        `${filledMarks}_${bio?.id}`,
       ],
     });
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset();
-      router.push(Data.success.redirectUrl);
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -84,7 +90,7 @@ export const updateBioGeneral = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

@@ -31,7 +31,7 @@ type PickedInputsValue = Pick<
   | "height"
   | "weight"
   | "birth_date"
-  | "locations"
+  // | "locations"
 >;
 
 interface Props extends PickedInputsValue {
@@ -50,7 +50,7 @@ const GeneralFilter = ({
   weight,
   birth_date,
   location_id,
-  locations,
+  // locations,
   setLocations,
 }: Props) => {
   const FILTER_RANGES = {

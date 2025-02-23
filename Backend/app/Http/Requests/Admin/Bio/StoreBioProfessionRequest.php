@@ -30,7 +30,7 @@ class StoreBioProfessionRequest extends FormRequest
         Rule::in(StatusEnum::PROFESSION_STATUS)
       ],
       'profession_description' => 'required|string|min:10|max:2500',
-      'monthly_income' => 'required|string|min:2|max:1000',
+      'monthly_income' => 'required|string|min:5|max:1000',
     ];
   }
 
@@ -47,7 +47,7 @@ class StoreBioProfessionRequest extends FormRequest
 
       'monthly_income.required' => ':attribute আবশ্যক।',
       'monthly_income.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'monthly_income.min' => ':attribute সর্বনিম্ন ২ অক্ষর হতে হবে।',
+      'monthly_income.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'monthly_income.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
     ];
   }

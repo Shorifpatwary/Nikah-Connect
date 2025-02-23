@@ -18,6 +18,7 @@ use App\Http\Controllers\Bio\MarriageInfoController;
 use App\Http\Controllers\Bio\PersonalDetailsController;
 use App\Http\Controllers\Bio\ProfessionSectionController;
 use App\Http\Controllers\Bio\ReligiousActivityController;
+use App\Http\Controllers\Bio\ShortBioController;
 use App\Http\Controllers\Bio\UserRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +47,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::apiResource('user-info', UserInfoController::class)->only(['index', 'store', 'show']);
 
   // Bio 
-  Route::apiResource('bio', BioController::class)->only(['index', 'store',  'update', 'destroy']);
+  Route::apiResource('bio', BioController::class)->only(['index', 'store',  'update', 'destroy'])->where(['bio' => '[0-9]+']);
+
+  // update statuses and types 
+  Route::patch('bio/update-statuses-types', [BioController::class, 'updateStatusesAndTypes'])->name('bio.update-statuses-types');
+
+  // Sort Bio 
+  Route::apiResource('bio/short', ShortBioController::class)->only(['store',  'update']);
 
   // Bio general
   Route::apiResource('bio/general', GeneralSectionController::class)->only(['store',  'update']);
@@ -78,6 +85,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   // Bio expected partner
   Route::apiResource('bio/hidden-info', HiddenInfoController::class)->only(['store',  'update']);
 
+  // Bio approve request.
+  Route::get('bio/approve-bio-request', [BioController::class, 'approveRequest']);
+
   // Bio Tags
   Route::apiResource('tag', TagController::class)->only(['index', 'store', 'show']);
 
@@ -89,7 +99,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // Bio user records 
   Route::get('bio/{section}/user-bio-record', [UserRecordController::class, 'getBioUserRecord'])
-    ->where('section', 'general|location|education|personal-info|family|profession|religious-activities|marital-info|expected-partner|hidden-info');
+    ->where('section', 'general|location|education|personal-info|family|profession|religious-activities|marital-info|expected-partner|hidden-info|filled-marks');
+
+  // Short bio user record.
+  Route::get('bio/user-record', [BioController::class, 'userRecord']);
 });
 
 // NON PROTECTED ROUTES

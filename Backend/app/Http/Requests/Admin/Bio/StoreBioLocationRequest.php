@@ -23,10 +23,10 @@ class StoreBioLocationRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'permanent_address' => ['required', 'string', 'max:1000'],
-      'present_address' => ['nullable', 'string', 'max:1000'],
-      'relocate_plan' => ['nullable', 'string', 'max:1000'],
-      'childhood_address' => ['nullable', 'string', 'max:1000'],
+      'permanent_address' => ['required', 'string', 'between:10,1000'],
+      'present_address' => ['nullable', 'string', 'between:10,1000'],
+      'relocate_plan' => ['nullable', 'string', 'between:10,1000'],
+      'childhood_address' => ['nullable', 'string', 'between:10,1000'],
     ];
   }
 
@@ -34,10 +34,11 @@ class StoreBioLocationRequest extends FormRequest
   {
     return [
       'permanent_address.required' => ':attribute আবশ্যক।',
-      'permanent_address.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
-      'present_address.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
-      'relocate_plan.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
-      'childhood_address.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
+
+      'permanent_address.between' => ':attribute ১০ থেকে ১০০০ অক্ষরের এর মধ্যে হতে হবে।',
+      'present_address.between' => ':attribute ১০ থেকে ১০০০ অক্ষরের এর মধ্যে হতে হবে।',
+      'relocate_plan.between' => ':attribute ১০ থেকে ১০০০ অক্ষরের এর মধ্যে হতে হবে।',
+      'childhood_address.between' => ':attribute ১০ থেকে ১০০০ অক্ষরের এর মধ্যে হতে হবে।',
     ];
   }
   public function attributes()

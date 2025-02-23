@@ -18,6 +18,7 @@ class FamilyInfoSection extends Model
     'bio_id',
   ];
 
+  public const FILLED_MARKS_KEY = 'family_filled_marks';
   public function bio()
   {
     return $this->belongsTo(Bio::class);

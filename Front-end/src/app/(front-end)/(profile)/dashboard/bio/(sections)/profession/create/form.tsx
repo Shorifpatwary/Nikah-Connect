@@ -3,7 +3,7 @@ import { createBioProfession } from "@/app/(front-end)/(profile)/dashboard/bio/(
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/profession/data";
 import { professions } from "@/assets/data/config/app.config";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
@@ -37,6 +37,7 @@ const Schema = object({
   ]),
   monthly_income: string([
     minLength(1, VM.monthly_income.required),
+    minLength(5, VM.monthly_income.minLength),
     maxLength(100, VM.monthly_income.maxLength),
   ]),
 });
@@ -113,7 +114,7 @@ const BioProfessionCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.create.submit}
         </Button>
       </div>
       <Toaster />

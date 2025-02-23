@@ -5,8 +5,11 @@ import lowFemaleAvatarImage from "@/assets/icons/low-level-muslim-female-avatar.
 import lowMaleAvatarImage from "@/assets/icons/low-level-muslim-male-avatar.svg";
 import midFemaleAvatarImage from "@/assets/icons/mid-level-muslim-female-avatar.svg";
 import midMaleAvatarImage from "@/assets/icons/mid-level-muslim-male-avatar.svg";
+import shortFemaleAvatarImage from "@/assets/icons/short-female-avatar.svg";
+import shortMaleAvatarImage from "@/assets/icons/short-male-avatar.svg";
 import topFemaleAvatarImage from "@/assets/icons/top-level-muslim-female-avatar.svg";
 import topMaleAvatarImage from "@/assets/icons/top-level-muslim-male-avatar.svg";
+
 import { Option } from "@/components/blocks/inputBox/selectBox";
 import Image from "next/image";
 
@@ -69,6 +72,24 @@ export const bio_profile_type_options: Option[] = [
       />
     ),
   },
+  {
+    value: "SHORT_MALE",
+    label: (
+      <GenerateBioProfileLabel
+        bio_profile="SHORT_MALE"
+        labelText="মুসলিম (পাত্র)"
+      />
+    ),
+  },
+  {
+    value: "SHORT_FEMALE",
+    label: (
+      <GenerateBioProfileLabel
+        bio_profile="SHORT_FEMALE"
+        labelText="মুসলিমা (পাত্রী)"
+      />
+    ),
+  },
 ];
 
 /**
@@ -76,11 +97,25 @@ export const bio_profile_type_options: Option[] = [
  * @param gender - "male" or "female"
  * @returns Filtered bio profile options for the opposite gender.
  */
+
 export const getOppositeBioProfiles = (gender: "male" | "female") => {
   const isMale = gender === "male";
-  return bio_profile_type_options.filter(profile =>
-    isMale ? profile.value.includes("FEMALE") : profile.value.includes("MALE")
-  );
+
+  return bio_profile_type_options.filter(profile => {
+    const value = profile.value;
+
+    // Exclude SHORT profiles
+    if (value.includes("SHORT")) return false;
+
+    // Opposite gender filtering
+    return isMale
+      ? value.startsWith("TOP_FEMALE") ||
+          value.startsWith("MID_FEMALE") ||
+          value.startsWith("LOW_FEMALE")
+      : value.startsWith("TOP_MALE") ||
+          value.startsWith("MID_MALE") ||
+          value.startsWith("LOW_MALE");
+  });
 };
 
 const BioProfile = ({ className, bio_profile }: Props) => {
@@ -136,6 +171,24 @@ const BioProfile = ({ className, bio_profile }: Props) => {
         src={lowFemaleAvatarImage}
         alt="Low practicing Muslim female avatar"
         title="Low practicing Muslim female"
+      />
+    );
+  } else if (bio_profile === "SHORT_MALE") {
+    return (
+      <Image
+        className={className}
+        src={shortMaleAvatarImage}
+        alt="Muslim male avatar"
+        title="Muslim male"
+      />
+    );
+  } else if (bio_profile === "SHORT_FEMALE") {
+    return (
+      <Image
+        className={className}
+        src={shortFemaleAvatarImage}
+        alt="Muslim female avatar"
+        title="Muslim female"
       />
     );
   } else {

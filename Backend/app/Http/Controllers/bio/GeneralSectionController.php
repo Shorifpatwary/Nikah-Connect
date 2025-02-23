@@ -10,9 +10,7 @@ use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\GeneralSection;
 use App\Models\Location;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class GeneralSectionController extends Controller
 {
@@ -33,7 +31,6 @@ class GeneralSectionController extends Controller
     DB::beginTransaction();
 
     try {
-
       // Check if the authenticated user already has a GeneralSection via the Bio model
       $existingGeneralSection = GeneralSection::whereHas('bio', function ($query) {
         $query->where('user_id', auth()->id());
@@ -54,6 +51,7 @@ class GeneralSectionController extends Controller
           'ঠিকানাঃ ' .  $location->name . ' ' . $location->type, // Concatenate location name and type
         ]),
         'status' => 'incomplete', // Set status to 'pending'
+        'type' => 'LONG', // Set type to 'pending'
         'user_id' => auth()->id(), // Get the authenticated user's ID
       ]);
 
@@ -109,7 +107,7 @@ class GeneralSectionController extends Controller
       $bio = Bio::where('user_id', auth()->id())->first();
 
       if (!$bio || $general->bio_id !== $bio->id) {
-        return response()->json(['error' => 'এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
+        return response()->json(['error' => 'আপনার এই বায়োডাটাটি সম্পাদনা করার জন্য আপনার অনুমতি নেই।'], 403);
       }
 
       // Fetch the location data using location_id
@@ -159,7 +157,6 @@ class GeneralSectionController extends Controller
   {
     //
   }
-
 
   /**
    * Helper function to calculate the filled marks percentage.

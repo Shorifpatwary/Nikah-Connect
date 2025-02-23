@@ -1,11 +1,11 @@
 "use client";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection"; // Add fetching function
-import { updateHiddenInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/edit/action"; // Update with the edit action
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/edit/data"; // Adjust path to edit data
-import { HiddenInfoInterface } from "@/assets/data/response-types/bio";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/data"; // Adjust path to edit data
+import { updateHiddenInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/edit/action"; // Update with the edit action
+import { BioWithHiddenInfos } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import TextInputBox from "@/components/blocks/inputBox/textInputBox";
@@ -17,48 +17,59 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, minLength, object, Output, string } from "valibot";
+import {
+  email,
+  maxLength,
+  minLength,
+  nullable,
+  object,
+  Output,
+  string,
+} from "valibot";
 
 // Valibot schema
 const Schema = object({
   name: string([
     minLength(1, VM.name.required),
-    minLength(2, VM.name.minLength),
-    maxLength(255, VM.name.maxLength),
+    minLength(5, VM.name.minLength),
+    maxLength(100, VM.name.maxLength),
   ]),
   email: string([
     minLength(1, VM.email.required),
     minLength(5, VM.email.minLength),
-    maxLength(255, VM.email.maxLength),
+    maxLength(50, VM.email.maxLength),
+    email(VM.email.email),
   ]),
   location: string([
     minLength(1, VM.location.required),
-    minLength(5, VM.location.minLength),
+    minLength(10, VM.location.minLength),
     maxLength(1000, VM.location.maxLength),
   ]),
   family_members_name: string([
     minLength(1, VM.family_members_name.required),
-    minLength(5, VM.family_members_name.minLength),
+    minLength(10, VM.family_members_name.minLength),
     maxLength(1000, VM.family_members_name.maxLength),
   ]),
   current_parent: string([
     minLength(1, VM.current_parent.required),
-    minLength(2, VM.current_parent.minLength),
+    minLength(5, VM.current_parent.minLength),
     maxLength(255, VM.current_parent.maxLength),
   ]),
   parent_mobile: string([
     minLength(1, VM.parent_mobile.required),
     minLength(10, VM.parent_mobile.minLength),
-    maxLength(25, VM.parent_mobile.maxLength),
+    maxLength(30, VM.parent_mobile.maxLength),
   ]),
-  social_links: string([maxLength(1000, VM.social_links.maxLength)]),
-  permanent_address_map_location: string([
-    maxLength(255, VM.permanent_address_map_location.maxLength),
-  ]),
-  present_address_map_location: string([
-    maxLength(255, VM.present_address_map_location.maxLength),
-  ]),
-  documents_links: string([maxLength(100, VM.documents_links.maxLength)]),
+  social_links: nullable(string([maxLength(1000, VM.social_links.maxLength)])),
+  permanent_address_map_location: nullable(
+    string([maxLength(255, VM.permanent_address_map_location.maxLength)])
+  ),
+  present_address_map_location: nullable(
+    string([maxLength(255, VM.present_address_map_location.maxLength)])
+  ),
+  documents_links: nullable(
+    string([maxLength(250, VM.documents_links.maxLength)])
+  ),
 });
 
 export type HiddenInfoEditSchemaType = Output<typeof Schema>;
@@ -68,12 +79,11 @@ const HiddenInfoEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [hiddenInfo, setHiddenInfo] = useState<HiddenInfoInterface | null>(
-    null
-  ); // State to store fetched bio data
+  const [bioWithHiddenInfo, setBioWithHiddenInfo] =
+    useState<BioWithHiddenInfos | null>(null); // State to store fetched bio data
 
   useEffect(() => {
-    fetchBioSection("hidden-info", setHiddenInfo);
+    fetchBioSection("hidden-info", setBioWithHiddenInfo);
   }, []);
 
   const {
@@ -88,20 +98,19 @@ const HiddenInfoEditForm = () => {
   });
 
   useEffect(() => {
-    if (hiddenInfo) {
-      // Set form values once hiddenInfo is fetched
+    if (bioWithHiddenInfo?.hidden_info) {
+      const hiddenInfo = bioWithHiddenInfo.hidden_info;
       Object.entries(hiddenInfo).forEach(([key, value]) => {
         setValue(key as keyof HiddenInfoEditSchemaType, value || "");
       });
     }
-  }, [hiddenInfo, setValue]);
+  }, [bioWithHiddenInfo, setValue]);
 
   const onSubmit: SubmitHandler<HiddenInfoEditSchemaType> = async formData => {
     setIsFormLoading(true);
     await updateHiddenInfo({
       data: formData,
-      // @ts-expect-error
-      id: hiddenInfo?.id,
+      bio: bioWithHiddenInfo,
       setError,
       reset,
       toast,
@@ -110,7 +119,7 @@ const HiddenInfoEditForm = () => {
     });
   };
 
-  if (!hiddenInfo) {
+  if (!bioWithHiddenInfo) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -218,7 +227,7 @@ const HiddenInfoEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

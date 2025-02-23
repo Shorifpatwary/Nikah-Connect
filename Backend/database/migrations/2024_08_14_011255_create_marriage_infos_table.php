@@ -13,15 +13,19 @@ return new class extends Migration
 	{
 		Schema::create('marriage_infos', function (Blueprint $table) {
 			$table->id();
+			// conditionally required
 			$table->text('prev_marriage')->nullable();
-			$table->string('work_after');
-			$table->string('study_after');
+			// nullable for short bio
+			$table->string('work_after')->nullable();
+			// nullable for short bio
+			$table->string('study_after')->nullable();
 			$table->text('ceremony_plans')->nullable();
 			$table->text('partner_view_rules')->nullable();
 			$table->text('marriage_weakness')->nullable();
 			$table->text('family_pref')->nullable();
 			$table->text('compromise_factors')->nullable();
-			$table->text('dowry_amount');
+			// nullable for short bio
+			$table->text('dowry_amount')->nullable();
 			$table->text('dowry_opinion')->nullable();
 			$table->text('cash_gift_opinion')->nullable();
 

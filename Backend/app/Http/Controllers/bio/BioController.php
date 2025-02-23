@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Bio;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Bio\StoreBioRequest;
 use App\Http\Requests\Admin\Bio\UpdateBioRequest;
@@ -9,6 +10,8 @@ use App\Http\Requests\Admin\Bio\UpdateBioRequest;
 use App\Http\Resources\Bio\BioResource;
 use App\Models\Bio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class BioController extends Controller
 {
@@ -133,8 +136,22 @@ class BioController extends Controller
    */
   public function show(Bio $bio)
   {
+    $bio->load([
+      'tags',
+      'generalSection',
+      'locationSection',
+      'educationSection',
+      'personalDetails',
+      'familyInfoSection',
+      'professionSection',
+      'religiousActivity',
+      'marriageInfo',
+      'expectedPartner'
+    ]);
+
     return new BioResource($bio);
   }
+
 
   /**
    * Update the specified resource in storage.
@@ -159,5 +176,183 @@ class BioController extends Controller
     return response()->json([
       'message' => 'Bio deleted successfully.'
     ]);
+  }
+
+  /**
+   * Update the authenticated resource types and status in storage.
+   */
+  public function updateStatusesAndTypes(Request $request)
+  {
+    $user = Auth::user();
+    $bio = $user->bio;
+
+    if (!$bio) {
+      return response()->json(['message' => 'Bio not found'], 404);
+    }
+
+    // Validate inputs (all optional)
+    $validated = $request->validate([
+      'bio_profile' => ['nullable', Rule::in(StatusEnum::BIO_PROFILE_TYPES)],
+      'status' => ['nullable', Rule::in(StatusEnum::BIO_STATUS)],
+      'type' => ['nullable', Rule::in(StatusEnum::BIO__TYPES)],
+    ]);
+
+    // Check if status is provided and is not in the allowed values
+    if (isset($validated['status']) && !in_array($validated['status'], ['approved', 'married', 'inactive'])) {
+      return response()->json([
+        'error' => 'বৈধ স্ট্যাটাস নির্বাচন করা আবশ্যক।'
+      ], 422);
+    }
+
+    // Update only the provided fields
+    $bio->fill($validated);
+
+    // Only save if there are changes
+    if ($bio->isDirty()) {
+      $bio->save();
+    }
+
+    return new BioResource($bio);
+  }
+
+
+  public function userRecord()
+  {
+    $bio = Bio::where('user_id', auth()->id())->first();
+
+    if (!$bio) {
+      return response()->json(['error' => 'আপনার জন্য কোনো বায়োডাটা খুঁজে পাওয়া যায়নি।'], 404);
+    }
+
+    $bio->load([
+      'tags',
+      'generalSection.location',
+      'locationSection',
+      'educationSection',
+      'personalDetails',
+      'familyInfoSection',
+      'professionSection',
+      'religiousActivity',
+      'marriageInfo',
+      'expectedPartner',
+      'hiddenInfo'
+    ]);
+
+    return new BioResource($bio);
+  }
+
+  public function approveRequest()
+  {
+    $bio = Bio::where('user_id', auth()->id())->firstOrFail();
+    $maritalStatus = $bio->generalSection?->marital_status;
+
+    if ($this->isBioComplete($bio, $maritalStatus)) {
+      $bio->update(['status' => 'pending_approval']);
+
+      return response()->json([
+        'message' => 'বায়ো এপ্রুব রিকোয়েষ্ট সফলভাবে পাঠানো হয়েছে।',
+        'status' => $bio->status,
+      ]);
+    }
+
+    return response()->json([
+      'error' => 'সমস্ত প্রয়োজনীয় প্রশ্নের উত্তর সঠিকভাবে পূরণ করা হয়নি।',
+    ], 422);
+  }
+
+  /**
+   * Check if required fields are filled based on bio type.
+   */
+  private function isBioComplete($bio, $maritalStatus)
+  {
+    $commonFields = [
+      // General Section
+      $bio->generalSection?->gender,
+      $bio->generalSection?->marital_status,
+      $bio->generalSection?->birth_date,
+      $bio->generalSection?->height,
+      $bio->generalSection?->weight,
+      $bio->generalSection?->complexion,
+      $bio->generalSection?->blood_group,
+      $bio->generalSection?->location_id,
+
+      // Location Section
+      $bio->location_section?->permanent_address,
+
+      // Education Section
+      $bio->education_section?->education_medium,
+      $bio->education_section?->previous_exams,
+
+      // Personal Details Section
+      $bio->personal_details?->about_yourself,
+
+      // Family Information Section
+      $bio->family_info_sections?->family_members_info,
+      $bio->family_info_sections?->economic_status,
+
+      // Profession Section
+      $bio->profession_section?->profession,
+      $bio->profession_section?->profession_description,
+
+      // Religious Activity Section
+      $bio->religious_activity?->mazhab,
+
+      // Hidden Info Section
+      $bio->hidden_info?->name,
+      $bio->hidden_info?->email,
+      $bio->hidden_info?->location,
+      $bio->hidden_info?->family_members_name,
+      $bio->hidden_info?->current_parent,
+      $bio->hidden_info?->parent_mobile,
+    ];
+
+    if ($maritalStatus !== 'অবিবাহিত') {
+      $commonFields[] = $bio->marriage_info?->prev_marriage;
+    }
+
+    if ($bio->type === "LONG") {
+      $extraFields = [
+        // Additional Education Fields
+        $bio->education_section?->highest_qualification,
+
+        // Additional Personal Details
+        $bio->personal_details?->outdoor_clothing,
+        $bio->personal_details?->physical_mental_illness,
+
+        // Additional Family Info
+        $bio->family_info_sections?->economic_status_details,
+
+        // Additional Profession Info
+        $bio->profession_section?->monthly_income,
+
+        // Additional Religious Activity Info
+        $bio->religious_activity?->prayer_habits,
+
+        // Additional Marriage Info
+        $bio->marriage_info?->work_after,
+        $bio->marriage_info?->study_after,
+        $bio->marriage_info?->ceremony_plans,
+        $bio->marriage_info?->partner_view_rules,
+        $bio->marriage_info?->marriage_weakness,
+        $bio->marriage_info?->family_pref,
+        $bio->marriage_info?->compromise_factors,
+        $bio->marriage_info?->dowry_amount,
+        $bio->marriage_info?->dowry_opinion,
+        $bio->marriage_info?->cash_gift_opinion,
+
+        // Expected Partner Section
+        $bio->expected_partner?->age,
+        $bio->expected_partner?->complexion,
+        $bio->expected_partner?->height,
+        $bio->expected_partner?->marital_status,
+        $bio->expected_partner?->educational_qualification,
+        $bio->expected_partner?->profession,
+        $bio->expected_partner?->economic_status,
+        $bio->expected_partner?->bio_profile_types,
+      ];
+      $commonFields = array_merge($commonFields, $extraFields);
+    }
+
+    return collect($commonFields)->every(fn($field) => filled($field));
   }
 }

@@ -16,7 +16,8 @@ return new class extends Migration
       $table->id();
       $table->enum('profession', StatusEnum::PROFESSION_STATUS);
       $table->text('profession_description');
-      $table->text('monthly_income');
+      // nullable for short bio
+      $table->text('monthly_income')->nullable();
 
       $table->foreignId('bio_id')->constrained('bios')->cascadeOnDelete();
 

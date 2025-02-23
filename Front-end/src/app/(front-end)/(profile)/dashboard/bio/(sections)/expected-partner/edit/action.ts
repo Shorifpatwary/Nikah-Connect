@@ -1,5 +1,5 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/data"; // Update path to the expected partner data
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/data"; // Update path to the expected partner data
 import { ExpectedPartnerEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/form"; // Update path to the schema
 import {
   allBio,
@@ -7,10 +7,12 @@ import {
   expectedPartner,
   filledMarks,
 } from "@/assets/data/config/app.config"; // Add `expectedPartner` to config
-import { ExpectedPartnerFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for expected partner
+import {
+  BioWithExpectedPartner,
+  ExpectedPartnerFormInterface,
+} from "@/assets/data/response-types/bio"; // Define the response type for expected partner
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -19,7 +21,7 @@ type ResponseType = ExpectedPartnerFormInterface<ExpectedPartnerEditSchemaType>;
 
 type Props<T> = {
   data: T;
-  id: number;
+  bio: BioWithExpectedPartner | null;
   setError: UseFormSetError<ExpectedPartnerEditSchemaType>;
   reset: UseFormReset<ExpectedPartnerEditSchemaType>;
   toast: (props: Toast) => void;
@@ -29,7 +31,7 @@ type Props<T> = {
 
 export const updateExpectedPartner = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -39,8 +41,7 @@ export const updateExpectedPartner = async <T>({
   try {
     setIsFormLoading(true);
     // Construct the URL for the expected partner info update
-    const url = `${backendUrl}/api/bio/expected-partner/${id}`;
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/expected-partner/${bio?.expected_partner?.id}`;
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -48,21 +49,25 @@ export const updateExpectedPartner = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${expectedPartner}_${userId}`, // Cache revalidation for expected partner info
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${expectedPartner}_${bio?.id}`, // Cache revalidation for expected partner info
+        `${filledMarks}_${bio?.id}`,
       ],
     });
 
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset(); // Reset form data after successful update
-      router.push(Data.success.redirectUrl); // Redirect to the success page after update
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      }
+      router.push(Data.edit.success.redirectUrl);
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -86,7 +91,7 @@ export const updateExpectedPartner = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

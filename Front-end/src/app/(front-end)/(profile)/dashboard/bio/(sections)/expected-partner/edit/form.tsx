@@ -1,15 +1,15 @@
 "use client";
-import { updateExpectedPartner } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/data";
+import { updateExpectedPartner } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/expected-partner/edit/action";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { getOppositeBioProfiles } from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
 import { complexions, marital_status } from "@/assets/data/config/app.config";
 import {
-  ExpectedPartnerInterface,
-  GeneralSectionInterface,
+  BioWithExpectedPartner,
+  BioWithGeneralSection,
 } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import FancyMultiSelectBox from "@/components/blocks/inputBox/fancyMultiSelectBox";
@@ -23,19 +23,27 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { array, maxLength, minLength, object, Output, string } from "valibot";
+import {
+  array,
+  maxLength,
+  minLength,
+  nullable,
+  object,
+  Output,
+  string,
+} from "valibot";
 
 // Valibot schema
 const Schema = object({
   age: string([
     minLength(1, VM.age.required),
-    minLength(2, VM.age.minLength),
+    minLength(5, VM.age.minLength),
     maxLength(250, VM.age.maxLength),
   ]),
   complexion: array(string(), [minLength(1, VM.complexion.required)]),
   height: string([
     minLength(1, VM.height.required),
-    minLength(3, VM.height.minLength),
+    minLength(5, VM.height.minLength),
     maxLength(250, VM.height.maxLength),
   ]),
   marital_status: array(string(), [minLength(1, VM.marital_status.required)]),
@@ -46,19 +54,21 @@ const Schema = object({
   ]),
   profession: string([
     minLength(1, VM.profession.required),
-    minLength(3, VM.profession.minLength),
+    minLength(10, VM.profession.minLength),
     maxLength(1000, VM.profession.maxLength),
   ]),
   economic_status: string([
     minLength(1, VM.economic_status.required),
-    minLength(3, VM.economic_status.minLength),
-    maxLength(1000, VM.economic_status.maxLength),
+    minLength(5, VM.economic_status.minLength),
+    maxLength(200, VM.economic_status.maxLength),
   ]),
   bio_profile_types: array(string(), [
     minLength(1, VM.bio_profile_types.required),
   ]),
-  family: string([maxLength(1000, VM.family.maxLength)]),
-  about_partner: string([maxLength(2500, VM.about_partner.maxLength)]),
+  family: nullable(string([maxLength(1000, VM.family.maxLength)])),
+  about_partner: nullable(
+    string([maxLength(2500, VM.about_partner.maxLength)])
+  ),
 });
 
 export type ExpectedPartnerEditSchemaType = Output<typeof Schema>;
@@ -67,13 +77,13 @@ const BioExpectedPartnerEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [expectedPartner, setExpectedPartner] =
-    useState<ExpectedPartnerInterface | null>(null);
+  const [bioWithExpectedPartner, setBioWithExpectedPartner] =
+    useState<BioWithExpectedPartner | null>(null);
 
   useEffect(() => {
-    fetchBioSection<ExpectedPartnerInterface>(
+    fetchBioSection<BioWithExpectedPartner>(
       "expected-partner",
-      setExpectedPartner
+      setBioWithExpectedPartner
     );
   }, []);
 
@@ -89,20 +99,20 @@ const BioExpectedPartnerEditForm = () => {
   });
 
   useEffect(() => {
-    if (expectedPartner) {
+    if (bioWithExpectedPartner?.expected_partner) {
+      const expectedPartner = bioWithExpectedPartner.expected_partner;
       Object.entries(expectedPartner).forEach(([key, value]) => {
         setValue(key as keyof ExpectedPartnerEditSchemaType, value || "");
       });
     }
-  }, [expectedPartner, setValue]);
+  }, [bioWithExpectedPartner, setValue]);
 
   const onSubmit: SubmitHandler<
     ExpectedPartnerEditSchemaType
   > = async formData => {
     await updateExpectedPartner<ExpectedPartnerEditSchemaType>({
       data: formData,
-      // @ts-expect-error
-      id: expectedPartner?.id,
+      bio: bioWithExpectedPartner,
       setError,
       reset,
       toast,
@@ -110,18 +120,22 @@ const BioExpectedPartnerEditForm = () => {
       setIsFormLoading,
     });
   };
-
-  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+  const [bioWithGeneral, setBioWithGeneral] =
+    useState<BioWithGeneralSection | null>(null);
 
   useEffect(() => {
-    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+    fetchBioSection<BioWithExpectedPartner>(
+      "expected-partner",
+      setBioWithExpectedPartner
+    );
+    fetchBioSection<BioWithGeneralSection>("general", setBioWithGeneral);
   }, []);
 
   const bio_profile_types = getOppositeBioProfiles(
-    general?.gender === "পাত্র" ? "male" : "female"
-  ); // Returns only female options
+    bioWithGeneral?.general_section?.gender === "পাত্র" ? "male" : "female"
+  ); // Returns only opposite options
 
-  if (!expectedPartner) {
+  if (!bioWithExpectedPartner?.expected_partner) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -152,7 +166,7 @@ const BioExpectedPartnerEditForm = () => {
             )
           }
           defaultValue={parseSelectedOptions(
-            expectedPartner.complexion,
+            bioWithExpectedPartner.expected_partner.complexion,
             complexions
           )}
         />
@@ -180,7 +194,7 @@ const BioExpectedPartnerEditForm = () => {
             )
           }
           defaultValue={parseSelectedOptions(
-            expectedPartner.marital_status,
+            bioWithExpectedPartner?.expected_partner?.marital_status,
             marital_status
           )}
         />
@@ -228,7 +242,7 @@ const BioExpectedPartnerEditForm = () => {
             )
           }
           defaultValue={parseSelectedOptions(
-            expectedPartner.bio_profile_types,
+            bioWithExpectedPartner.expected_partner.bio_profile_types,
             bio_profile_types
           )}
         />
@@ -256,7 +270,7 @@ const BioExpectedPartnerEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

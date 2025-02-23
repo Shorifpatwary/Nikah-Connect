@@ -53,7 +53,7 @@ const TextareaBox = ({
 
       {/* Textarea */}
       <Textarea
-        className={cn("text-lg max-md:text-xl", className)}
+        className={cn("text-xl md:text-lg", className)}
         rows={4}
         {...props}
         id={fieldName}

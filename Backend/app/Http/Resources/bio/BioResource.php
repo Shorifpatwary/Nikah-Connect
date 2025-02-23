@@ -21,6 +21,7 @@ class BioResource extends JsonResource
       'title' => $this->title,
       'bio_profile' => $this->bio_profile,
       'status' => $this->status,
+      'type' => $this->type,
       'created_at' => (string)  $this->created_at,
       'updated_at' => (string) $this->updated_at,
 
@@ -35,6 +36,8 @@ class BioResource extends JsonResource
       'religious_activity' => new ReligiousActivityResource($this->whenLoaded('religiousActivity')),
       'marriage_info' => new MarriageInfoResource($this->whenLoaded('marriageInfo')),
       'expected_partner' => new ExpectedPartnerResource($this->whenLoaded('expectedPartner')),
+      'hidden_info' => new HiddenInfoResource($this->whenLoaded('hiddenInfo')),
+      'filled_marks' => new FilledMarksResource($this->whenLoaded('filledMarks')),
     ];
   }
 }

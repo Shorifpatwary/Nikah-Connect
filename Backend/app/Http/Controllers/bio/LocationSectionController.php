@@ -9,7 +9,6 @@ use App\Http\Resources\Bio\LocationSectionResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\LocationSection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LocationSectionController extends Controller

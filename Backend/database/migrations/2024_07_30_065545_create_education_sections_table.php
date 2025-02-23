@@ -15,7 +15,8 @@ return new class extends Migration
     Schema::create('education_sections', function (Blueprint $table) {
       $table->id();
       $table->enum('education_medium', StatusEnum::EDUCATION_MEDIUM)->nullable(false);
-      $table->text('highest_qualification');
+      // nullable for short bio 
+      $table->text('highest_qualification')->nullable();
       $table->text('current_study')->nullable();
       $table->text('previous_exams');
       $table->text('other_qualifications')->nullable();

@@ -8,8 +8,6 @@ use App\Http\Resources\Bio\EducationSectionResource;
 use App\Models\Bio;
 use App\Models\EducationSection;
 use App\Models\FilledMarks;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class EducationSectionController extends Controller

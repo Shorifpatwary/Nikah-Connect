@@ -1,6 +1,14 @@
 export const BioItemData = {
+  questions: {
+    createdAt: "তৈরীর তারিখ",
+    updatedAt: "আপডেট তারিখ",
+  },
+  short: {
+    label: "সংক্ষিপ্ত বায়োডাটা তথ্য",
+    othersLabel: "আন্যান্য তথ্য",
+  },
   general: {
-    label: "সাধারন তথ্যাবলি",
+    label: "সাধারন তথ্য",
     questions: {
       gender: "পাত্রের ধরন",
       marital_status: "বৈবাহিক অবস্থা",
@@ -85,7 +93,7 @@ export const BioItemData = {
       ceremony_plans: "বিবাহের অনুষ্ঠানের পরিকল্পনা",
       partner_view_rules: "পাত্র / পাত্রী দেখার নিয়ম",
       marriage_weakness: "নিজ পক্ষের দুর্বলতা",
-      family_pref: "পূর্ববর্তী বিবাহ",
+      family_pref: "পরিবারের পছন্দ",
       compromise_factors: "ছাড় দেওয়ার বিষয়াবলি",
       dowry_amount: "মোহরানার পরিমাণ",
       dowry_opinion: "মোহরানা সম্পর্কে মতামত",
@@ -109,5 +117,17 @@ export const BioItemData = {
   },
   hidden: {
     label: "গোপনীয় তথ্য",
+    questions: {
+      name: "নাম",
+      email: "ইমেইল",
+      location: "ঠিকানা",
+      family_members_name: "পরিবারের সদস্যদের নাম",
+      current_parent: "বর্তমান অভিভাবক",
+      parent_mobile: "অভিভাবকের মোবাইল নম্বর",
+      social_links: "সামাজিক যোগাযোগ মাধ্যমের লিংক সমূহ",
+      permanent_address_map_location: "স্থায়ী ঠিকানার মানচিত্রের অবস্থান",
+      present_address_map_location: "বর্তমান ঠিকানার মানচিত্রের অবস্থান",
+      documents_links: "ডকুমেন্ট লিংক",
+    },
   },
 };

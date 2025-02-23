@@ -8,7 +8,6 @@ use App\Http\Resources\Bio\FamilyInfoResource;
 use App\Models\Bio;
 use App\Models\FamilyInfoSection;
 use App\Models\FilledMarks;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FamilyInfoSectionController extends Controller

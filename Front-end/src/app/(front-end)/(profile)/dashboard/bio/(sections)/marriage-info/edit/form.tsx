@@ -1,14 +1,14 @@
 "use client";
 
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
-import { updateMarriageInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/edit/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/data";
+import { updateMarriageInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/edit/action";
 import {
-  GeneralSectionInterface,
-  MarriageInfoInterface,
+  BioWithGeneralSection,
+  BioWithMarriageInfo,
 } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -20,37 +20,52 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { maxLength, minLength, object, Output, string } from "valibot";
+import {
+  maxLength,
+  minLength,
+  nullable,
+  object,
+  Output,
+  string,
+} from "valibot";
 
 // Valibot schema
 const Schema = object({
-  prev_marriage: string([maxLength(1000, VM.prev_marriage.maxLength)]),
+  prev_marriage: nullable(
+    string([maxLength(1000, VM.prev_marriage.maxLength)])
+  ),
   work_after: string([
     minLength(1, VM.work_after.required),
-    minLength(5, VM.work_after.minLength),
     maxLength(255, VM.work_after.maxLength),
   ]),
   study_after: string([
     minLength(1, VM.study_after.required),
-    minLength(5, VM.study_after.minLength),
     maxLength(255, VM.study_after.maxLength),
   ]),
-  ceremony_plans: string([maxLength(1000, VM.ceremony_plans.maxLength)]),
-  partner_view_rules: string([
-    maxLength(1000, VM.partner_view_rules.maxLength),
-  ]),
-  marriage_weakness: string([maxLength(1000, VM.marriage_weakness.maxLength)]),
-  family_pref: string([maxLength(1000, VM.family_pref.maxLength)]),
-  compromise_factors: string([
-    maxLength(1000, VM.compromise_factors.maxLength),
-  ]),
+  ceremony_plans: nullable(
+    string([maxLength(1000, VM.ceremony_plans.maxLength)])
+  ),
+  partner_view_rules: nullable(
+    string([maxLength(1000, VM.partner_view_rules.maxLength)])
+  ),
+  marriage_weakness: nullable(
+    string([maxLength(1000, VM.marriage_weakness.maxLength)])
+  ),
+  family_pref: nullable(string([maxLength(1000, VM.family_pref.maxLength)])),
+  compromise_factors: nullable(
+    string([maxLength(1000, VM.compromise_factors.maxLength)])
+  ),
   dowry_amount: string([
     minLength(1, VM.dowry_amount.required),
     minLength(5, VM.dowry_amount.minLength),
     maxLength(1000, VM.dowry_amount.maxLength),
   ]),
-  dowry_opinion: string([maxLength(1000, VM.dowry_opinion.maxLength)]),
-  cash_gift_opinion: string([maxLength(1000, VM.cash_gift_opinion.maxLength)]),
+  dowry_opinion: nullable(
+    string([maxLength(1000, VM.dowry_opinion.maxLength)])
+  ),
+  cash_gift_opinion: nullable(
+    string([maxLength(1000, VM.cash_gift_opinion.maxLength)])
+  ),
 });
 
 export type MarriageInfoEditSchemaType = Output<typeof Schema>;
@@ -59,13 +74,17 @@ const MarriageInfoEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [marriageInfo, setMarriageInfo] =
-    useState<MarriageInfoInterface | null>(null);
-  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+  const [bioWithMarriageInfo, setBioWithMarriageInfo] =
+    useState<BioWithMarriageInfo | null>(null);
+  const [bioWithGeneral, setBioWithGeneral] =
+    useState<BioWithGeneralSection | null>(null);
 
   useEffect(() => {
-    fetchBioSection<MarriageInfoInterface>("marital-info", setMarriageInfo);
-    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+    fetchBioSection<BioWithMarriageInfo>(
+      "marital-info",
+      setBioWithMarriageInfo
+    );
+    fetchBioSection<BioWithGeneralSection>("general", setBioWithGeneral);
   }, []);
 
   const {
@@ -80,20 +99,20 @@ const MarriageInfoEditForm = () => {
   });
 
   useEffect(() => {
-    if (marriageInfo) {
+    if (bioWithMarriageInfo?.marriage_info) {
+      const marriageInfo = bioWithMarriageInfo.marriage_info;
       Object.entries(marriageInfo).forEach(([key, value]) => {
         setValue(key as keyof MarriageInfoEditSchemaType, value || "");
       });
     }
-  }, [marriageInfo, setValue]);
+  }, [bioWithMarriageInfo, setValue]);
 
   const onSubmit: SubmitHandler<
     MarriageInfoEditSchemaType
   > = async formData => {
     await updateMarriageInfo<MarriageInfoEditSchemaType>({
       data: formData,
-      // @ts-expect-error
-      id: marriageInfo?.id,
+      bio: bioWithMarriageInfo,
       setError,
       reset,
       toast,
@@ -102,7 +121,7 @@ const MarriageInfoEditForm = () => {
     });
   };
 
-  if (!marriageInfo) {
+  if (!bioWithMarriageInfo) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -110,7 +129,7 @@ const MarriageInfoEditForm = () => {
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         {/* Previous Marriage */}
-        {general?.marital_status !== "অবিবাহিত" && (
+        {bioWithGeneral?.general_section?.marital_status !== "অবিবাহিত" && (
           <TextareaBox
             label={Data.inputs.prev_marriage.title}
             labelRequired={true}
@@ -233,7 +252,7 @@ const MarriageInfoEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

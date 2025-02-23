@@ -3,7 +3,7 @@ import { createBioEducation } from "@/app/(front-end)/(profile)/dashboard/bio/(s
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/data";
 import { education_mediums } from "@/assets/data/config/app.config";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
@@ -18,6 +18,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   object,
   Output,
   picklist,
@@ -35,15 +36,17 @@ const Schema = object({
     minLength(5, VM.highest_qualification.minLength),
     maxLength(1000, VM.highest_qualification.maxLength),
   ]),
-  current_study: string([maxLength(1000, VM.current_study.maxLength)]),
+  current_study: nullable(
+    string([maxLength(1000, VM.current_study.maxLength)])
+  ),
   previous_exams: string([
     minLength(1, VM.previous_exams.required),
     minLength(50, VM.previous_exams.minLength),
     maxLength(2500, VM.previous_exams.maxLength),
   ]),
-  other_qualifications: string([
-    maxLength(2500, VM.other_qualifications.maxLength),
-  ]),
+  other_qualifications: nullable(
+    string([maxLength(2500, VM.other_qualifications.maxLength)])
+  ),
 });
 
 export type EducationCreateSchemaType = Output<typeof Schema>;
@@ -136,7 +139,7 @@ const BioEducationCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.create.submit}
         </Button>
       </div>
       <Toaster />

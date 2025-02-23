@@ -1,6 +1,6 @@
 "use client";
 
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/edit/data"; // Update path to the personal details data
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/data"; // Update path to the personal details data
 import { PersonalDetailsEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/edit/form"; // Update path to the personal details schema
 import {
   allBio,
@@ -8,10 +8,12 @@ import {
   filledMarks,
   personalDetails,
 } from "@/assets/data/config/app.config"; // Add `personalDetails` to config
-import { PersonalDetailsFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for personal details
+import {
+  BioWithPersonalDetails,
+  PersonalDetailsFormInterface,
+} from "@/assets/data/response-types/bio"; // Define the response type for personal details
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -20,7 +22,7 @@ type ResponseType = PersonalDetailsFormInterface<PersonalDetailsEditSchemaType>;
 
 type Props<T> = {
   data: T;
-  id: number; // Accept the ID for the specific personal details record to be updated
+  bio: BioWithPersonalDetails | null;
   setError: UseFormSetError<PersonalDetailsEditSchemaType>;
   reset: UseFormReset<PersonalDetailsEditSchemaType>;
   toast: (props: Toast) => void;
@@ -30,7 +32,7 @@ type Props<T> = {
 
 export const updateBioPersonalDetails = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -40,8 +42,7 @@ export const updateBioPersonalDetails = async <T>({
   try {
     setIsFormLoading(true);
     // Make fetch request to update personal details
-    const url = `${backendUrl}/api/bio/personal-details/${id}`; // Update endpoint for updating personal details
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/personal-details/${bio?.personal_details?.id}`; // Update endpoint for updating personal details
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -49,21 +50,26 @@ export const updateBioPersonalDetails = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${personalDetails}_${userId}`, // Cache revalidation for personal details
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${personalDetails}_${bio?.id}`,
+        `${filledMarks}_${bio?.id}`,
       ],
     });
 
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset(); // Reset form data after successful update
-      router.push(Data.success.redirectUrl); // Redirect to the success page after update
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -79,9 +85,9 @@ export const updateBioPersonalDetails = async <T>({
         }
       );
       toast({
-        title: Data.error[422].title,
+        title: Data.edit.error[422].title,
         variant: "destructive",
-        description: Data.error[422].description,
+        description: Data.edit.error[422].description,
       });
     }
     // Handle unknown errors
@@ -92,7 +98,7 @@ export const updateBioPersonalDetails = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

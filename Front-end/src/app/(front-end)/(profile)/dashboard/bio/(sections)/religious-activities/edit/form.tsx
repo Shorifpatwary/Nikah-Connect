@@ -1,14 +1,14 @@
 "use client";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
-import { updateBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/edit/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/data";
+import { updateBioReligiousActivity } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/religious-activities/edit/action";
 import { mazhabs } from "@/assets/data/config/app.config";
 import {
-  GeneralSectionInterface,
-  ReligiousActivityInterface,
+  BioWithGeneralSection,
+  BioWithReligiousActivity,
 } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
@@ -24,6 +24,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   object,
   Output,
   picklist,
@@ -37,26 +38,32 @@ const Schema = object({
     minLength(10, VM.prayer_habits.minLength),
     maxLength(1000, VM.prayer_habits.maxLength),
   ]),
-  haram_relationships: string([
-    maxLength(1000, VM.haram_relationships.maxLength),
-  ]),
-  quran_recitation: string([maxLength(1000, VM.quran_recitation.maxLength)]),
-  mahram_adherence: string([maxLength(1000, VM.mahram_adherence.maxLength)]),
-  has_beard: string([maxLength(1000, VM.has_beard.maxLength)]),
-  entertainment_habits: string([
-    maxLength(1000, VM.entertainment_habits.maxLength),
-  ]),
+  haram_relationships: nullable(
+    string([maxLength(1000, VM.haram_relationships.maxLength)])
+  ),
+  quran_recitation: nullable(
+    string([maxLength(1000, VM.quran_recitation.maxLength)])
+  ),
+  mahram_adherence: nullable(
+    string([maxLength(1000, VM.mahram_adherence.maxLength)])
+  ),
+  has_beard: nullable(string([maxLength(1000, VM.has_beard.maxLength)])),
+  entertainment_habits: nullable(
+    string([maxLength(1000, VM.entertainment_habits.maxLength)])
+  ),
   mazhab: picklist(
     mazhabs.map(option => option.value),
     VM.mazhab.required
+  ), // required
+  religious_beliefs: nullable(
+    string([maxLength(1000, VM.religious_beliefs.maxLength)])
   ),
-  religious_beliefs: string([maxLength(1000, VM.religious_beliefs.maxLength)]),
-  religious_knowledge: string([
-    maxLength(1000, VM.religious_knowledge.maxLength),
-  ]),
-  family_religious_environment: string([
-    maxLength(1000, VM.family_religious_environment.maxLength),
-  ]),
+  religious_knowledge: nullable(
+    string([maxLength(1000, VM.religious_knowledge.maxLength)])
+  ),
+  family_religious_environment: nullable(
+    string([maxLength(1000, VM.family_religious_environment.maxLength)])
+  ),
 });
 
 export type ReligiousActivityEditSchemaType = Output<typeof Schema>;
@@ -65,17 +72,18 @@ const BioReligiousActivityEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [religiousActivity, setReligiousActivity] =
-    useState<ReligiousActivityInterface | null>(null);
-  const [general, setGeneral] = useState<GeneralSectionInterface | null>(null);
+  const [bioWithReligiousActivity, setBioWithReligiousActivity] =
+    useState<BioWithReligiousActivity | null>(null);
+  const [bioWithGeneral, setBioWithGeneral] =
+    useState<BioWithGeneralSection | null>(null);
 
   // Fetch the bio section and general data
   useEffect(() => {
-    fetchBioSection<ReligiousActivityInterface>(
+    fetchBioSection<BioWithReligiousActivity>(
       "religious-activities",
-      setReligiousActivity
+      setBioWithReligiousActivity
     );
-    fetchBioSection<GeneralSectionInterface>("general", setGeneral);
+    fetchBioSection<BioWithGeneralSection>("general", setBioWithGeneral);
   }, []);
 
   const {
@@ -91,20 +99,21 @@ const BioReligiousActivityEditForm = () => {
 
   // Set the form data if religiousActivity data exists
   useEffect(() => {
-    if (religiousActivity) {
+    if (bioWithReligiousActivity?.religious_activity) {
+      const religiousActivity = bioWithReligiousActivity.religious_activity;
       Object.entries(religiousActivity).forEach(([key, value]) => {
         setValue(key as keyof ReligiousActivityEditSchemaType, value || "");
       });
     }
-  }, [religiousActivity, setValue]);
+  }, [bioWithReligiousActivity, setValue]);
 
   const onSubmit: SubmitHandler<
     ReligiousActivityEditSchemaType
   > = async formData => {
     await updateBioReligiousActivity<ReligiousActivityEditSchemaType>({
       data: formData,
-      // @ts-expect-error
-      id: religiousActivity?.id,
+
+      bio: bioWithReligiousActivity,
       setError,
       reset,
       toast,
@@ -113,7 +122,7 @@ const BioReligiousActivityEditForm = () => {
     });
   };
 
-  if (!religiousActivity) {
+  if (!bioWithReligiousActivity) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -158,7 +167,7 @@ const BioReligiousActivityEditForm = () => {
           register={register("mahram_adherence")}
         />
         {/* Has Beard (Conditional) */}
-        {general?.gender === "পাত্র" && (
+        {bioWithGeneral?.general_section?.gender === "পাত্র" && (
           <TextareaBox
             label={Data.inputs.has_beard.title}
             errorMessage={errors.has_beard?.message}
@@ -185,7 +194,7 @@ const BioReligiousActivityEditForm = () => {
           options={mazhabs}
           errorMessage={errors.mazhab?.message}
           setValue={value => setValue("mazhab", value)}
-          defaultValue={religiousActivity.mazhab}
+          defaultValue={bioWithReligiousActivity?.religious_activity?.mazhab}
         />
         {/* Religious Beliefs */}
         <TextareaBox
@@ -220,7 +229,7 @@ const BioReligiousActivityEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

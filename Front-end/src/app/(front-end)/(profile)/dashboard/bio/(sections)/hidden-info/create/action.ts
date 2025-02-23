@@ -1,6 +1,6 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/create/data";
 import { HiddenInfoCreateSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/create/form";
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/hidden-info/data";
 import {
   allBio,
   backendUrl,
@@ -55,12 +55,12 @@ export const createHiddenInfo = async <T>({
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.create.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.create.success.description,
       });
       reset();
-      router.push(Data.success.redirectUrl);
+      router.push(Data.create.success.redirectUrl);
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -76,18 +76,20 @@ export const createHiddenInfo = async <T>({
         }
       );
       toast({
-        title: Data.error[422].title,
+        title: Data.create.error[422].title,
         variant: "destructive",
-        description: Data.error[422].description,
+        description: Data.create.error[422].description,
       });
     }
     // Handle authorization error
     else if (response.status === 403) {
       toast({
-        title: Data.error[403].title,
+        title: Data.create.error[403].title,
         variant: "destructive",
-        description: Data.error[403].description,
+        description: Data.create.error[403].description,
       });
+      // redirect to the edit page.
+      router.push(Data.create.error[403].redirectUrl);
     }
     // Handle unknown error
     else {
@@ -97,7 +99,7 @@ export const createHiddenInfo = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.create.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

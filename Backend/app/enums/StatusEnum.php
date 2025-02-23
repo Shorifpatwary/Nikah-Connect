@@ -4,21 +4,22 @@ namespace App\Enums;
 
 class StatusEnum
 {
-  const BIO_PROFILE_TYPES = ["TOP_MALE", "MID_MALE", "LOW_MALE", "TOP_FEMALE", "MID_FEMALE", "LOW_FEMALE"];
+  const BIO_PROFILE_TYPES = ["TOP_MALE", "MID_MALE", "LOW_MALE", "TOP_FEMALE", "MID_FEMALE", "LOW_FEMALE", "SHORT_MALE", "SHORT_FEMALE"];
+  const BIO__TYPES = ["LONG", "SHORT", "SHORT_TO_LONG_DRAFT", "SHORT_TO_LONG_APPROVED_REQUEST"];
   const GENDERS = ['পাত্র', 'পাত্রী'];
-  const MARITAL_STATUS = ['অবিবাহিত', 'বিবাহিত', 'ডিভোর্সড', 'বিধবা', 'বিপত্নিক'];
+  const MARITAL_STATUS = ['অবিবাহিত', 'বিবাহিত', 'ডিভোর্সড', 'সহধর্মীহীন',];
   const COMPLEXIONS = ['কালো', 'শ্যামলা', 'উজ্জ্বল শ্যামলা', 'ফর্সা', 'উজ্জ্বল ফর্সা'];
   const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'জানা নেই'];
   const EDUCATION_MEDIUM = ['জেনারেল', 'কাউমি', 'আলিয়া', 'দেশের বাইরে', 'অন্যান্য'];
   const ECONOMIC_STATUS = ["নিম্নবিত্ত", "নিম্ন মধ্যবিত্ত", "মধ্যবিত্ত", "উচ্চ মধ্যবিত্ত", "উচ্চবিত্ত"];
 
-  const PROFESSION_STATUS = ["ব্যবসায়ী", "সরকারী চাকুরী", "বেসরকারী চাকুরী", "প্রবাসী", "শিক্ষক", "ফ্রিল্যান্সার", "ডাক্তার", "কৃষক", "অন্যান্য", "পেশা নেই"];
+  const PROFESSION_STATUS = ["ব্যবসায়ী", "সরকারী চাকুরী", "বেসরকারী চাকুরী", "প্রবাসী", "শিক্ষক", "শিক্ষার্থী", "ফ্রিল্যান্সার", "ডাক্তার", "কৃষক", "অন্যান্য", "পেশা নেই"];
   const BIO_STATUS = ['incomplete', 'approved', 'pending_approval', 'reject', 'married', 'inactive',];
 
   const LOCATION_TYPE = ["বিভাগ", "জেলা", "উপজেলা"];
   const ALL_MAZHAB = [
     'হানাফী (সুন্নি)',
-    'মালিকি(সুন্নি)',
+    'মালিকি (সুন্নি)',
     'শাফিয়ি (সুন্নি)',
     'হানবালী (সুন্নি)',
     'আহলে হাদিস',

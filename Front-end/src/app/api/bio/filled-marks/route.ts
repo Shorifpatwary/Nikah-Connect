@@ -4,7 +4,6 @@ import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-ma
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { getUserIdFromCookies } from "@/lib/request/header/getUserIdFromCookies";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
-import { redirect } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -31,14 +30,11 @@ export async function GET(request: NextRequest) {
       if (response.status === 401) {
         // remove auth cookie
         deleteAuthCookies();
-        redirect("/login");
-      } else if (response.status === 404) {
-        return NextResponse.json(
-          { error: "No filled marks data found for this user." },
-          { status: 404 }
-        );
       }
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      return NextResponse.json(
+        { error: `HTTP error! Status: ${response.status}` },
+        { status: response.status }
+      );
     }
 
     const data: FilledMarksInterface = await response.json();

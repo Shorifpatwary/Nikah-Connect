@@ -13,9 +13,12 @@ return new class extends Migration
   {
     Schema::create('personal_details', function (Blueprint $table) {
       $table->id();
-      $table->text('about_yourself');
-      $table->string('outdoor_clothing');
-      $table->text('physical_mental_illness');
+      // nullable for short bio
+      $table->text('about_yourself')->nullable();
+      // nullable for short bio
+      $table->string('outdoor_clothing')->nullable();
+      // nullable for short bio
+      $table->text('physical_mental_illness')->nullable();
       $table->text('favorite_books')->nullable();
       $table->text('favorite_online_personalities')->nullable();
       $table->text('device_usage_time')->nullable();

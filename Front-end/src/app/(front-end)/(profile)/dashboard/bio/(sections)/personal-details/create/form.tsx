@@ -3,7 +3,7 @@ import { createBioPersonalDetails } from "@/app/(front-end)/(profile)/dashboard/
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/create/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/data";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import { Button } from "@/components/ui/button";
@@ -152,7 +152,7 @@ const BioPersonalDetailsCreateForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.create.submit}
         </Button>
       </div>
       <Toaster />

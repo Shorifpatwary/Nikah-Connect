@@ -9,8 +9,7 @@ class Bio extends Model
 {
   use HasFactory;
 
-
-  protected $fillable = ['title', 'status', 'bio_profile', 'user_id'];
+  protected $fillable = ['title', 'status', 'type', 'bio_profile', 'user_id'];
 
   /**
    * The tags that belong to the bio.
@@ -53,10 +52,7 @@ class Bio extends Model
   {
     return $this->hasOne(ExpectedPartner::class);
   }
-  public function  hiddenInfo()
-  {
-    return $this->hasOne(HiddenInfo::class);
-  }
+
 
   public function  religiousActivity()
   {
@@ -66,6 +62,11 @@ class Bio extends Model
   {
     return $this->hasOne(MarriageInfo::class);
   }
+  public function  hiddenInfo()
+  {
+    return $this->hasOne(HiddenInfo::class);
+  }
+
   public function  filledMarks()
   {
     return $this->hasOne(FilledMarks::class);

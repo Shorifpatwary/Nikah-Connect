@@ -1,11 +1,11 @@
 "use client";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
-import { updateBioPersonalDetails } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/edit/data";
-import { PersonalDetailsSectionInterface } from "@/assets/data/response-types/bio";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/data";
+import { updateBioPersonalDetails } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/personal-details/edit/action";
+import { BioWithPersonalDetails } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
@@ -49,13 +49,13 @@ const BioPersonalDetailsEditForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [personalDetails, setPersonalDetails] =
-    useState<PersonalDetailsSectionInterface | null>(null);
+  const [bioWithPersonalDetails, setBboWithPersonalDetails] =
+    useState<BioWithPersonalDetails | null>(null);
 
   useEffect(() => {
-    fetchBioSection<PersonalDetailsSectionInterface>(
+    fetchBioSection<BioWithPersonalDetails>(
       "personal-info",
-      setPersonalDetails
+      setBboWithPersonalDetails
     );
   }, []);
 
@@ -71,20 +71,21 @@ const BioPersonalDetailsEditForm = () => {
   });
 
   useEffect(() => {
-    if (personalDetails) {
+    if (bioWithPersonalDetails?.personal_details) {
+      const personalDetails = bioWithPersonalDetails?.personal_details;
+
       Object.entries(personalDetails).forEach(([key, value]) => {
         setValue(key as keyof PersonalDetailsEditSchemaType, value || "");
       });
     }
-  }, [personalDetails, setValue]);
+  }, [bioWithPersonalDetails, setValue]);
 
   const onSubmit: SubmitHandler<
     PersonalDetailsEditSchemaType
   > = async formData => {
     await updateBioPersonalDetails<PersonalDetailsEditSchemaType>({
       data: formData,
-      // @ts-expect-error
-      id: personalDetails?.id,
+      bio: bioWithPersonalDetails,
       setError,
       reset,
       toast,
@@ -93,7 +94,7 @@ const BioPersonalDetailsEditForm = () => {
     });
   };
 
-  if (!personalDetails) {
+  if (!bioWithPersonalDetails) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -179,7 +180,7 @@ const BioPersonalDetailsEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

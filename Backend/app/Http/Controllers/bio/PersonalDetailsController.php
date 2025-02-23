@@ -8,7 +8,6 @@ use App\Http\Resources\Bio\PersonalDetailsSectionResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\PersonalDetails;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PersonalDetailsController extends Controller

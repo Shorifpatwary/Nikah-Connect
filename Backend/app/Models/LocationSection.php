@@ -16,6 +16,7 @@ class LocationSection extends Model
     'childhood_address',
     'bio_id',
   ];
+  public const FILLED_MARKS_KEY = 'location_filled_marks';
 
   /**
    * Get the bio associated with the description.

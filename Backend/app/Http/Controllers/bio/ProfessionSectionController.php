@@ -8,7 +8,6 @@ use App\Http\Resources\Bio\ProfessionResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\ProfessionSection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProfessionSectionController extends Controller

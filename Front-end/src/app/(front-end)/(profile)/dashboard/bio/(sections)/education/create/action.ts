@@ -1,6 +1,6 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/data"; // Update path to the education data
 import { EducationCreateSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/create/form"; // Update path to the education schema
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/education/data"; // Update path to the education data
 import {
   allBio,
   backendUrl,
@@ -54,13 +54,13 @@ export const createBioEducation = async <T>({
     // If there are errors in the response, set each error using setError
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.create.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.create.success.description,
       });
       reset();
 
-      router.push(Data.success.redirectUrl); // Redirect to the success URL defined in `data`
+      router.push(Data.create.success.redirectUrl); // Redirect to the success URL defined in `data`
     } else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
         Record<keyof EducationCreateSchemaType, string[]>
@@ -74,16 +74,18 @@ export const createBioEducation = async <T>({
         }
       );
       toast({
-        title: Data.error[422].title,
+        title: Data.create.error[422].title,
         variant: "destructive",
-        description: Data.error[422].description,
+        description: Data.create.error[422].description,
       });
     } else if (response.status === 403) {
       toast({
-        title: Data.error[403].title,
+        title: Data.create.error[403].title,
         variant: "destructive",
-        description: Data.error[403].description,
+        description: Data.create.error[403].description,
       });
+      // redirect to the edit page.
+      router.push(Data.create.error[403].redirectUrl);
     } else {
       toast({
         title: response.data.error
@@ -91,7 +93,7 @@ export const createBioEducation = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.create.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

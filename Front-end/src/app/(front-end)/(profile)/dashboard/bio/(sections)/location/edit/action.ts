@@ -1,6 +1,6 @@
 "use client";
 
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/edit/data";
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/data";
 import { LocationEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/location/edit/form";
 import {
   allBio,
@@ -8,10 +8,12 @@ import {
   filledMarks,
   locations,
 } from "@/assets/data/config/app.config";
-import { LocationFormInterface } from "@/assets/data/response-types/bio";
+import {
+  BioWithLocationSection,
+  LocationFormInterface,
+} from "@/assets/data/response-types/bio";
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -20,7 +22,7 @@ type ResponseType = LocationFormInterface<LocationEditSchemaType>;
 
 type Props<T> = {
   data: T;
-  id: number;
+  bio: BioWithLocationSection | null;
   setError: UseFormSetError<LocationEditSchemaType>;
   reset: UseFormReset<LocationEditSchemaType>;
   toast: (props: Toast) => void;
@@ -30,7 +32,7 @@ type Props<T> = {
 
 export const updateBioLocation = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -40,8 +42,7 @@ export const updateBioLocation = async <T>({
   try {
     setIsFormLoading(true);
     // Make fetch request to update bio location
-    const url = `${backendUrl}/api/bio/location/${id}`;
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/location/${bio?.location_section?.id}`;
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -49,22 +50,25 @@ export const updateBioLocation = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${locations}_${userId}`,
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${locations}_${bio?.id}`,
+        `${filledMarks}_${bio?.id}`,
       ],
     });
-
     // Handle response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset();
-
-      router.push(Data.success.redirectUrl);
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     } else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
         Record<keyof LocationEditSchemaType, string[]>
@@ -78,9 +82,9 @@ export const updateBioLocation = async <T>({
         }
       );
       toast({
-        title: Data.error[422].title,
+        title: Data.edit.error[422].title,
         variant: "destructive",
-        description: Data.error[422].description,
+        description: Data.edit.error[422].description,
       });
     } else {
       toast({
@@ -89,7 +93,7 @@ export const updateBioLocation = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

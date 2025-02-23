@@ -21,7 +21,7 @@ class GeneralSection extends Model
     'location_id',
     'bio_id',
   ];
-
+  public const FILLED_MARKS_KEY = 'general_filled_marks';
   /**
    * Get the location associated with the general section.
    */

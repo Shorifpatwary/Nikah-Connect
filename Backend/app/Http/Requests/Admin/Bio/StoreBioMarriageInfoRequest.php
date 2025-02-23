@@ -41,8 +41,8 @@ class StoreBioMarriageInfoRequest extends FormRequest
         // Apply required rule if marital_status is not 'অবিবাহিত'
         Rule::requiredIf($maritalStatus !== 'অবিবাহিত'),
       ],
-      'work_after' => 'required|string|min:5|max:255',
-      'study_after' => 'required|string|min:5|max:255',
+      'work_after' => 'required|string|max:255',
+      'study_after' => 'required|string|max:255',
       'ceremony_plans' => 'nullable|string|min:10|max:1000',
       'partner_view_rules' => 'nullable|string|min:10|max:1000',
       'marriage_weakness' => 'nullable|string|min:10|max:1000',
@@ -58,15 +58,12 @@ class StoreBioMarriageInfoRequest extends FormRequest
   public function messages(): array
   {
     return [
-      'prev_marriage.required' =>
-      ':attribute আবশ্যক।',
+      'prev_marriage.required' =>  ':attribute আবশ্যক।',
       'prev_marriage.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
       'prev_marriage.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
       'work_after.required' => ':attribute নির্বাচন করা আবশ্যক।',
-      'work_after.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'work_after.max' => ':attribute সর্বাধিক ২৫৫ অক্ষর হতে পারবে।',
       'study_after.required' => ':attribute নির্বাচন করা আবশ্যক।',
-      'study_after.min' => ':attribute সর্বনিম্ন ৫ অক্ষর হতে হবে।',
       'study_after.max' => ':attribute সর্বাধিক ২৫৫ অক্ষর হতে পারবে।',
       'ceremony_plans.min' => ':attribute সর্বনিম্ন ১০ অক্ষর হতে হবে।',
       'ceremony_plans.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',

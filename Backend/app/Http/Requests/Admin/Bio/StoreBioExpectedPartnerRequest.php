@@ -25,7 +25,7 @@ class StoreBioExpectedPartnerRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'age' => 'required|string|min:2|max:250',
+      'age' => 'required|string|min:5|max:250',
       'complexion' => [
         'required',
         'array',
@@ -35,7 +35,7 @@ class StoreBioExpectedPartnerRequest extends FormRequest
         Rule::in(StatusEnum::COMPLEXIONS), // Each item must match the allowed values
       ],
 
-      'height' => 'required|string|min:10|max:250',
+      'height' => 'required|string|min:5|max:250',
       'marital_status' => [
         'required',
         'array',
@@ -46,9 +46,9 @@ class StoreBioExpectedPartnerRequest extends FormRequest
       ],
 
       'educational_qualification' => 'required|string|min:10|max:1000',
-      'profession' => 'required|string|min:3|max:1000',
+      'profession' => 'required|string|min:10|max:1000',
       'economic_status'
-      => 'required|string|min:4|max:200',
+      => 'required|string|min:5|max:200',
       'bio_profile_types' => [
         'required',
         'array',
@@ -73,8 +73,8 @@ class StoreBioExpectedPartnerRequest extends FormRequest
     return [
       'age.required' => ':attribute প্রদান করা আবশ্যক।',
       'age.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'age.min' => ':attribute অন্তত ২ অক্ষর হতে হবে।',
-      'age.max' => ':attribute সর্বাধিক ১০০ অক্ষর হতে পারবে।',
+      'age.min' => ':attribute অন্তত ৫ অক্ষর হতে হবে।',
+      'age.max' => ':attribute সর্বাধিক ২৫০ অক্ষর হতে পারবে।',
 
       'complexion.required' => ':attribute নির্বাচন করা আবশ্যক।',
       'complexion.array' => ':attribute এর মান একটি বৈধ তালিকা হতে হবে।',
@@ -84,8 +84,8 @@ class StoreBioExpectedPartnerRequest extends FormRequest
 
       'height.required' => ':attribute প্রদান করা আবশ্যক।',
       'height.string' => ':attribute একটি বৈধ টেক্সট হতে হবে।',
-      'height.min' => ':attribute কমপক্ষে :min অক্ষর হতে হবে।',
-      'height.max' => ':attribute সর্বাধিক :max অক্ষর পর্যন্ত হতে পারে।',
+      'height.min' => ':attribute কমপক্ষে ৫ অক্ষর হতে হবে।',
+      'height.max' => ':attribute সর্বাধিক ২৫০ অক্ষর পর্যন্ত হতে পারে।',
 
       'marital_status.required' => ':attribute নির্বাচন করা আবশ্যক।',
       'marital_status.array' => ':attribute এর মান একটি বৈধ তালিকা হতে হবে।',
@@ -100,13 +100,13 @@ class StoreBioExpectedPartnerRequest extends FormRequest
 
       'profession.required' => ':attribute প্রদান করা আবশ্যক।',
       'profession.string' => ':attribute একটি টেক্সট হতে হবে।',
-      'profession.min' => ':attribute অন্তত ৩ অক্ষর হতে হবে।',
+      'profession.min' => ':attribute অন্তত ১০ অক্ষর হতে হবে।',
       'profession.max' => ':attribute সর্বাধিক ১০০০ অক্ষর হতে পারবে।',
 
       'economic_status.required' => ':attribute নির্বাচন করা আবশ্যক।',
       'economic_status.string' => ':attribute এর মান একটি বৈধ টেক্সট হতে হবে।',
-      'economic_status.min' => ':attribute কমপক্ষে :min অক্ষরের হতে হবে।',
-      'economic_status.max' => ':attribute সর্বোচ্চ :max অক্ষরের হতে পারে।',
+      'economic_status.min' => ':attribute কমপক্ষে ৫ অক্ষরের হতে হবে।',
+      'economic_status.max' => ':attribute সর্বোচ্চ ২০০ অক্ষরের হতে পারে।',
 
       'bio_profile_types.required' => ':attribute নির্বাচন করা আবশ্যক।',
       'bio_profile_types.array' => ':attribute এর মান একটি বৈধ তালিকা হতে হবে।',

@@ -1,5 +1,5 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/edit/data"; // Update path to the family info data
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/data"; // Update path to the family info data
 import { FamilyInfoEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/edit/form"; // Update path to the family info schema
 import {
   allBio,
@@ -7,10 +7,12 @@ import {
   familyInfos,
   filledMarks,
 } from "@/assets/data/config/app.config"; // Add `familyInfos` to config
-import { FamilyInfoFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for family info
+import {
+  BioWithFamilyInfoSection,
+  FamilyInfoFormInterface,
+} from "@/assets/data/response-types/bio"; // Define the response type for family info
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -19,7 +21,7 @@ type ResponseType = FamilyInfoFormInterface<FamilyInfoEditSchemaType>; // Use fa
 
 type Props<T> = {
   data: T;
-  id: number; // Accept the ID for the specific family info record to be updated
+  bio: BioWithFamilyInfoSection | null;
   setError: UseFormSetError<FamilyInfoEditSchemaType>;
   reset: UseFormReset<FamilyInfoEditSchemaType>;
   toast: (props: Toast) => void;
@@ -29,7 +31,7 @@ type Props<T> = {
 
 export const updateBioFamilyInfo = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -39,8 +41,7 @@ export const updateBioFamilyInfo = async <T>({
   try {
     setIsFormLoading(true);
     // Make fetch request to update family info
-    const url = `${backendUrl}/api/bio/family-info/${id}`; // Update endpoint for updating family info
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/family-info/${bio?.family_info_sections?.id}`; // Update endpoint for updating family info
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -48,21 +49,27 @@ export const updateBioFamilyInfo = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${familyInfos}_${userId}`, // Cache revalidation for family infos
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${familyInfos}_${bio?.id}`, // Cache revalidation for family infos
+        `${filledMarks}_${bio?.id}`,
       ],
     });
 
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset(); // Reset form data after successful update
-      router.push(Data.success.redirectUrl); // Redirect to the success page after update
+
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -86,7 +93,7 @@ export const updateBioFamilyInfo = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

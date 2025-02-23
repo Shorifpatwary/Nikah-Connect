@@ -40,7 +40,17 @@ const TextInputBox = ({
         <Suggestion suggestions={suggestions} />
       )}
       {/* input */}
-      <Input {...props} id={fieldName} autoComplete={fieldName} {...register} />
+      <Input
+        {...props}
+        id={fieldName}
+        autoComplete={fieldName}
+        {...register}
+        className={`${
+          props.type === "email" || props.type === "password"
+            ? "text-base"
+            : "text-xl md:text-lg"
+        }`}
+      />
 
       {errorMessage && <Error>{errorMessage}</Error>}
     </div>

@@ -1,5 +1,5 @@
 "use client";
-import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/edit/data"; // Update path to marriage info data
+import { Data } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/data"; // Update path to marriage info data
 import { MarriageInfoEditSchemaType } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/marriage-info/edit/form"; // Update path to the marriage info schema
 import {
   allBio,
@@ -7,10 +7,12 @@ import {
   filledMarks,
   marriageInfo,
 } from "@/assets/data/config/app.config"; // Add `marriageInfo` to config
-import { MarriageInfoFormInterface } from "@/assets/data/response-types/bio"; // Define the response type for marriage info
+import {
+  BioWithMarriageInfo,
+  MarriageInfoFormInterface,
+} from "@/assets/data/response-types/bio"; // Define the response type for marriage info
 import { Toast } from "@/components/ui/use-toast";
 import { fetchRequest } from "@/lib/request/fetchRequest";
-import getAuthUserIdFromClientCookies from "@/lib/request/header/getAuthUserIdFromClientCookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -19,7 +21,7 @@ type ResponseType = MarriageInfoFormInterface<MarriageInfoEditSchemaType>;
 
 type Props<T> = {
   data: T;
-  id: number;
+  bio: BioWithMarriageInfo | null;
   setError: UseFormSetError<MarriageInfoEditSchemaType>;
   reset: UseFormReset<MarriageInfoEditSchemaType>;
   toast: (props: Toast) => void;
@@ -29,7 +31,7 @@ type Props<T> = {
 
 export const updateMarriageInfo = async <T>({
   data,
-  id,
+  bio,
   setError,
   reset,
   toast,
@@ -39,8 +41,7 @@ export const updateMarriageInfo = async <T>({
   try {
     setIsFormLoading(true);
     // Make fetch request to update marriage info
-    const url = `${backendUrl}/api/bio/marriage-info/${id}`;
-    const userId = getAuthUserIdFromClientCookies();
+    const url = `${backendUrl}/api/bio/marriage-info/${bio?.marriage_info?.id}`;
     const response = await fetchRequest<ResponseType>({
       url,
       options: {
@@ -48,21 +49,27 @@ export const updateMarriageInfo = async <T>({
         body: JSON.stringify(data),
       },
       tagRevalidate: [
-        `${allBio}_${userId}`,
-        `${marriageInfo}_${userId}`, // Cache revalidation for marriage info
-        `${filledMarks}_${userId}`,
+        `${allBio}_${bio?.id}`,
+        `${marriageInfo}_${bio?.id}`, // Cache revalidation for marriage info
+        `${filledMarks}_${bio?.id}`,
       ],
     });
 
     // Handle success response
     if (response.status === 200 || response.status === 201) {
       toast({
-        title: Data.success.title,
+        title: Data.edit.success.title,
         variant: "primary",
-        description: Data.success.description,
+        description: Data.edit.success.description,
       });
       reset(); // Reset form data after successful update
-      router.push(Data.success.redirectUrl); // Redirect to the success page after update
+
+      // redirect conditionally for short to long bio mover
+      if (bio?.type === "SHORT_TO_LONG_DRAFT") {
+        router.push(Data.edit.success.shortToLongRedirect);
+      } else {
+        router.push(Data.edit.success.redirectUrl);
+      }
     }
     // Handle validation errors
     else if (response.status === 422) {
@@ -78,9 +85,9 @@ export const updateMarriageInfo = async <T>({
         }
       );
       toast({
-        title: Data.error[422].title,
+        title: Data.edit.error[422].title,
         variant: "destructive",
-        description: Data.error[422].description,
+        description: Data.edit.error[422].description,
       });
     }
     // Handle unknown errors
@@ -91,7 +98,7 @@ export const updateMarriageInfo = async <T>({
           : Data.unKnownError.title,
         variant: "destructive",
         description: response.data.error
-          ? `${Data.error.tryAgainDescription}`
+          ? `${Data.edit.error.tryAgainDescription}`
           : Data.unKnownError.description,
       });
     }

@@ -25,7 +25,7 @@ class StoreBioFamilyInfoRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'family_members_info' => ['required', 'string', 'min:10', 'max:1000'],
+      'family_members_info' => ['required', 'string', 'min:10', 'max:1500'],
       'uncles_info' => ['nullable', 'string', 'min:10', 'max:1000'],
       'descent' => ['nullable', 'string', 'min:10', 'max:1000'],
       'economic_status' => ['required', Rule::in(StatusEnum::ECONOMIC_STATUS)],
@@ -38,7 +38,7 @@ class StoreBioFamilyInfoRequest extends FormRequest
     return [
       'family_members_info.required' => ':attribute প্রদান করা আবশ্যক।',
       'family_members_info.min' => ':attribute কমপক্ষে ১০ অক্ষরের হতে হবে।',
-      'family_members_info.max' => ':attribute সর্বাধিক ১০০০ অক্ষরের হতে পারবে।',
+      'family_members_info.max' => ':attribute সর্বাধিক ১৫০০ অক্ষরের হতে পারবে।',
       'uncles_info.min' => ':attribute কমপক্ষে ১০ অক্ষরের হতে হবে।',
       'uncles_info.max' => ':attribute সর্বাধিক ১০০০ অক্ষরের হতে পারবে।',
       'descent.min' => ':attribute কমপক্ষে ১০ অক্ষরের হতে হবে।',

@@ -1,7 +1,9 @@
+import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-marks";
 import { LocationType } from "@/assets/data/response-types/locations";
 import {
   BioProfileType,
   BioStatusType,
+  BioType,
   BloodType,
   ComplexionType,
   EconomicStatusType,
@@ -22,6 +24,7 @@ export interface BioInterface extends Timestamps {
   bio_profile: BioProfileType;
   status: BioStatusType;
   tags: TagInterface[];
+  type: BioType;
   general_section?: GeneralSectionInterface;
   location_section?: LocationSectionInterface;
   education_section?: EducationSectionInterface;
@@ -31,8 +34,77 @@ export interface BioInterface extends Timestamps {
   religious_activity?: ReligiousActivityInterface;
   marriage_info?: MarriageInfoInterface;
   expected_partner?: ExpectedPartnerInterface;
-  hidden_infos?: HiddenInfoInterface;
+  filled_marks?: FilledMarksInterface;
+  hidden_info?: HiddenInfoInterface;
 }
+
+export type ShortBioInterface = Pick<
+  BioInterface,
+  "id" | "title" | "status" | "type" | "bio_profile"
+> & {
+  general_section: Pick<
+    NonNullable<BioInterface["general_section"]>,
+    | "id"
+    | "gender"
+    | "marital_status"
+    | "birth_date"
+    | "height"
+    | "weight"
+    | "complexion"
+    | "blood_group"
+    | "location"
+  >;
+  location_section: Pick<
+    NonNullable<BioInterface["location_section"]>,
+    "permanent_address"
+  >;
+  education_section: Pick<
+    NonNullable<BioInterface["education_section"]>,
+    "education_medium" | "previous_exams"
+  >;
+  family_info_sections: Pick<
+    NonNullable<BioInterface["family_info_sections"]>,
+    "family_members_info" | "economic_status"
+  >;
+  profession_section: Pick<
+    NonNullable<BioInterface["profession_section"]>,
+    "profession" | "profession_description"
+  >;
+  religious_activity: Pick<
+    NonNullable<BioInterface["religious_activity"]>,
+    "mazhab"
+  >;
+  marriage_info: Pick<
+    NonNullable<BioInterface["marriage_info"]>,
+    "prev_marriage"
+  >;
+  hidden_info: Pick<
+    NonNullable<BioInterface["hidden_info"]>,
+    | "name"
+    | "email"
+    | "location"
+    | "family_members_name"
+    | "current_parent"
+    | "parent_mobile"
+  >;
+};
+
+type BioWithSection<K extends keyof BioInterface> = Pick<
+  BioInterface,
+  "id" | "title" | "bio_profile" | "status" | "type" | K
+>;
+
+export type BioWithGeneralSection = BioWithSection<"general_section">;
+export type BioWithLocationSection = BioWithSection<"location_section">;
+export type BioWithEducationSection = BioWithSection<"education_section">;
+export type BioWithPersonalDetails = BioWithSection<"personal_details">;
+export type BioWithFamilyInfoSection = BioWithSection<"family_info_sections">;
+export type BioWithProfessionSection = BioWithSection<"profession_section">;
+export type BioWithReligiousActivity = BioWithSection<"religious_activity">;
+export type BioWithMarriageInfo = BioWithSection<"marriage_info">;
+export type BioWithExpectedPartner = BioWithSection<"expected_partner">;
+export type BioWithHiddenInfos = BioWithSection<"hidden_info">;
+export type BioWithFilledMarks = BioWithSection<"filled_marks">;
 
 export type BiosWithPagination = DataWithPagination<BioInterface>;
 
@@ -112,12 +184,14 @@ export interface HiddenInfoInterface extends Timestamps {
   id: number;
   name: string;
   family_members_name: string;
+  location: string;
   current_parent: string;
   parent_mobile: string;
   permanent_address_map_location?: string;
   present_address_map_location?: string;
   email: string;
   social_links?: string;
+  documents_link: URL;
 }
 
 export interface ReligiousActivityInterface extends Timestamps {
@@ -159,6 +233,11 @@ export interface FormErrorInterface<Error> {
 export interface BioFormInterface<Error>
   extends FormErrorInterface<Error>,
     BioInterface {}
+
+// short bio fom interface
+export interface ShortBioFormInterface<Error>
+  extends FormErrorInterface<Error>,
+    ShortBioInterface {}
 
 // LocationFormInterface
 export interface GeneralFormInterface<Error>

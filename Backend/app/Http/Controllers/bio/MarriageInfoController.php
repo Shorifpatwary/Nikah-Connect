@@ -8,7 +8,6 @@ use App\Http\Resources\Bio\MarriageInfoResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\MarriageInfo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MarriageInfoController extends Controller

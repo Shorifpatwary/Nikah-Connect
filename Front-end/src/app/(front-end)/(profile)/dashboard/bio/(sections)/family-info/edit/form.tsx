@@ -1,13 +1,13 @@
 "use client";
 
-import { updateBioFamilyInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/edit/action";
 import {
   Data,
   VM,
-} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/edit/data";
+} from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/data";
+import { updateBioFamilyInfo } from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/family-info/edit/action";
 import fetchBioSection from "@/app/(front-end)/(profile)/dashboard/bio/(sections)/fetchBioSection";
 import { economic_status } from "@/assets/data/config/app.config";
-import { FamilyInfoSectionInterface } from "@/assets/data/response-types/bio";
+import { BioWithFamilyInfoSection } from "@/assets/data/response-types/bio";
 import SubmitLoader from "@/components/blocks/form-helper/submit-loader";
 import SelectBox from "@/components/blocks/inputBox/selectBox";
 import TextareaBox from "@/components/blocks/inputBox/TextareaBox";
@@ -22,6 +22,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   maxLength,
   minLength,
+  nullable,
   object,
   Output,
   picklist,
@@ -35,12 +36,8 @@ const Schema = object({
     minLength(10, VM.family_members_info.minLength),
     maxLength(1500, VM.family_members_info.maxLength),
   ]),
-  uncles_info: string([
-    maxLength(1000, VM.uncles_info.maxLength), // Optional field
-  ]),
-  descent: string([
-    maxLength(1000, VM.descent.maxLength), // Optional field
-  ]),
+  uncles_info: nullable(string([maxLength(1000, VM.uncles_info.maxLength)])),
+  descent: nullable(string([maxLength(1000, VM.descent.maxLength)])),
   economic_status: picklist(
     economic_status.map(option => option.value),
     VM.economic_status.required
@@ -59,11 +56,11 @@ const BioFamilyInfoEditForm = () => {
   const router = useRouter();
   // Form status
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
-  const [familyInfo, setFamilyInfo] =
-    useState<FamilyInfoSectionInterface | null>(null);
+  const [bioWithFamily, setBioWithFamily] =
+    useState<BioWithFamilyInfoSection | null>(null);
 
   useEffect(() => {
-    fetchBioSection<FamilyInfoSectionInterface>("family", setFamilyInfo);
+    fetchBioSection<BioWithFamilyInfoSection>("family", setBioWithFamily);
   }, []);
 
   const {
@@ -78,18 +75,18 @@ const BioFamilyInfoEditForm = () => {
   });
 
   useEffect(() => {
-    if (familyInfo) {
+    if (bioWithFamily?.family_info_sections) {
+      const familyInfo = bioWithFamily.family_info_sections;
       Object.entries(familyInfo).forEach(([key, value]) => {
         setValue(key as keyof FamilyInfoEditSchemaType, value || "");
       });
     }
-  }, [familyInfo, setValue]);
+  }, [bioWithFamily, setValue]);
 
   const onSubmit: SubmitHandler<FamilyInfoEditSchemaType> = async formData => {
     await updateBioFamilyInfo<FamilyInfoEditSchemaType>({
       data: formData,
-      // @ts-expect-error
-      id: familyInfo?.id,
+      bio: bioWithFamily,
       setError,
       reset,
       toast,
@@ -98,7 +95,7 @@ const BioFamilyInfoEditForm = () => {
     });
   };
 
-  if (!familyInfo) {
+  if (!bioWithFamily) {
     return <TableSkeleton rowCount={10} rowClassName="h-10 mt-2" />;
   }
 
@@ -144,7 +141,7 @@ const BioFamilyInfoEditForm = () => {
           options={economic_status}
           errorMessage={errors.economic_status?.message}
           setValue={value => setValue("economic_status", value)}
-          defaultValue={familyInfo.economic_status}
+          defaultValue={bioWithFamily.family_info_sections?.economic_status}
         />
 
         {/* Economic Status Details */}
@@ -164,7 +161,7 @@ const BioFamilyInfoEditForm = () => {
           type="submit"
           disabled={isFormLoading}
         >
-          {isFormLoading ? <SubmitLoader /> : Data.submit}
+          {isFormLoading ? <SubmitLoader /> : Data.edit.submit}
         </Button>
       </div>
       <Toaster />

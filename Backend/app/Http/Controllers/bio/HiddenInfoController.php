@@ -8,7 +8,6 @@ use App\Http\Resources\Bio\HiddenInfoResource;
 use App\Models\Bio;
 use App\Models\FilledMarks;
 use App\Models\HiddenInfo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HiddenInfoController extends Controller
