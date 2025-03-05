@@ -4,7 +4,7 @@ import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-ma
 import { getHeaders } from "@/lib/request/header/getHeaders";
 import { getUserIdFromCookies } from "@/lib/request/header/getUserIdFromCookies";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const userId = await getUserIdFromCookies();
@@ -30,11 +30,16 @@ export async function GET(request: NextRequest) {
       if (response.status === 401) {
         // remove auth cookie
         deleteAuthCookies();
+        // return redirect("/login");
+        // return NextResponse.redirect(
+        //   new URL("http://localhost:3000/login", request.url)
+        // );
+      } else {
+        return NextResponse.json(
+          { error: `HTTP error! Status: ${response.status}` },
+          { status: response.status }
+        );
       }
-      return NextResponse.json(
-        { error: `HTTP error! Status: ${response.status}` },
-        { status: response.status }
-      );
     }
 
     const data: FilledMarksInterface = await response.json();

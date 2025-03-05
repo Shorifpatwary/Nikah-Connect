@@ -2,9 +2,9 @@ import Routes from "@/assets/data/routes";
 import {
   BookHeart,
   CandlestickChart,
+  Coins,
   HelpCircle,
   Settings,
-  Users,
 } from "lucide-react";
 
 export type SideNavItem = {
@@ -21,9 +21,9 @@ export const SideNavItems: SideNavItem[] = [
     icon: <BookHeart />,
   },
   {
-    title: "Users",
-    path: "/admin/user",
-    icon: <Users />,
+    title: "Coin",
+    path: `${Routes.Profile}/coin`,
+    icon: <Coins />,
   },
   {
     title: "bios",

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -59,6 +58,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function  bio()
     {
         return $this->hasOne(Bio::class);
+    }
+    public function  coin()
+    {
+        return $this->hasOne(Coin::class);
     }
 
     // Define one-to-one relationship with UserInfo

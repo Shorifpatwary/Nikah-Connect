@@ -35,6 +35,7 @@ export const religiousActivities = "religiousActivities";
 export const marriageInfo = "marriageInfo";
 export const expectedPartner = "expectedPartner";
 export const hiddenInfo = "hiddenInfo";
+export const allCoinsTag = "coins";
 
 // ! user  roles from "RolesEnum.php"
 export const roles: Option[] = [

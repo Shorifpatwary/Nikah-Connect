@@ -1,18 +1,16 @@
 "use client";
 
-import { ReadonlyURLSearchParams } from "next/navigation";
-
 // Parses query parameters with searchParams as input
-export const getQueryParams = (searchParams: ReadonlyURLSearchParams) => {
-  const params: Record<string, string> = {};
-
-  // Iterate through each query parameter
-  searchParams.forEach((value, key) => {
-    // Add parameters directly to params
-    params[key] = value;
-  });
-
-  return { params };
+export const getQueryParams = () => {
+  if (typeof window !== "undefined") {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params: Record<string, string> = {};
+    urlSearchParams.forEach((value, key) => {
+      params[key] = value;
+    });
+    return params;
+  }
+  return {};
 };
 
 // Parses query parameters with searchParams as input

@@ -54,7 +54,8 @@ class ShortBioController extends Controller
           'জন্মঃ ' . $request->input('birth_date'),
           'ঠিকানাঃ ' . $locationName,
         ]),
-        'status' => 'incomplete', // Default status
+        'status' => 'pending_approval',
+        'bio_profile' => $request->input('gender') === 'পাত্র' ? 'SHORT_MALE' : ($request->input('gender') === 'পাত্রী' ? 'SHORT_FEMALE' : null),
         'type' => 'SHORT',
         'user_id' => auth()->id(),
       ]);

@@ -19,6 +19,7 @@ import {
 import { cn, convertStringToArray, formatMonthYearInBangla } from "@/lib/utils";
 import { ExternalLink, EyeIcon } from "lucide-react";
 import Link from "next/link";
+import { memo } from "react";
 
 interface Props
   extends Pick<
@@ -140,4 +141,4 @@ const BioCard = ({
   );
 };
 
-export default BioCard;
+export default memo(BioCard);

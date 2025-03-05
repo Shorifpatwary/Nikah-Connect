@@ -7,6 +7,7 @@ use App\Http\Controllers\App\LocationController;
 use App\Http\Controllers\Bio\BioController;
 use App\Http\Controllers\App\BioController
 as AppBioController;
+use App\Http\Controllers\App\CoinController;
 use App\Http\Controllers\Bio\EducationSectionController;
 use App\Http\Controllers\Bio\ExpectedPartnerController;
 use App\Http\Controllers\Bio\FamilyInfoSectionController;
@@ -93,6 +94,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // filled marks 
   Route::apiResource('filled-marks', FilledMarksController::class)->only(['index', 'store', 'show']);
+
+  // coins 
+  Route::apiResource('coin', CoinController::class)->only(['index', 'store', 'show']);
 
   // Route to get the filled marks data for the logged-in user
   Route::get('/user-bio/filled-marks', [FilledMarksController::class, 'userFilledMarks'])->name('user.filled-marks');

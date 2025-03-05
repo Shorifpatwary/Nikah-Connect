@@ -4,8 +4,7 @@ import { getQueryParams } from "@/lib/query/getQueryParams";
 import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { ArrowDownUp } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 export interface columnType {
   name: string;
   label: string;
@@ -23,23 +22,19 @@ const T_Head = ({ className, columns }: Props) => {
   const createQueryString = queryString();
 
   const handleSort = (columnName: string) => {
-    const searchParams = useSearchParams(); // Fetch search parameters
-    // Memoize query params and filters
-    const { params } = useMemo(
-      () => getQueryParams(searchParams),
-      [searchParams]
-    );
+    const currentQueryParams = getQueryParams();
 
     // Determine the current sort direction for the column
-    const currentSortColumn = params.sort;
+    const currentSortColumn = currentQueryParams.sort;
     let newSortDirection: "asc" | "desc" = "asc";
 
     if (currentSortColumn === columnName) {
       // If the column is already being sorted, toggle the sort direction
-      newSortDirection = params.sort_direction === "asc" ? "desc" : "asc";
+      newSortDirection =
+        currentQueryParams.sort_direction === "asc" ? "desc" : "asc";
     }
     const newQuery = createQueryString({
-      ...params,
+      ...currentQueryParams,
       sort: columnName,
       sort_direction: newSortDirection,
       page: 1,

@@ -31,6 +31,11 @@ export const SideNavItems: SideNavItem[] = [
     icon: <BookHeart />,
   },
   {
+    title: "coins",
+    path: "/admin/coin",
+    icon: <BookHeart />,
+  },
+  {
     title: "Attributes",
     path: "",
     icon: <Settings />,

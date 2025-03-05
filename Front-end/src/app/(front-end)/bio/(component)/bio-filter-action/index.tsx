@@ -31,8 +31,8 @@ import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { FilterIcon, X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { memo, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { memo, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { array, object, string } from "valibot";
 
@@ -101,14 +101,10 @@ export const Schema = object({
 });
 
 const BioFilterAction = ({ className }: Props) => {
-  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { params } = useMemo(
-    () => getQueryParams(searchParams),
-    [searchParams]
-  );
-  const locationIds = params.location_id;
+  const currentQueryParams = getQueryParams();
+  const locationIds = currentQueryParams.location_id;
 
   const createQueryString = queryString();
 
@@ -230,56 +226,68 @@ const BioFilterAction = ({ className }: Props) => {
 
   // Set initial values dynamically
   useEffect(() => {
-    if (params) {
-      console.log(params, "params from use effect");
+    if (currentQueryParams) {
+      console.log(currentQueryParams, "currentQueryParams from use effect");
 
       // Set array values (like gender, complexion)
-      if (params.gender) {
-        setValue("gender", params.gender.split(","));
+      if (currentQueryParams.gender) {
+        setValue("gender", currentQueryParams.gender.split(","));
       }
-      if (params.marital_status) {
-        setValue("marital_status", params.marital_status.split(","));
-      }
-      if (params.complexion) {
-        setValue("complexion", params.complexion.split(","));
-      }
-      if (params.blood_group) {
-        setValue("blood_group", params.blood_group.split(","));
-      }
-      if (params.education_medium) {
-        setValue("education_medium", params.education_medium.split(","));
-      }
-      if (params.economic_status) {
-        setValue("economic_status", params.economic_status.split(","));
-      }
-      if (params.profession) {
-        setValue("profession", params.profession.split(","));
-      }
-      if (params.mazhab) {
-        setValue("mazhab", params.mazhab.split(","));
-      }
-      if (params.bio_profile) {
-        setValue("bio_profile", params.bio_profile.split(","));
-      }
-      if (params.expected_complexion) {
-        setValue("expected_complexion", params.expected_complexion.split(","));
-      }
-      if (params.expected_marital_status) {
+      if (currentQueryParams.marital_status) {
         setValue(
-          "expected_marital_status",
-          params.expected_marital_status.split(",")
+          "marital_status",
+          currentQueryParams.marital_status.split(",")
         );
       }
-      if (params.expected_bio_profile_types) {
+      if (currentQueryParams.complexion) {
+        setValue("complexion", currentQueryParams.complexion.split(","));
+      }
+      if (currentQueryParams.blood_group) {
+        setValue("blood_group", currentQueryParams.blood_group.split(","));
+      }
+      if (currentQueryParams.education_medium) {
+        setValue(
+          "education_medium",
+          currentQueryParams.education_medium.split(",")
+        );
+      }
+      if (currentQueryParams.economic_status) {
+        setValue(
+          "economic_status",
+          currentQueryParams.economic_status.split(",")
+        );
+      }
+      if (currentQueryParams.profession) {
+        setValue("profession", currentQueryParams.profession.split(","));
+      }
+      if (currentQueryParams.mazhab) {
+        setValue("mazhab", currentQueryParams.mazhab.split(","));
+      }
+      if (currentQueryParams.bio_profile) {
+        setValue("bio_profile", currentQueryParams.bio_profile.split(","));
+      }
+      if (currentQueryParams.expected_complexion) {
+        setValue(
+          "expected_complexion",
+          currentQueryParams.expected_complexion.split(",")
+        );
+      }
+      if (currentQueryParams.expected_marital_status) {
+        setValue(
+          "expected_marital_status",
+          currentQueryParams.expected_marital_status.split(",")
+        );
+      }
+      if (currentQueryParams.expected_bio_profile_types) {
         setValue(
           "expected_bio_profile_types",
-          params.expected_bio_profile_types.split(",")
+          currentQueryParams.expected_bio_profile_types.split(",")
         );
       }
 
       // Set range values (like height, weight)
-      if (params.height) {
-        const height = params.height
+      if (currentQueryParams.height) {
+        const height = currentQueryParams.height
           .split(",")
           .map(val => parseFloat(val) || null);
         setValue("height", [
@@ -288,8 +296,8 @@ const BioFilterAction = ({ className }: Props) => {
         ]);
       }
 
-      if (params.weight) {
-        const weight = params.weight
+      if (currentQueryParams.weight) {
+        const weight = currentQueryParams.weight
           .split(",")
           .map(val => parseFloat(val) || null);
         setValue("weight", [
@@ -298,8 +306,8 @@ const BioFilterAction = ({ className }: Props) => {
         ]);
       }
 
-      if (params.birth_date) {
-        const birthDate = params.birth_date
+      if (currentQueryParams.birth_date) {
+        const birthDate = currentQueryParams.birth_date
           .split(",")
           .map(val => parseInt(val) || null);
         setValue("birth_date", [
@@ -308,7 +316,7 @@ const BioFilterAction = ({ className }: Props) => {
         ]);
       }
     }
-  }, [params]);
+  }, [currentQueryParams]);
 
   return (
     <div
