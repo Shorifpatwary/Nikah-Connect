@@ -127,7 +127,7 @@ export const BioItemData = {
       social_links: "সামাজিক যোগাযোগ মাধ্যমের লিংক সমূহ",
       permanent_address_map_location: "স্থায়ী ঠিকানার মানচিত্রের অবস্থান",
       present_address_map_location: "বর্তমান ঠিকানার মানচিত্রের অবস্থান",
-      documents_links: "ডকুমেন্ট লিংক",
+      documents_link: "ডকুমেন্ট লিংক",
     },
   },
 };

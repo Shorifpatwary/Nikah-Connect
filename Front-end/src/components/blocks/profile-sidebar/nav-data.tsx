@@ -4,6 +4,7 @@ import {
   CandlestickChart,
   Coins,
   HelpCircle,
+  History,
   Settings,
 } from "lucide-react";
 
@@ -16,9 +17,14 @@ export type SideNavItem = {
 };
 export const SideNavItems: SideNavItem[] = [
   {
-    title: "Bio Data",
+    title: "Bio",
     path: `${Routes.Profile}/bio`,
     icon: <BookHeart />,
+  },
+  {
+    title: "History",
+    path: `${Routes.Profile}/bio/history`,
+    icon: <History />,
   },
   {
     title: "Coin",

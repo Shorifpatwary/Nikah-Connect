@@ -23,6 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatReadableDate } from "@/lib/utils";
 import { CircleEllipsisIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -138,7 +139,7 @@ const CoinTable = () => {
               <TableCell>{item.total_purchase}</TableCell>
               <TableCell>{item.total_used}</TableCell>
               <TableCell>{item.user.email}</TableCell>
-              <TableCell>{item.updated_at}</TableCell>
+              <TableCell>{formatReadableDate(item.updated_at)}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

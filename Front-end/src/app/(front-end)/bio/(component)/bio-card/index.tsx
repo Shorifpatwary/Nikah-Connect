@@ -127,6 +127,7 @@ const BioCard = ({
       <CardFooter className="flex justify-between">
         <Link
           href={`${Routes.bio.url}/${id}/${title}`}
+          prefetch={false}
           className="w-full"
           target="_blank"
           rel="noopener noreferrer"

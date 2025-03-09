@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatReadableDate } from "@/lib/utils";
 import { CircleEllipsisIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -119,7 +120,7 @@ const TagTable = () => {
               <TableCell>{item.search_text}</TableCell>
               <TableCell>{item.group_name}</TableCell>
               <TableCell>{item.status}</TableCell>
-              <TableCell>{item.updated_at}</TableCell>
+              <TableCell>{formatReadableDate(item.updated_at)}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

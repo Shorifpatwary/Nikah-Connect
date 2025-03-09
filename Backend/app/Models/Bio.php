@@ -53,7 +53,6 @@ class Bio extends Model
     return $this->hasOne(ExpectedPartner::class);
   }
 
-
   public function  religiousActivity()
   {
     return $this->hasOne(ReligiousActivity::class);

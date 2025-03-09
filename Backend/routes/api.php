@@ -21,6 +21,7 @@ use App\Http\Controllers\Bio\ProfessionSectionController;
 use App\Http\Controllers\Bio\ReligiousActivityController;
 use App\Http\Controllers\Bio\ShortBioController;
 use App\Http\Controllers\Bio\UserRecordController;
+use App\Http\Controllers\Bio\ViewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -97,6 +98,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // coins 
   Route::apiResource('coin', CoinController::class)->only(['index', 'store', 'show']);
+
+  // views
+  Route::apiResource('bio/view', ViewController::class)->only(['index', 'store', 'show'])->where(['view' => '[0-9]+']);
+
+  // Authenticated user's views
+  Route::get('bio/view/user-records', [ViewController::class, 'userRecords'])->name('view.user-records');
 
   // Route to get the filled marks data for the logged-in user
   Route::get('/user-bio/filled-marks', [FilledMarksController::class, 'userFilledMarks'])->name('user.filled-marks');

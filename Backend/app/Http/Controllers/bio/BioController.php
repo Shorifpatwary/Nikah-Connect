@@ -214,8 +214,6 @@ class BioController extends Controller
 
     return new BioResource($bio);
   }
-
-
   public function userRecord()
   {
     $bio = Bio::where('user_id', auth()->id())->first();
@@ -239,6 +237,11 @@ class BioController extends Controller
     ]);
 
     return new BioResource($bio);
+  }
+
+  public function bioAuthenticatedUserDetail()
+  {
+    // return new BioResource($bio);
   }
 
   public function approveRequest()

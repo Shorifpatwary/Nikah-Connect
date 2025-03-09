@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatReadableDate } from "@/lib/utils";
 import { CircleEllipsisIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -119,15 +120,8 @@ const BioTable = () => {
               <TableCell>{item.general_section?.gender}</TableCell>
               <TableCell>{item.title}</TableCell>
               <TableCell>{item.status}</TableCell>
-              <TableCell className="flex flex-wrap gap-1">
-                {/* {item.tags.map(tag => (
-                  <Badge key={`${item.id} + ${tag.id} + ${tag.name}`}>
-                    {tag.name}
-                  </Badge>
-                ))} */}
-                something
-              </TableCell>
-              <TableCell>{item.updated_at}</TableCell>
+              <TableCell className="flex flex-wrap gap-1">something</TableCell>
+              <TableCell>{formatReadableDate(item.updated_at)}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

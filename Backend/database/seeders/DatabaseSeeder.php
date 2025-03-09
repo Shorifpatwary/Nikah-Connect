@@ -34,7 +34,8 @@ class DatabaseSeeder extends Seeder
       // ReligiousActivitySeeder::class,
       // MarriageInfoSeeder::class,
       // FilledMarksSeeder::class,
-      CoinSeeder::class,
+      // CoinSeeder::class,
+      ViewSeeder::class,
     ]);
   }
 }

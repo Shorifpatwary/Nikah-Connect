@@ -40,6 +40,7 @@ const Routes = {
   profile_bio: {
     url: "/dashboard/bio",
     create: "/dashboard/bio/create",
+    history: "/dashboard/bio/history",
     change_status: "/dashboard/bio/change-status",
     short_bio: {
       create: "/dashboard/bio/short/create",

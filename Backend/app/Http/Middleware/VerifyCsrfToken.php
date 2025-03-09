@@ -47,5 +47,6 @@ class VerifyCsrfToken extends Middleware
     'api/bio/short/*',
     'api/bio/update-statuses-types',
     'api/coin/*',
+    'api/view/*',
   ];
 }

@@ -73,3 +73,10 @@ export function formatMonthYearInBangla(dateString: string): string {
 
   return `${formattedMonth}-${formattedYear}`;
 }
+
+export const getInitialSerialNumber = (
+  perPage: string | number = 20,
+  currentPage: string | number = 1
+) => {
+  return (Number(currentPage) - 1) * Number(perPage) + 1;
+};

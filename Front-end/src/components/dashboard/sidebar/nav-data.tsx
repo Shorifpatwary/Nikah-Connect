@@ -1,6 +1,7 @@
 import {
   BookHeart,
   CandlestickChart,
+  Eye,
   HelpCircle,
   Home,
   Settings,
@@ -34,6 +35,11 @@ export const SideNavItems: SideNavItem[] = [
     title: "coins",
     path: "/admin/coin",
     icon: <BookHeart />,
+  },
+  {
+    title: "views",
+    path: "/admin/bio/view",
+    icon: <Eye />,
   },
   {
     title: "Attributes",

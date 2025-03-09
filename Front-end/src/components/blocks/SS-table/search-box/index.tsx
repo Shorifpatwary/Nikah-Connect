@@ -3,6 +3,7 @@ import { queryString } from "@/lib/query/queryString";
 import { cn } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+
 type Props = {
   className?: string;
 };
@@ -12,6 +13,7 @@ const TableSearchBox = ({ className }: Props) => {
   const createQueryString = queryString();
   const handleSearch = (value: string) => {
     const trimmedValue = value.trim();
+
     if (trimmedValue) {
       const newQuery = createQueryString({
         search: trimmedValue,
