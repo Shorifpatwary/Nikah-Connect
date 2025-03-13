@@ -1,4 +1,3 @@
-import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { backendUrl, filledMarks } from "@/assets/data/config/app.config";
 import { FilledMarksInterface } from "@/assets/data/response-types/bio/filled-marks";
 import { getHeaders } from "@/lib/request/header/getHeaders";
@@ -27,21 +26,11 @@ export async function GET(request: NextRequest) {
     // update the credentials
     await setCookiesFromResponse(response);
     if (!response.ok) {
-      if (response.status === 401) {
-        // remove auth cookie
-        deleteAuthCookies();
-        // return redirect("/login");
-        // return NextResponse.redirect(
-        //   new URL("http://localhost:3000/login", request.url)
-        // );
-      } else {
-        return NextResponse.json(
-          { error: `HTTP error! Status: ${response.status}` },
-          { status: response.status }
-        );
-      }
+      return NextResponse.json(
+        { error: `HTTP error! Status: ${response.status}` },
+        { status: response.status }
+      );
     }
-
     const data: FilledMarksInterface = await response.json();
     return NextResponse.json(data);
   } catch (error) {

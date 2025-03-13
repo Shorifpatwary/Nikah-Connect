@@ -13,6 +13,6 @@ class FamilyInfoSectionSeeder extends Seeder
    */
   public function run(): void
   {
-    FamilyInfoSection::factory(10)->create();
+    FamilyInfoSection::factory(30)->create();
   }
 }

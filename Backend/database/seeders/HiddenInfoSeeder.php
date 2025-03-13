@@ -13,6 +13,6 @@ class HiddenInfoSeeder extends Seeder
    */
   public function run(): void
   {
-    HiddenInfo::factory(10)->create();
+    HiddenInfo::factory(30)->create();
   }
 }

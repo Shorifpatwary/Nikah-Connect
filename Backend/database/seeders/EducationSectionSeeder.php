@@ -12,6 +12,6 @@ class EducationSectionSeeder extends Seeder
    */
   public function run(): void
   {
-    EducationSection::factory(10)->create();
+    EducationSection::factory(30)->create();
   }
 }

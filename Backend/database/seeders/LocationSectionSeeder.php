@@ -12,6 +12,6 @@ class LocationSectionSeeder extends Seeder
      */
     public function run(): void
     {
-        LocationSection::factory(10)->create();
+        LocationSection::factory(30)->create();
     }
 }

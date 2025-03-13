@@ -13,6 +13,6 @@ class MarriageInfoSeeder extends Seeder
      */
     public function run(): void
     {
-        MarriageInfo::factory(10)->create();
+        MarriageInfo::factory(30)->create();
     }
 }

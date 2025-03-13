@@ -12,6 +12,6 @@ class GeneralSectionSeeder extends Seeder
    */
   public function run(): void
   {
-    GeneralSection::factory(10)->create();
+    GeneralSection::factory(30)->create();
   }
 }

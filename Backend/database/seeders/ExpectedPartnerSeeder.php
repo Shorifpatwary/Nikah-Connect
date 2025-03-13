@@ -13,6 +13,6 @@ class ExpectedPartnerSeeder extends Seeder
    */
   public function run(): void
   {
-    ExpectedPartner::factory(10)->create();
+    ExpectedPartner::factory(30)->create();
   }
 }

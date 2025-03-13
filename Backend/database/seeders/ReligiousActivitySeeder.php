@@ -13,6 +13,6 @@ class ReligiousActivitySeeder extends Seeder
      */
     public function run(): void
     {
-        ReligiousActivity::factory(10)->create();
+        ReligiousActivity::factory(30)->create();
     }
 }

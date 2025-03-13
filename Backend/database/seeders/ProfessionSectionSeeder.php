@@ -13,6 +13,6 @@ class ProfessionSectionSeeder extends Seeder
    */
   public function run(): void
   {
-    ProfessionSection::factory(10)->create();
+    ProfessionSection::factory(30)->create();
   }
 }

@@ -13,6 +13,6 @@ class ViewSeeder extends Seeder
      */
     public function run(): void
     {
-        View::factory(30)->create();
+        View::factory(50)->create();
     }
 }

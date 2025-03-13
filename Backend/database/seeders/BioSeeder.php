@@ -12,6 +12,6 @@ class BioSeeder extends Seeder
      */
     public function run(): void
     {
-        Bio::factory(10)->create();
+        Bio::factory(30)->create();
     }
 }

@@ -13,6 +13,6 @@ class PersonalDetailsSeeder extends Seeder
    */
   public function run(): void
   {
-    PersonalDetails::factory(10)->create();
+    PersonalDetails::factory(30)->create();
   }
 }

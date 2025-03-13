@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
 
       $user->assignRole(RolesEnum::SUPER_ADMIN);
     } else {
-      User::factory(10)->create();
+      User::factory(30)->create();
     }
   }
 }

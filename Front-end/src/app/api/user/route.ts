@@ -27,7 +27,10 @@ export async function GET(request: NextRequest) {
     await setCookiesFromResponse(response);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      return NextResponse.json(
+        { error: `HTTP error! Status: ${response.status}` },
+        { status: response.status }
+      );
     }
 
     const data: UsersWithPagination = await response.json();

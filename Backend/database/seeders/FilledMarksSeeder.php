@@ -13,6 +13,6 @@ class FilledMarksSeeder extends Seeder
      */
     public function run(): void
     {
-        FilledMarks::factory()->count(20)->create();
+        FilledMarks::factory()->count(50)->create();
     }
 }
