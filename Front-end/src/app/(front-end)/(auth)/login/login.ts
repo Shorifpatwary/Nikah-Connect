@@ -55,7 +55,9 @@ export const Login = async <T>({
       await createCookie(response.data);
 
       // redirect
-      router.push(formData.login.success.redirectUrl);
+      // router.push(formData.login.success.redirectUrl);
+      // Redirect the user back to the previous page
+      router.back();
     } else if (response.status === 422) {
       const errors = response?.data?.errors as Partial<
         Record<keyof LoginSchemaType, string[]>

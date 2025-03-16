@@ -18,6 +18,7 @@ use App\Http\Controllers\Bio\LocationSectionController;
 use App\Http\Controllers\Bio\MarriageInfoController;
 use App\Http\Controllers\Bio\PersonalDetailsController;
 use App\Http\Controllers\Bio\ProfessionSectionController;
+use App\Http\Controllers\Bio\PurchaseController;
 use App\Http\Controllers\Bio\ReligiousActivityController;
 use App\Http\Controllers\Bio\ShortBioController;
 use App\Http\Controllers\Bio\UserRecordController;
@@ -104,6 +105,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // Authenticated user's views
   Route::get('bio/view/user-records', [ViewController::class, 'userRecords'])->name('view.user-records');
+
+  // purchases
+  Route::apiResource('bio/purchase', PurchaseController::class)
+    ->only(['index', 'store', 'show'])
+    ->where(['purchase' => '[0-9]+']);
+
+  // Authenticated user's purchases
+  Route::get('bio/purchase/user-records', [PurchaseController::class, 'userRecords'])
+    ->name('purchase.user-records');
+
 
   // Route to get the filled marks data for the logged-in user
   Route::get('/user-bio/filled-marks', [FilledMarksController::class, 'userFilledMarks'])->name('user.filled-marks');

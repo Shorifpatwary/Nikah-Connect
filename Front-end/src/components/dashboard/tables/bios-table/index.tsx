@@ -5,12 +5,13 @@ import T_Head, { columnType } from "@/components/blocks/SS-table/T-head";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
 
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
+import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { BiosWithPagination } from "@/assets/data/response-types/bio";
 import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
@@ -64,19 +65,35 @@ const tableColumns: columnType[] = [
   },
 ];
 
-const path = `${Routes.Admin}/bio`;
-const apiBaseUrl = "/api/bio";
-
 const BioTable = () => {
+  const pathname = usePathname();
+  const apiBaseUrl = "/api/bio";
+
   const params = useSearchParams();
+  const router = useRouter();
+
   const [data, setData] = useState<BiosWithPagination>();
   const fetchData = async () => {
     try {
       const queryString = params.toString();
       const response = await fetch(`${apiBaseUrl}?${queryString}`);
-      // handle data
-      const data = await response.json();
-      setData(data);
+      if (!response.ok) {
+        // Handle authentication errors
+        if (response.status === 401) {
+          // remove auth cookie
+          deleteAuthCookies();
+          //  redirect to the login page
+          router.push(Routes.Login);
+        } else {
+          console.error(
+            `Http error when fetching purchase data ${response.status}`
+          );
+        }
+      } else {
+        // handle data
+        const data = await response.json();
+        setData(data);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -139,12 +156,18 @@ const BioTable = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link className="w-full" href={`${path}/${item.id}/view`}>
+                      <Link
+                        className="w-full"
+                        href={`${pathname}/${item.id}/view`}
+                      >
                         view
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link className="w-full" href={`${path}/${item.id}/edit`}>
+                      <Link
+                        className="w-full"
+                        href={`${pathname}/${item.id}/edit`}
+                      >
                         edit
                       </Link>
                     </DropdownMenuItem>

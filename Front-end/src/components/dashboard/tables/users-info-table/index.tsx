@@ -5,12 +5,13 @@ import T_Head, { columnType } from "@/components/blocks/SS-table/T-head";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
 
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
+import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import { UsersInfoWithPagination } from "@/assets/data/response-types/user-infos";
 import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
@@ -77,19 +78,36 @@ const tableColumns: columnType[] = [
     sortable: false,
   },
 ];
-const path = `${Routes.Admin}/user-info`;
-const apiBaseUrl = `/api/marketing/user-info`;
 
 const UsersInfoTable = () => {
+  const pathname = usePathname();
+  const apiBaseUrl = `/api/marketing/user-info`;
+
   const params = useSearchParams();
+  const router = useRouter();
+
   const [usersInfo, setUsersInfo] = useState<UsersInfoWithPagination>();
   const fetchData = async () => {
     try {
       const queryString = params.toString();
       const response = await fetch(`${apiBaseUrl}?${queryString}`);
-      // handle data
-      const data = await response.json();
-      setUsersInfo(data);
+      if (!response.ok) {
+        // Handle authentication errors
+        if (response.status === 401) {
+          // remove auth cookie
+          deleteAuthCookies();
+          //  redirect to the login page
+          router.push(Routes.Login);
+        } else {
+          console.error(
+            `Http error when fetching purchase data ${response.status}`
+          );
+        }
+      } else {
+        // handle data
+        const data = await response.json();
+        setUsersInfo(data);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -159,7 +177,7 @@ const UsersInfoTable = () => {
                     <DropdownMenuItem>
                       <Link
                         className="w-full"
-                        href={`${path}/${userInfo.id}/view`}
+                        href={`${pathname}/${userInfo.id}/view`}
                       >
                         view
                       </Link>
@@ -167,7 +185,7 @@ const UsersInfoTable = () => {
                     <DropdownMenuItem>
                       <Link
                         className="w-full"
-                        href={`${path}/${userInfo.id}/edit`}
+                        href={`${pathname}/${userInfo.id}/edit`}
                       >
                         edit
                       </Link>

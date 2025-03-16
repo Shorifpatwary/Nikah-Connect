@@ -3,15 +3,13 @@
     "aaron-bond.better-comments",
     "streetsidesoftware.code-spell-checker",
     "dbaeumer.vscode-eslint",
-    "ms-vscode.vscode-typescript-next",
     "PKief.material-icon-theme",
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
     "dsznajder.es7-react-js-snippets",
     "sdras.night-owl",
     "bmewburn.vscode-intelephense-client",
-    "onecentlin.laravel5-snippets",
-    "DEVSENSE.phptools-vscode",
-    "formulahendry.auto-rename-tag"
+    "formulahendry.auto-rename-tag",
+    "amiralizadeh9480.laravel-extra-intellisense"
   ]
 }

@@ -47,17 +47,14 @@ const T_Head = ({ className, columns }: Props) => {
         {columns.map(column => {
           if (!column.sortable) {
             return (
-              <TableHead
-                key={column.label}
-                className={cn("", column.className)}
-              >
-                {column.name}{" "}
+              <TableHead key={column.name} className={cn("", column.className)}>
+                {column.label}
               </TableHead>
             );
           } else {
             return (
               <TableHead
-                key={column.label}
+                key={column.name}
                 className={cn("capitalize", column.className)}
               >
                 <Button

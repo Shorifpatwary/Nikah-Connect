@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const queryString = searchParams.toString();
 
-  const apiUrl = `${backendUrl}/api/bio/view/user-records${queryString ? "?" + queryString : ""}`;
+  const apiUrl = `${backendUrl}/api/bio/purchase/user-records${queryString ? "?" + queryString : ""}`;
 
   const headers = await getHeaders();
   const userId = await getUserIdFromCookies();
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
         ...headers,
       },
       next: {
-        tags: [`${allBio}_views_${userId}`],
+        tags: [`${allBio}_purchases_${userId}`],
         revalidate: 60 * 60, // Cache for 1 hour
       },
     });
@@ -38,6 +38,6 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    throw new Error(`Error fetching user view records: ${error}`);
+    throw new Error(`Error fetching user purchase records: ${error}`);
   }
 }

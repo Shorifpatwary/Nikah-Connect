@@ -5,7 +5,7 @@ import T_Head, { columnType } from "@/components/blocks/SS-table/T-head";
 import TableSkeleton from "@/components/blocks/SS-table/table-skeleton";
 
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import CustomPagination from "@/components/blocks/pagination";
@@ -70,10 +70,10 @@ const tableColumns: columnType[] = [
   },
 ];
 
-const path = `${Routes.Admin}/view`;
-const apiBaseUrl = "/api/bio/view";
-
 const ViewTable = () => {
+  const pathname = usePathname();
+  const apiBaseUrl = "/api/bio/view";
+
   const params = useSearchParams();
   const router = useRouter();
   const [data, setData] = useState<ViewsWithPagination>();
@@ -90,7 +90,7 @@ const ViewTable = () => {
           router.push(Routes.Login);
         } else {
           console.error(
-            `Http error when fetching coin data ${response.status}`
+            `Http error when fetching view data ${response.status}`
           );
         }
       } else {
@@ -172,12 +172,18 @@ const ViewTable = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link className="w-full" href={`${path}/${item.id}/view`}>
+                      <Link
+                        className="w-full"
+                        href={`${pathname}/${item.id}/view`}
+                      >
                         view
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link className="w-full" href={`${path}/${item.id}/edit`}>
+                      <Link
+                        className="w-full"
+                        href={`${pathname}/${item.id}/edit`}
+                      >
                         edit
                       </Link>
                     </DropdownMenuItem>

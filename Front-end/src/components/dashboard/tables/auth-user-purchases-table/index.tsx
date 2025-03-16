@@ -13,7 +13,7 @@ import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
 import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
 import BioProfile from "@/app/(front-end)/bio/(component)/bio-card/bio-profile";
-import { ViewsWithPagination } from "@/assets/data/response-types/view";
+import { PurchasesWithPagination } from "@/assets/data/response-types/purchase";
 import Routes from "@/assets/data/routes";
 import { formatReadableDate, getInitialSerialNumber } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
@@ -22,7 +22,7 @@ import Link from "next/link";
 const tableColumns: columnType[] = [
   {
     label: "SL No",
-    name: "sl_no-",
+    name: "sl_nos",
     sortable: false,
   },
   {
@@ -46,18 +46,18 @@ const tableColumns: columnType[] = [
     sortable: false,
   },
   {
-    label: "View",
+    label: "Purchase",
     name: "created_at",
     sortable: true,
   },
 ];
 
-const HistoryTable = () => {
-  const apiBaseUrl = "/api/bio/view/user-records";
+const PurchaseTable = () => {
+  const apiBaseUrl = "/api/bio/purchase/user-records";
 
   const params = useSearchParams();
   const router = useRouter();
-  const [data, setData] = useState<ViewsWithPagination>();
+  const [data, setData] = useState<PurchasesWithPagination>();
   const fetchData = async () => {
     try {
       const queryString = params.toString();
@@ -71,7 +71,7 @@ const HistoryTable = () => {
           router.push(Routes.Login);
         } else {
           console.error(
-            `Http error when fetching view data ${response.status}`
+            `Http error when fetching purchase data ${response.status}`
           );
         }
       } else {
@@ -152,4 +152,4 @@ const HistoryTable = () => {
     </Section>
   );
 };
-export default HistoryTable;
+export default PurchaseTable;

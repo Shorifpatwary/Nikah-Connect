@@ -12,7 +12,7 @@ import CustomPagination from "@/components/blocks/pagination";
 import RecordsPerPage from "@/components/blocks/SS-table/data-per-table";
 
 import { deleteAuthCookies } from "@/app/(front-end)/(auth)/authCookie";
-import { CoinsWithPagination } from "@/assets/data/response-types/coin";
+import { PurchasesWithPagination } from "@/assets/data/response-types/purchase";
 import Routes from "@/assets/data/routes";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { formatReadableDate } from "@/lib/utils";
-import { CircleEllipsisIcon } from "lucide-react";
+import { CircleEllipsisIcon, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 const tableColumns: columnType[] = [
@@ -34,28 +34,33 @@ const tableColumns: columnType[] = [
     sortable: true,
   },
   {
-    label: "Total Coin",
-    name: "total_coin",
+    label: "Bio Title",
+    name: "title",
     sortable: true,
   },
   {
-    label: "Total Purchase",
-    name: "total_purchase",
+    label: "Name",
+    name: "name",
     sortable: true,
   },
   {
-    label: "Total Used",
-    name: "total_used",
-    sortable: true,
-  },
-  {
-    label: "Email",
+    label: "E-mail",
     name: "email",
     sortable: true,
   },
   {
-    label: "Last Update",
-    name: "updated_at",
+    label: "User",
+    name: "user",
+    sortable: false,
+  },
+  {
+    label: "Bio",
+    name: "bio",
+    sortable: false,
+  },
+  {
+    label: "Purchased At",
+    name: "created_at",
     sortable: true,
   },
   {
@@ -65,13 +70,13 @@ const tableColumns: columnType[] = [
   },
 ];
 
-const CoinTable = () => {
+const SaleTable = () => {
   const pathname = usePathname();
-  const apiBaseUrl = "/api/coin";
+  const apiBaseUrl = "/api/bio/purchase";
 
   const params = useSearchParams();
   const router = useRouter();
-  const [data, setData] = useState<CoinsWithPagination>();
+  const [data, setData] = useState<PurchasesWithPagination>();
   const fetchData = async () => {
     try {
       const queryString = params.toString();
@@ -85,7 +90,7 @@ const CoinTable = () => {
           router.push(Routes.Login);
         } else {
           console.error(
-            `Http error when fetching coin data ${response.status}`
+            `Http error when fetching purchase data ${response.status}`
           );
         }
       } else {
@@ -113,6 +118,7 @@ const CoinTable = () => {
       </Section>
     );
   }
+
   return (
     <Section rowClassName="flex-col gap-4 w-full">
       {/* table top header */}
@@ -135,11 +141,20 @@ const CoinTable = () => {
           {data?.data.map(item => (
             <TableRow key={item.id}>
               <TableCell className="font-medium">{item.id}</TableCell>
-              <TableCell>{item.total_coin}</TableCell>
-              <TableCell>{item.total_purchase}</TableCell>
-              <TableCell>{item.total_used}</TableCell>
+              <TableCell>{item.bio.title}</TableCell>
+              <TableCell>{item.user.name}</TableCell>
               <TableCell>{item.user.email}</TableCell>
-              <TableCell>{formatReadableDate(item.updated_at)}</TableCell>
+              <TableCell>
+                <Link href={`${Routes.Admin}/user/${item.user.id}`}>
+                  <ExternalLink />
+                </Link>
+              </TableCell>
+              <TableCell>
+                <Link href={`${Routes.Admin}/bio/${item.bio.id}`}>
+                  <ExternalLink className="text-primary" />
+                </Link>
+              </TableCell>
+              <TableCell>{formatReadableDate(item.created_at)}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -190,4 +205,4 @@ const CoinTable = () => {
     </Section>
   );
 };
-export default CoinTable;
+export default SaleTable;

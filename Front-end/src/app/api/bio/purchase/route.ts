@@ -1,6 +1,6 @@
-import { allBio, backendUrl } from "@/assets/data/config/app.config";
+import { allPurchasesTag, backendUrl } from "@/assets/data/config/app.config";
+import { PurchasesWithPagination } from "@/assets/data/response-types/purchase";
 import { getHeaders } from "@/lib/request/header/getHeaders";
-import { getUserIdFromCookies } from "@/lib/request/header/getUserIdFromCookies";
 import { setCookiesFromResponse } from "@/lib/request/header/setCookies";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -8,11 +8,10 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const queryString = searchParams.toString();
 
-  const apiUrl = `${backendUrl}/api/bio/view/user-records${queryString ? "?" + queryString : ""}`;
+  // Construct the request URL with query string
+  const apiUrl = `${backendUrl}/api/bio/purchase${queryString ? "?" + queryString : ""}`;
 
   const headers = await getHeaders();
-  const userId = await getUserIdFromCookies();
-
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
@@ -20,24 +19,25 @@ export async function GET(request: NextRequest) {
         ...headers,
       },
       next: {
-        tags: [`${allBio}_views_${userId}`],
-        revalidate: 60 * 60, // Cache for 1 hour
+        tags: [allPurchasesTag],
+        revalidate: 60 * 60, // Cache for 1 hour (in seconds)
       },
     });
 
-    // Update cookies from response
+    // Update authentication cookies
     await setCookiesFromResponse(response);
 
     if (!response.ok) {
+      // Delete auth cookie from the API call when response is 401
       return NextResponse.json(
         { error: `HTTP error! Status: ${response.status}` },
         { status: response.status }
       );
     }
 
-    const data = await response.json();
+    const data: PurchasesWithPagination = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    throw new Error(`Error fetching user view records: ${error}`);
+    throw new Error(`Error: ${error}`);
   }
 }

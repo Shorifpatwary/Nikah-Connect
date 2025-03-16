@@ -5,6 +5,7 @@ import {
   HelpCircle,
   Home,
   Settings,
+  ShoppingCart,
   Users,
 } from "lucide-react";
 
@@ -40,6 +41,11 @@ export const SideNavItems: SideNavItem[] = [
     title: "views",
     path: "/admin/bio/view",
     icon: <Eye />,
+  },
+  {
+    title: "purchases",
+    path: "/admin/bio/purchase",
+    icon: <ShoppingCart />,
   },
   {
     title: "Attributes",

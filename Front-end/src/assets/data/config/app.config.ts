@@ -37,6 +37,7 @@ export const expectedPartner = "expectedPartner";
 export const hiddenInfo = "hiddenInfo";
 export const allCoinsTag = "coins";
 export const allViewsTag = "views";
+export const allPurchasesTag = "purchases";
 
 // ! user  roles from "RolesEnum.php"
 export const roles: Option[] = [

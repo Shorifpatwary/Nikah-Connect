@@ -6,6 +6,7 @@ import {
   HelpCircle,
   History,
   Settings,
+  ShoppingCart,
 } from "lucide-react";
 
 export type SideNavItem = {
@@ -25,6 +26,11 @@ export const SideNavItems: SideNavItem[] = [
     title: "History",
     path: `${Routes.Profile}/bio/history`,
     icon: <History />,
+  },
+  {
+    title: "Purchase",
+    path: `${Routes.Profile}/bio/purchase`,
+    icon: <ShoppingCart />,
   },
   {
     title: "Coin",
